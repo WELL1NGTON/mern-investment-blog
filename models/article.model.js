@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const marked = require('marked');
-const slugify = require('slugify');
+const mongoose = require("mongoose");
+// const marked = require('marked');
+const slugify = require("slugify");
 const Schema = mongoose.Schema;
 
 const articleSchema = new Schema(
@@ -27,7 +27,7 @@ const articleSchema = new Schema(
   }
 );
 
-articleSchema.pre('validate', function (next) {
+articleSchema.pre("validate", function (next) {
   if (this.title) {
     this.slug = slugify(this.title, { lower: true, strict: true });
   }
@@ -35,6 +35,6 @@ articleSchema.pre('validate', function (next) {
   next();
 });
 
-const Article = mongoose.model('Article', articleSchema);
+const Article = mongoose.model("Article", articleSchema);
 
 module.exports = Article;

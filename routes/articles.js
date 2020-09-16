@@ -1,57 +1,135 @@
-const router = require('express').Router();
-let Article = require('../models/article.model');
+const router = require("express").Router();
+const Article = require("../models/article.model");
+const Category = require("../models/category.model");
+const auth = require("../middleware/auth");
+var async = require("async");
 
-router.route('/').get((req, res) => {
+// @route   GET articles
+// @desc    Get all articles
+// @access  Public
+router.route("/").get((req, res) => {
   Article.find()
-    .sort({ createdAt: 'desc' })
+    .sort({ createdAt: "desc" })
     .then((articles) => res.json(articles))
-    .catch((err) => res.status(400).json('Error: ' + err));
+    .catch((err) => res.status(400).json("Error: " + err));
 });
 
-router.route('/add').post((req, res) => {
-  const title = req.body.title;
-  const description = req.body.description;
-  const markdownArticle = req.body.markdownArticle;
+// @route   POST articles
+// @desc    Add new article
+// @access  Private
+router.route("/add").post(auth, (req, res) => {
+  const { title, description, markdownArticle, author } = req.body;
   const date = Date.parse(req.body.date);
-  const tags = req.body.tags;
-  const author = req.body.author;
+  const tags = req.body.tags.map((tag) => tag.toUpperCase());
 
-  const newArticle = new Article({ title, description, markdownArticle, date, tags, author });
+  const newArticle = new Article({
+    title,
+    description,
+    markdownArticle,
+    date,
+    tags,
+    author,
+  });
 
   newArticle
     .save()
-    .then(() => res.json('Article added!'))
-    .catch((err) => res.status(400).json('Error: ' + err));
+    .then(() => {
+      updateCategories(tags);
+
+      res.json("Article added!");
+    })
+    .catch((err) => res.status(400).json("Error: " + err));
 });
 
-router.route('/:slug').get((req, res) => {
+// @route   GET articles/:slug
+// @desc    Get article
+// @access  Public
+router.route("/:slug").get((req, res) => {
   Article.findOne({ slug: req.params.slug })
     .then((article) => res.json(article))
-    .catch((err) => res.status(400).json('Error: ' + err));
+    .catch((err) => res.status(400).json("Error: " + err));
 });
 
-router.route('/:slug').delete((req, res) => {
+// @route   DELETE articles/:slug
+// @desc    Delete article
+// @access  Private
+router.route("/:slug").delete(auth, (req, res) => {
   Article.findOneAndDelete({ slug: req.params.slug })
-    .then(() => res.json('Article deleted.'))
-    .catch((err) => res.status(400).json('Error: ' + err));
+    .then((article) => {
+      console.log(article);
+      updateCategories([], article.tags);
+      res.json("Article deleted.");
+    })
+    .catch((err) => res.status(400).json("Error: " + err));
 });
 
-router.route('/update/:slug').post((req, res) => {
+// @route   POST articles/update/:slug
+// @desc    Update article
+// @access  Private
+router.route("/update/:slug").post((req, res) => {
   Article.findOne({ slug: req.params.slug })
     .then((article) => {
+      oldTags = article.tags;
+      newTags = req.body.tags.map((tag) => tag.toUpperCase());
+
       article.title = req.body.title;
       article.description = req.body.description;
       article.markdownArticle = req.body.markdownArticle;
       article.date = Date.parse(req.body.date);
-      article.tags = req.body.tags;
+      article.tags = req.body.tags.map((tag) => tag.toUpperCase());
       article.author = req.body.author;
 
       article
         .save()
-        .then(() => res.json('Article updated!'))
-        .catch((err) => res.status(400).json('Error: ' + err));
+        .then(() => {
+          updateCategories(newTags, oldTags);
+          res.json("Article updated!");
+        })
+        .catch((err) => res.status(400).json("Error: " + err));
     })
-    .catch((err) => res.status(400).json('Error: ' + err));
+    .catch((err) => res.status(400).json("Error: " + err));
 });
 
 module.exports = router;
+
+async function updateCategories(newTags, oldTags = []) {
+  tagsToUpdate = [];
+
+  newTags.forEach((newTag) => {
+    if (!oldTags.includes(newTag))
+      tagsToUpdate.push({
+        tag: newTag,
+        ammount: 1,
+      });
+  });
+
+  oldTags.forEach((oldTag) => {
+    if (!newTags.includes(oldTag))
+      tagsToUpdate.push({
+        tag: oldTag,
+        ammount: -1,
+      });
+  });
+
+  async.each(tagsToUpdate, (tagToUpdate, callback) => {
+    const name = tagToUpdate.tag;
+
+    Category.findOne({ name })
+      .then((category) => {
+        if (category)
+          Category.findOneAndUpdate(
+            { name },
+            { $inc: { posts_count: tagToUpdate.ammount } }
+          ).catch((err) => console.log("Error: " + err));
+        else {
+          const newCategory = new Category({
+            name: name,
+            posts_count: tagToUpdate.ammount,
+          });
+
+          newCategory.save().catch((err) => console.log("Error: " + err));
+        }
+      })
+      .catch((err) => console.log("Error: " + err));
+  });
+}

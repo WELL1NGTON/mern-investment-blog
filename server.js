@@ -1,9 +1,9 @@
-const express = require('express');
-const cors = require('cors');
-const mongoose = require('mongoose');
+const express = require("express");
+const cors = require("cors");
+const mongoose = require("mongoose");
 
 //environment variables
-require('dotenv').config();
+require("dotenv").config();
 
 //express server
 const app = express();
@@ -14,19 +14,23 @@ app.use(cors());
 app.use(express.json());
 
 const uri = process.env.ATLAS_URI;
-mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true });
+mongoose.connect(uri, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+});
 const connection = mongoose.connection;
-connection.once('open', () => {
-  console.log('MongoDB database connection established successfully');
+connection.once("open", () => {
+  console.log("MongoDB database connection established successfully");
 });
 
-// const exercisesRouter = require('./routes/exercises');
-// const usersRouter = require('./routes/users');
-const articlesRouter = require('./routes/articles');
+// const categoriesRouter = require("./routes/categories");
 
-// app.use('/exercises', exercisesRouter);
-// app.use('/users', usersRouter);
-app.use('/articles', articlesRouter);
+app.use("/articles", require("./routes/articles"));
+app.use("/users", require("./routes/users"));
+app.use("/auth", require("./routes/auth"));
+// app.use("/categories", categoriesRouter);
 
 //start listening
 app.listen(port, () => {

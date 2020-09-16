@@ -1,22 +1,30 @@
-const mongoose = require('mongoose');
-
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema(
   {
-    username: {
+    email: {
       type: String,
       required: true,
-      unique: true,
       trim: true,
       minlength: 3,
     },
+    name: { type: String, required: true },
+    password: { type: String, required: true },
   },
   {
     timestamps: true,
   }
 );
 
-const User = mongoose.model('User', userSchema);
+// userSchema.pre("validate", function (next) {
+// if (this.title) {
+//   this.slug = slugify(this.title, { lower: true, strict: true });
+// }
+
+//   next();
+// });
+
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;
