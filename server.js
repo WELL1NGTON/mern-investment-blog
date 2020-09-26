@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser");
 
 //environment variables
 require("dotenv").config();
@@ -10,7 +11,14 @@ const app = express();
 const port = process.env.port || 5000;
 
 //middleware
-app.use(cors());
+app.use(cookieParser());
+app.use(
+  cors({
+    origin: "http://localhost:3000", //frontend
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 
 const uri = process.env.ATLAS_URI;
@@ -26,7 +34,6 @@ connection.once("open", () => {
 });
 
 // const categoriesRouter = require("./routes/categories");
-
 app.use("/articles", require("./routes/articles"));
 app.use("/users", require("./routes/users"));
 app.use("/auth", require("./routes/auth"));

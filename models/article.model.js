@@ -13,9 +13,10 @@ const articleSchema = new Schema(
     },
     description: { type: String, required: true },
     markdownArticle: { type: String, required: true },
-    date: { type: Date, required: false },
+    date: { type: Date, required: true },
     tags: { type: [String], required: true },
     author: { type: String, required: true },
+    previewImg: { type: String, required: false },
     slug: {
       type: String,
       required: true,
