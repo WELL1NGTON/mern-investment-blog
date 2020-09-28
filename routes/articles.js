@@ -22,6 +22,8 @@ router.route("/add").post(auth, (req, res) => {
   const date = Date.parse(req.body.date);
   const tags = req.body.tags.map((tag) => tag.toUpperCase());
 
+  //const imgUrl = req.file.filename;
+
   const newArticle = new Article({
     title,
     description,
@@ -29,6 +31,7 @@ router.route("/add").post(auth, (req, res) => {
     date,
     tags,
     author,
+    //previewImg: imgUrl
   });
 
   newArticle
