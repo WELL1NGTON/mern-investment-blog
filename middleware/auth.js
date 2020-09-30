@@ -1,5 +1,7 @@
 const jwt = require("jsonwebtoken");
 const RefreshToken = require("../models/refreshToken.model");
+// const cookieExtractor = require("../util/cookieExtractor");
+// import cookieExtractor from "../util/cookieExtractor";
 
 function cookieExtractor(req) {
   let accessToken = null;

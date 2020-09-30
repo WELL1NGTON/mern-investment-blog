@@ -9,7 +9,9 @@ var async = require("async");
 // @access  Public
 router.route("/").get((req, res) => {
   Article.find()
+    // .find({ $and: [{ state: "PUBLISHED" }, { visibility: "ALL" }] }) //Return Published and Visible to all
     .sort({ createdAt: "desc" })
+    //.limit(20)
     .then((articles) => res.json(articles))
     .catch((err) => res.status(400).json("Error: " + err));
 });
@@ -59,7 +61,7 @@ router.route("/:slug").get((req, res) => {
 router.route("/:slug").delete(auth, (req, res) => {
   Article.findOneAndDelete({ slug: req.params.slug })
     .then((article) => {
-      console.log(article);
+      // console.log(article);
       updateCategories([], article.tags);
       res.json("Article deleted.");
     })

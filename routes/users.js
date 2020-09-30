@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 
 // @route   POST users
 // @desc    Register new user
-// @access  Private------
+// @access  Private
 router.route("/register/").post((req, res) => {
   const { name, email, password } = req.body;
 
@@ -53,4 +53,5 @@ router.route("/register/").post((req, res) => {
     });
   });
 });
+
 module.exports = router;

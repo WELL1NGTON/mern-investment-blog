@@ -5,7 +5,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const auth = require("../middleware/auth");
 
-const ACCESS_TOKEN_EXPIRATION_TIME = "15s";
+const ACCESS_TOKEN_EXPIRATION_TIME = "15m";
 const REFRESH_TOKEN_EXPIRATION_TIME = "30d";
 
 // @route   POST auth/login

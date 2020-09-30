@@ -18,8 +18,8 @@ app.use(
     credentials: true,
   })
 );
-
 app.use(express.json());
+app.use(express.static("public")); //folder public so user can receive the images
 
 const uri = process.env.ATLAS_URI;
 mongoose.connect(uri, {
@@ -37,6 +37,7 @@ connection.once("open", () => {
 app.use("/articles", require("./routes/articles"));
 app.use("/users", require("./routes/users"));
 app.use("/auth", require("./routes/auth"));
+app.use("/images", require("./routes/images"));
 // app.use("/categories", categoriesRouter);
 
 //start listening

@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-// const marked = require('marked');
 const slugify = require("slugify");
 const Schema = mongoose.Schema;
 
@@ -17,6 +16,19 @@ const articleSchema = new Schema(
     tags: { type: [String], required: true },
     author: { type: String, required: true },
     previewImg: { type: String, required: false },
+    images: { type: [String], required: true },
+    visibility: {
+      type: String,
+      enum: ["ALL", "EDITORS", "USERS"],
+      default: "ALL",
+      required: true,
+    },
+    state: {
+      type: String,
+      enum: ["EDITING", "PUBLISHED", "DELETED"],
+      default: "EDITING",
+      required: true,
+    },
     slug: {
       type: String,
       required: true,
