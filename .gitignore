@@ -4,4 +4,7 @@ npm-debug.log
 .env
 .DS_Store
 .rest
+
+#Blog images folder
 public/images/*
+!public/images/.gitkeep
