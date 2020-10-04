@@ -2,11 +2,12 @@ const router = require("express").Router();
 const User = require("../models/user.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const auth = require("../middleware/auth");
 
 // @route   POST users
 // @desc    Register new user
 // @access  Private
-router.route("/register/").post((req, res) => {
+router.route("/register/").post(auth, (req, res) => {
   const { name, email, password } = req.body;
 
   if (!name || !email || !password)

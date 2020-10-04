@@ -9,9 +9,10 @@ var async = require("async");
 // @access  Public
 router.route("/").get((req, res) => {
   Article.find()
-    // .find({ $and: [{ state: "PUBLISHED" }, { visibility: "ALL" }] }) //Return Published and Visible to all
+    .find({ $and: [{ state: "PUBLISHED" }, { visibility: "ALL" }] }) //Return Published and Visible to all
     .sort({ createdAt: "desc" })
-    //.limit(20)
+    .limit(20)
+    .select("-markdownArticle")
     .then((articles) => res.json(articles))
     .catch((err) => res.status(400).json("Error: " + err));
 });
@@ -20,7 +21,14 @@ router.route("/").get((req, res) => {
 // @desc    Add new article
 // @access  Private
 router.route("/add").post(auth, (req, res) => {
-  const { title, description, markdownArticle, author } = req.body;
+  const {
+    title,
+    description,
+    markdownArticle,
+    author,
+    state,
+    visibility,
+  } = req.body;
   const date = Date.parse(req.body.date);
   const tags = req.body.tags.map((tag) => tag.toUpperCase());
 
@@ -33,6 +41,8 @@ router.route("/add").post(auth, (req, res) => {
     date,
     tags,
     author,
+    state,
+    visibility,
     //previewImg: imgUrl
   });
 

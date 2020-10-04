@@ -4,9 +4,7 @@ const RefreshToken = require("../models/refreshToken.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const auth = require("../middleware/auth");
-
-const ACCESS_TOKEN_EXPIRATION_TIME = "15m";
-const REFRESH_TOKEN_EXPIRATION_TIME = "30d";
+const jwtTokens = require("../util/jwtTokens");
 
 // @route   POST auth/login
 // @desc    Auth user (login)
@@ -23,8 +21,8 @@ router.route("/login").post((req, res) => {
     bcrypt.compare(password, user.password).then((isMatch) => {
       if (!isMatch) return res.status(400).json({ msg: "invalid credentials" });
 
-      const accessToken = generateAccessToken(user);
-      const refreshToken = generateRefreshToken(user);
+      const accessToken = jwtTokens.generateAccessToken(user);
+      const refreshToken = jwtTokens.generateRefreshToken(user);
 
       const newRefreshToken = new RefreshToken({
         user_id: user.id,
@@ -85,12 +83,13 @@ router.route("/refresh").get((req, res) => {
             process.env.REFRESH_TOKEN_SECRET
           );
           req.user = decoded;
-          const accessToken = generateAccessToken(req.user);
+          const accessToken = jwtTokens.generateAccessToken(req.user);
+
           res
             .cookie("access-token", accessToken, { httpOnly: true })
             .json({ success: true });
         } catch {
-          RefreshToken.findByIdAndDelete(refreshToken);
+          RefreshToken.findOneAndDelete({ token: refreshToken }).exec();
           res
             .status(400)
             .clearCookie("refresh-token")
@@ -101,17 +100,5 @@ router.route("/refresh").get((req, res) => {
       .catch((err) => res.status(400).json("Error: " + err));
   }
 });
-
-function generateAccessToken(user) {
-  return jwt.sign({ id: user.id }, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: ACCESS_TOKEN_EXPIRATION_TIME,
-  });
-}
-
-function generateRefreshToken(user) {
-  return jwt.sign({ id: user.id }, process.env.REFRESH_TOKEN_SECRET, {
-    expiresIn: REFRESH_TOKEN_EXPIRATION_TIME,
-  });
-}
 
 module.exports = router;

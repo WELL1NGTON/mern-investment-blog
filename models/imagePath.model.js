@@ -9,21 +9,14 @@ const imagePathSchema = new Schema(
       trim: true,
       minlength: 3,
     },
-    articles: { type: [String], required: false },
+    articles: { type: [String], required: true },
+    tags: { type: [String], required: true },
     user: { type: String, required: true },
   },
   {
     timestamps: true,
   }
 );
-
-// userSchema.pre("validate", function (next) {
-// if (this.title) {
-//   this.slug = slugify(this.title, { lower: true, strict: true });
-// }
-
-//   next();
-// });
 
 const ImagePath = mongoose.model("ImagePath", imagePathSchema);
 

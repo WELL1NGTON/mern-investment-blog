@@ -1,45 +1,33 @@
 const jwt = require("jsonwebtoken");
 const RefreshToken = require("../models/refreshToken.model");
-// const cookieExtractor = require("../util/cookieExtractor");
-// import cookieExtractor from "../util/cookieExtractor";
+const cookieExtractor = require("../util/cookieExtractor");
 
-function cookieExtractor(req) {
-  let accessToken = null;
-  let refreshToken = null;
-  if (req && req.cookies) {
-    accessToken = req.cookies["access-token"];
-    refreshToken = req.cookies["refresh-token"];
-  }
-  return { accessToken, refreshToken };
+function generateAccessToken(user) {
+  return jwt.sign({ id: user.id }, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: "15s",
+  });
 }
 
 async function refreshAccessToken(refreshToken) {
+  //todo: it was needed to verify the refreshToken against the server, but for that it would need to be an async function... ?
   try {
-    // Verify token
     const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
-
-    // Add user from payload
-    req.user = decoded;
-
-    const doc = await RefreshToken.findOne({ token: refreshToken });
-    if (doc) {
-      const accessToken = jwt.sign(
-        { id: decoded.id },
-        process.env.ACCESS_TOKEN_SECRET,
-        {
-          expiresIn: ACCESS_TOKEN_EXPIRATION_TIME,
-        }
-      );
-      return accessToken;
-    }
-    return null;
+    const docRefreshToken = await RefreshToken.findOne({
+      token: refreshToken,
+    }).exec();
+    if (!docRefreshToken) return { newAccessToken: null, decoded: null };
+    let newAccessToken = null;
+    if (decoded.email === user.email)
+      newAccessToken = generateAccessToken(decoded);
+    return { newAccessToken, decoded };
   } catch (e) {
-    return null;
+    console.error(e);
+    return { newAccessToken: null, decoded: null };
   }
 }
 
-function auth(req, res, next) {
-  const { accessToken, refreshToken } = cookieExtractor(req);
+async function auth(req, res, next) {
+  const { accessToken, refreshToken } = cookieExtractor.extractJWTTokens(req);
 
   // Check for token
   if (!accessToken)
@@ -55,7 +43,27 @@ function auth(req, res, next) {
     req.refreshToken = refreshToken;
     next();
   } catch (e) {
-    res.status(400).json({ msg: "Token is not valid" });
+    if (!refreshToken) {
+      return res
+        .status(400)
+        .clearCookie("refresh-token")
+        .clearCookie("access-token")
+        .json({ msg: "Token is not valid" });
+    }
+    const { newAccessToken, decoded } = await refreshAccessToken(refreshToken);
+    if (!newAccessToken || !decoded) {
+      RefreshToken.findOneAndDelete({ token: refreshToken }).exec();
+      return res
+        .status(400)
+        .clearCookie("refresh-token")
+        .clearCookie("access-token")
+        .json({ msg: "Refresh token is not valid" });
+    }
+    req.user = decoded;
+    req.accessToken = newAccessToken;
+    req.refreshToken = refreshToken;
+    res.cookie("access-token", newAccessToken, { httpOnly: true });
+    next();
   }
 }
 

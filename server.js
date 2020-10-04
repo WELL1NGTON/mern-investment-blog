@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
+// const rateLimiterMiddleware = require("./middleware/rateLimiter");
 
 //environment variables
 require("dotenv").config();
@@ -20,6 +21,7 @@ app.use(
 );
 app.use(express.json());
 app.use(express.static("public")); //folder public so user can receive the images
+// app.use(rateLimiterMiddleware);
 
 const uri = process.env.ATLAS_URI;
 mongoose.connect(uri, {

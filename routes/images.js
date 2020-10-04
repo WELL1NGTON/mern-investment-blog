@@ -17,7 +17,9 @@ router.route("/").get(auth, (req, res) => {
       console.log(err);
       return res.status(404).json("Couldn't read images directory");
     }
-    res.status(200).json({ files });
+    res
+      .status(200)
+      .json({ files: files.filter((value) => value !== ".gitkeep") });
   });
 });
 
@@ -30,6 +32,12 @@ router.route("/add").post(auth, multer.single("image"), (req, res) => {
   filehelper
     .compressImage(req.file, size)
     .then((newPath) => {
+      const newImagePath = new ImagePath({
+        path: newPath,
+        articles: [],
+        tags: [],
+        user: req.user.id,
+      });
       return res.status(200).json({
         imgUrl: newPath,
       });

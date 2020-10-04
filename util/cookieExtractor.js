@@ -1,4 +1,4 @@
-exports.cookieExtractor = (req) => {
+exports.extractJWTTokens = (req) => {
   let accessToken = null;
   let refreshToken = null;
   if (req && req.cookies) {
@@ -7,3 +7,5 @@ exports.cookieExtractor = (req) => {
   }
   return { accessToken, refreshToken };
 };
+
+// module.exports.extractJWTTokens = extractJWTTokens;
