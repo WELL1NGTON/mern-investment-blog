@@ -1,16 +1,12 @@
-const fs = require("fs");
-const sharp = require("sharp");
+import fs from "fs";
+import sharp from "sharp";
 
-exports.compressImage = (file, size) => {
+const compressImage = (file: Express.Multer.File, size: number) => {
   const newPath = file.path.split(".")[0] + ".png";
   return sharp(file.path)
     .resize(size)
-    .toFormat("png")
-    .png
-    // ({
-    //   quality: 100,
-    // })
-    ()
+    .toFormat("jpg")
+    .jpeg({ quality: 80 })
     .toBuffer()
     .then((data) => {
       fs.access(file.path, (err) => {
@@ -32,3 +28,5 @@ exports.compressImage = (file, size) => {
       return newPath;
     });
 };
+
+export { compressImage };

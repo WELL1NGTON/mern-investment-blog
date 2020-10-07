@@ -1,16 +1,18 @@
-const router = require("express").Router();
-const Article = require("../models/article.model");
-const Category = require("../models/category.model");
-const auth = require("../middleware/auth");
-var async = require("async");
+import express, { Request, Response } from "express";
+import Article from "../models/article.model";
+import Category from "../models/category.model";
+import { auth } from "../middleware/auth";
+import async from "async";
+
+const router = express.Router();
 
 // @route   GET articles
 // @desc    Get all articles
 // @access  Public
-router.route("/").get((req, res) => {
+router.route("/").get((req: Request, res: Response) => {
   Article.find()
     .find({ $and: [{ state: "PUBLISHED" }, { visibility: "ALL" }] }) //Return Published and Visible to all
-    .sort({ createdAt: "desc" })
+    .sort({ date: "desc" })
     .limit(20)
     .select("-markdownArticle")
     .then((articles) => res.json(articles))
@@ -20,7 +22,7 @@ router.route("/").get((req, res) => {
 // @route   POST articles
 // @desc    Add new article
 // @access  Private
-router.route("/add").post(auth, (req, res) => {
+router.route("/").post(auth, (req: Request, res: Response) => {
   const {
     title,
     description,
@@ -29,9 +31,10 @@ router.route("/add").post(auth, (req, res) => {
     state,
     visibility,
   } = req.body;
-  const date = Date.parse(req.body.date);
-  const tags = req.body.tags.map((tag) => tag.toUpperCase());
-
+  const date = req.body.date ? Date.parse(String(req.body.date)) : new Date();
+  const tags = req.body.tags
+    ? req.body.tags.map((tag: string) => tag.toUpperCase())
+    : [];
   //const imgUrl = req.file.filename;
 
   const newArticle = new Article({
@@ -50,16 +53,17 @@ router.route("/add").post(auth, (req, res) => {
     .save()
     .then(() => {
       updateCategories(tags);
-
-      res.json("Article added!");
+      return res.json("Article added!");
     })
-    .catch((err) => res.status(400).json("Error: " + err));
+    .catch((err) => {
+      res.status(400).json("Error: " + err);
+    });
 });
 
 // @route   GET articles/:slug
 // @desc    Get article
 // @access  Public
-router.route("/:slug").get((req, res) => {
+router.route("/:slug").get((req: Request, res: Response) => {
   Article.findOne({ slug: req.params.slug })
     .then((article) => res.json(article))
     .catch((err) => res.status(400).json("Error: " + err));
@@ -68,12 +72,13 @@ router.route("/:slug").get((req, res) => {
 // @route   DELETE articles/:slug
 // @desc    Delete article
 // @access  Private
-router.route("/:slug").delete(auth, (req, res) => {
+router.route("/:slug").delete(auth, (req: Request, res: Response) => {
   Article.findOneAndDelete({ slug: req.params.slug })
     .then((article) => {
-      // console.log(article);
-      updateCategories([], article.tags);
-      res.json("Article deleted.");
+      if (article !== null) {
+        updateCategories([], article.tags);
+        res.json("Article deleted.");
+      }
     })
     .catch((err) => res.status(400).json("Error: " + err));
 });
@@ -81,34 +86,39 @@ router.route("/:slug").delete(auth, (req, res) => {
 // @route   POST articles/update/:slug
 // @desc    Update article
 // @access  Private
-router.route("/update/:slug").post((req, res) => {
+router.route("/update/:slug").post((req: Request, res: Response) => {
   Article.findOne({ slug: req.params.slug })
     .then((article) => {
-      oldTags = article.tags;
-      newTags = req.body.tags.map((tag) => tag.toUpperCase());
+      if (article !== null) {
+        const oldTags = article.tags;
+        const newTags = req.body.tags.map((tag: string) => tag.toUpperCase());
 
-      article.title = req.body.title;
-      article.description = req.body.description;
-      article.markdownArticle = req.body.markdownArticle;
-      article.date = Date.parse(req.body.date);
-      article.tags = req.body.tags.map((tag) => tag.toUpperCase());
-      article.author = req.body.author;
+        article.title = req.body.title;
+        article.description = req.body.description;
+        article.markdownArticle = req.body.markdownArticle;
+        article.date = new Date(Date.parse(req.body.date));
+        article.tags = req.body.tags.map((tag: string) => tag.toUpperCase());
+        article.author = req.body.author;
 
-      article
-        .save()
-        .then(() => {
-          updateCategories(newTags, oldTags);
-          res.json("Article updated!");
-        })
-        .catch((err) => res.status(400).json("Error: " + err));
+        article
+          .save()
+          .then(() => {
+            updateCategories(newTags, oldTags);
+            res.json("Article updated!");
+          })
+          .catch((err) => res.status(400).json("Error: " + err));
+      }
     })
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
 module.exports = router;
 
-async function updateCategories(newTags, oldTags = []) {
-  tagsToUpdate = [];
+async function updateCategories(
+  newTags: Array<string>,
+  oldTags: Array<string> = []
+) {
+  const tagsToUpdate: Array<{ tag: string; ammount: number }> = [];
 
   newTags.forEach((newTag) => {
     if (!oldTags.includes(newTag))
@@ -126,7 +136,7 @@ async function updateCategories(newTags, oldTags = []) {
       });
   });
 
-  async.each(tagsToUpdate, (tagToUpdate, callback) => {
+  await async.each(tagsToUpdate, (tagToUpdate, callback) => {
     const name = tagToUpdate.tag;
 
     Category.findOne({ name })
@@ -143,8 +153,10 @@ async function updateCategories(newTags, oldTags = []) {
           });
 
           newCategory.save().catch((err) => console.log("Error: " + err));
+          console.log(name);
         }
       })
       .catch((err) => console.log("Error: " + err));
   });
+  return "success";
 }

@@ -1,11 +1,13 @@
-const router = require("express").Router();
-const Category = require("../models/category.model");
+import express, { Request, Response } from "express";
+import Category from "../models/category.model";
+
+const router = express.Router();
 
 // @route   GET categories
 // @desc    Get all categories
 // @access  Public
-router.route("/").get((req, res) => {
-  Category.find()
+router.route("/").get((req: Request, res: Response) => {
+  Category.find({ visible: true })
     .sort({ createdAt: "desc" })
     .then((categories) => res.json(categories))
     .catch((err) => res.status(400).json("Error: " + err));

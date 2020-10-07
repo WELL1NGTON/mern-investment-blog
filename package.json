@@ -12,11 +12,19 @@
   "license": "ISC",
   "dependencies": {
     "@types/async": "^3.2.3",
+    "@types/bcrypt": "^3.0.0",
     "@types/cookie-parser": "^1.4.2",
     "@types/cors": "^2.8.7",
+    "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.8",
+    "@types/ioredis": "^4.17.4",
+    "@types/jsonwebtoken": "^8.5.0",
+    "@types/marked": "^1.1.0",
     "@types/mongoose": "^5.7.36",
+    "@types/multer": "^1.4.4",
+    "@types/sharp": "^0.26.0",
     "async": "^3.2.0",
+    "bcrypt": "^5.0.0",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
@@ -30,10 +38,11 @@
     "rate-limiter-flexible": "^2.1.10",
     "sharp": "^0.26.1",
     "slugify": "^1.4.5",
-    "ts-node-dev": "^1.0.0-pre.63",
+    "ts-node": "^9.0.0",
     "typescript": "^4.0.3"
   },
   "devDependencies": {
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "ts-node-dev": "^1.0.0-pre.63"
   }
 }

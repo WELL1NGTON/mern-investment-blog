@@ -42,7 +42,7 @@ if (uri) {
   app.use("/users", require("./routes/users"));
   app.use("/auth", require("./routes/auth"));
   app.use("/images", require("./routes/images"));
-  // app.use("/categories", categoriesRouter);
+  app.use("/categories", require("./routes/categories"));
 
   //start listening
   app.listen(port, () => {

@@ -1,7 +1,13 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+import mongoose, { Schema, Document } from "mongoose";
 
-const categorySchema = new Schema(
+export interface ICategory extends Document {
+  name: string;
+  posts_count: number;
+  last_entry: Date;
+  visible: boolean;
+}
+
+const CategorySchema: Schema = new Schema(
   {
     name: {
       type: String,
@@ -19,6 +25,4 @@ const categorySchema = new Schema(
   }
 );
 
-const Category = mongoose.model("Category", categorySchema);
-
-module.exports = Category;
+export default mongoose.model<ICategory>("Category", CategorySchema);
