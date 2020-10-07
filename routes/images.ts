@@ -19,9 +19,14 @@ router.route("/").get(auth, (req: Request, res: Response) => {
       console.log(err);
       return res.status(404).json("Couldn't read images directory");
     }
+    const imagesFiltered = files.filter((value) => value !== ".gitkeep");
     res
       .status(200)
-      .json({ files: files.filter((value) => value !== ".gitkeep") });
+      .json(
+        imagesFiltered.map(
+          (value) => `${req.protocol}://${req.get("host")}/images/${value}`
+        )
+      );
   });
 });
 
