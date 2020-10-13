@@ -2,6 +2,7 @@ import mongoose, { Schema, Document } from "mongoose";
 
 export interface IImagePath extends Document {
   path: string;
+  url: string;
   articles: Array<string>;
   tags: Array<string>;
   user: string;
@@ -14,6 +15,11 @@ const ImagePathSchema: Schema = new Schema(
       required: true,
       trim: true,
       minlength: 3,
+    },
+    url: {
+      type: String,
+      required: true,
+      trim: true,
     },
     articles: { type: [String], required: true },
     tags: { type: [String], required: true },

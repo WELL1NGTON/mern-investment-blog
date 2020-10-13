@@ -3,13 +3,17 @@ import User from "../models/user.model";
 import bcrypt from "bcrypt";
 import { auth } from "../middleware/auth";
 import { IUserInfo } from "../util/jwtTokens";
+import RefreshToken from "../models/refreshToken.model";
+import userModel from "../models/user.model";
 
 const router = express.Router();
 
 // @route   POST users
 // @desc    Register new user
 // @access  Private
-router.route("/register/").post(auth, (req, res) => {
+router.route("/").post(auth, (req, res) => {
+  if (req.body.user.role !== "ADMIN")
+    return res.status(401).json({ msg: "Usuário não autorizado." });
   const { name, email, password } = req.body;
 
   if (!name || !email || !password)
@@ -22,6 +26,7 @@ router.route("/register/").post(auth, (req, res) => {
       name,
       email,
       password,
+      role: "EDITOR",
     });
 
     bcrypt.genSalt(10, (err: Error, salt: string) => {
@@ -39,28 +44,48 @@ router.route("/register/").post(auth, (req, res) => {
               role: user.role,
             };
             res.status(200).json({ user: userDecoded });
-            // generateAccessToken(userDecoded);
-            // jwt.sign(
-            //   { id: user.id },
-            //   process.env.ACCESS_TOKEN_SECRET,
-            //   {
-            //     expiresIn: 600,
-            //   },
-            //   (err, token) => {
-            //     if (err) throw err;
-            //     res.json({
-            //       token,
-            //       user: {
-            //         id: user.id,
-            //         name: user.name,
-            //         email: user.email,
-            //       },
-            //     });
-            //   }
-            // );
           })
           .catch((err) => res.status(400).json("Error: " + err));
       });
+    });
+  });
+});
+
+// @route   POST users
+// @desc    Register new user
+// @access  Private
+router.route("/:email").post(auth, (req, res) => {
+  const email = req.params.email;
+
+  if (email !== req.body.user.email)
+    return res
+      .status(400)
+      .json({ msg: "Sem permissão necessária para alterar esse usuário." });
+
+  // if (req.body.user.email !== email)
+  //   return res.status(401).json({ msg: "User not Authorized." });
+  const { name, password } = req.body;
+
+  if (!name || !password)
+    return res.status(400).json({ msg: "Por favor, preencha todos os campos" });
+
+  bcrypt.genSalt(10, (err: Error, salt: string) => {
+    bcrypt.hash(password, salt, (err, hash) => {
+      if (err) throw err;
+      const newPassword = hash;
+
+      User.findOneAndUpdate({ email }, { name, password: newPassword })
+        .then(() => {
+          RefreshToken.remove({ user_id: req.body.user.id });
+          return res.status(200).json({
+            msg: "Dados do usuário atualizados com sucesso!",
+          });
+        })
+        .catch((err) => {
+          return res
+            .status(400)
+            .json({ msg: "Erro ao atualizar as informações do usuário.", err });
+        });
     });
   });
 });

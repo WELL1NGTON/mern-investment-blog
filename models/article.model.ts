@@ -1,5 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
 import slugify from "slugify";
+import Category from "../models/category.model";
 
 export interface IArticle extends Document {
   title: string;
@@ -56,9 +57,52 @@ const ArticleSchema: Schema = new Schema(
 ArticleSchema.pre<IArticle>("validate", function (next) {
   if (this.title) {
     this.slug = slugify(this.title, { lower: true, strict: true });
+    this.tags = this.tags.map((tag: string) => tag.toUpperCase());
   }
 
   next();
 });
+
+// ArticleSchema.post<IArticle>("save", function (doc) {
+//   if (doc.tags.length > 0) {
+//     doc.tags.forEach((tag) => {
+//       Category.findOneAndUpdate(
+//         { name: tag },
+//         { $inc: { posts_count: 1 } },
+//         { upsert: true, new: true, setDefaultsOnInsert: true }
+//       )
+//         .exec()
+//         .catch((err) => console.log("Error: " + err));
+//     });
+//   }
+// });
+
+// ArticleSchema.post<IArticle>("remove", function (doc) {
+//   if (doc.tags.length > 0) {
+//     doc.tags.forEach((tag) => {
+//       Category.findOneAndUpdate(
+//         { name: tag },
+//         { $inc: { posts_count: -1 } },
+//         { upsert: true, new: true, setDefaultsOnInsert: true }
+//       )
+//         .exec()
+//         .catch((err) => console.log("Error: " + err));
+//     });
+//   }
+// });
+
+// ArticleSchema.post<IArticle>("remove", function (doc) {
+//   if (doc.tags.length > 0) {
+//     doc.tags.forEach((tag) => {
+//       Category.findOneAndUpdate(
+//         { name: tag },
+//         { $inc: { posts_count: -1 } },
+//         { upsert: true, new: true, setDefaultsOnInsert: true }
+//       )
+//         .exec()
+//         .catch((err) => console.log("Error: " + err));
+//     });
+//   }
+// });
 
 export default mongoose.model<IArticle>("Article", ArticleSchema);

@@ -2,7 +2,7 @@ import fs from "fs";
 import sharp from "sharp";
 
 const compressImage = (file: Express.Multer.File, size: number) => {
-  const newPath = file.path.split(".")[0] + ".png";
+  const newPath = file.path.split(".")[0] + ".jpg";
   return sharp(file.path)
     .resize(size)
     .toFormat("jpg")

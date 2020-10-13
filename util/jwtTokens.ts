@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 
-const ACCESS_TOKEN_EXPIRATION_TIME = "7d";
-const REFRESH_TOKEN_EXPIRATION_TIME = "15s";
+const ACCESS_TOKEN_EXPIRATION_TIME = "15M";
+const REFRESH_TOKEN_EXPIRATION_TIME = "7D";
 
 export interface IUserInfo {
   id: string;
