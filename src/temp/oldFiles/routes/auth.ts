@@ -89,7 +89,7 @@ router.route("/").delete(auth, (req: Request, res: Response) => {
     .catch((err) => res.status(400).json({ msg: "Error: " + err }));
 });
 
-// @route   delete auth/forgot
+// @route   POST auth/forgot
 // @desc    Logout user
 // @access  Private
 router.route("/forgot").post((req: Request, res: Response) => {

@@ -1,12 +1,4 @@
-import {
-  Document,
-  DocumentQuery,
-  Model,
-  Schema,
-  MongooseFilterQuery,
-  FilterQuery,
-} from "mongoose";
-import { IArticle } from "../models/article.model";
+import { Document, DocumentQuery, Model, Schema, FilterQuery } from "mongoose";
 
 declare module mongoose_fuzzy_search {
   export interface MongooseFuzzyOptions<T> {

@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
-import mongoose_fuzzy_search from "../typings/mongoose_fuzzy_search";
+import mongoose_fuzzy_search from "typings/mongoose_fuzzy_search";
 import slugify from "slugify";
 const mongoose_fuzzy_searching = require("mongoose-fuzzy-searching");
 // import Category from "../models/category.model";
