@@ -5,7 +5,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import routes from "./routes";
-import AppError from '../../errors/AppError';
+import AppError from '@shared/errors/AppError';
 
 const nodemailer = require("nodemailer");
 // const rateLimiterMiddleware = require("./middleware/rateLimiter");
