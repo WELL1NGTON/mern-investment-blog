@@ -124,10 +124,7 @@ export default class ArticlesController {
       visibility,
     });
 
-    return response.status(201).json({
-      msg: `${articles.articles.length} articles econtrados`,
-      articles: articles,
-    });
+    return response.status(201).json(articles);
   }
 
   public async listAll(
@@ -172,9 +169,6 @@ export default class ArticlesController {
       visibility,
     });
 
-    return response.status(201).json({
-      msg: `${articles.articles.length} articles econtrados`,
-      articles,
-    });
+    return response.status(201).json(articles);
   }
 }

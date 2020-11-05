@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "dev:server": "ts-node-dev -r tsconfig-paths/register src/shared/infra/http/server.ts --traceResolution",
-    "start": "ts-node server.js"
+    "start": "ts-node server.ts"
   },
   "keywords": [],
   "author": "",
@@ -51,6 +51,7 @@
     "eslint": "^7.11.0",
     "eslint-config-prettier": "^6.12.0",
     "eslint-plugin-prettier": "^3.1.4",
+    "express-async-errors": "^3.1.1",
     "jest": "^26.6.1",
     "nodemon": "^2.0.4",
     "prettier": "^2.1.2",
