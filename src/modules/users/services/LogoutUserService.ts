@@ -15,7 +15,9 @@ class LogoutUserService {
       token: refreshToken,
     }).exec();
 
-    if (!token) throw new AppError("Usuário não está autenticado.", 400);
+    if (!token) {
+      throw new AppError("Usuário não está autenticado.", 400);
+    }
 
     return { success: true };
   }

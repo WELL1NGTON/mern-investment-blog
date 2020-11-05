@@ -23,7 +23,10 @@ class CreateUserService {
   }: IRequest): Promise<IResponse> {
     const user = await User.findOne({ email }).exec();
 
-    if (user) throw new AppError("Email já cadastrado.", 400);
+    if (user) {
+      throw new AppError("Email já cadastrado.", 400);
+
+    }
 
     const newUser = new User({
       name,
@@ -49,7 +52,9 @@ class CreateUserService {
 
       return { userInfo };
     } catch (err) {
+
       throw new AppError(err, 500);
+
     }
   }
 }

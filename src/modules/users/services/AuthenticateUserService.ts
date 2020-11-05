@@ -22,15 +22,24 @@ interface IResponse {
 class AuthenticateUserService {
   public async execute({ email, password }: IRequest): Promise<IResponse> {
     if (!email || !password)
+      {
       throw new AppError("Por favor, preencha todos os campos", 400);
+
+    }
 
     const user = await User.findOne({ email }).exec();
 
-    if (!user) throw new AppError("Usuário não existe.", 400);
+    if (!user) {
+      throw new AppError("Usuário não existe.", 400);
+
+    }
 
     const isMatch = await bcrypt.compare(password, user.password);
 
-    if (!isMatch) throw new AppError("Email ou senha inválidos", 400);
+    if (!isMatch) {
+      throw new AppError("Email ou senha inválidos", 400);
+
+    }
 
     const userInfo: IUserInfo = {
       id: user._id,
@@ -43,7 +52,10 @@ class AuthenticateUserService {
     const refreshToken = generateRefreshToken(userInfo);
 
     if (!accessToken || !refreshToken)
+      {
       throw new AppError("Falha ao autenticar o usuário.", 500);
+
+    }
 
     const newRefreshToken = new RefreshToken({
       user_id: user.id,

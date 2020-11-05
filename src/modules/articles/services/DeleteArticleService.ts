@@ -13,7 +13,12 @@ class CreateArticleService {
   public async execute({ slug }: IRequest): Promise<IResponse> {
     const article = await Article.findOne({ slug }).exec();
 
-    if (!article) throw new AppError("Artigo não encontrado.", 404);
+    if (!article){
+      throw new AppError("Artigo não encontrado.", 404);
+    }
+
+
+
 
     await Article.findByIdAndDelete({ id: article._id });
 

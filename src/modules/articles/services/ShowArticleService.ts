@@ -13,7 +13,9 @@ class ShowArticleService {
   public async execute({ slug }: IRequest): Promise<IResponse> {
     const article = await Article.findOne({ slug });
 
-    if (!article) throw new AppError("File not found.", 404);
+    if (!article) {
+      throw new AppError("File not found.", 404);
+    }
 
     return { msg: `Artigo salvo com sucesso.`, article };
   }

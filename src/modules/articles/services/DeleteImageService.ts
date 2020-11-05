@@ -17,12 +17,16 @@ class UploadImageService {
 
     const imagePath = await ImagePath.findOneAndDelete({ name: fileName });
 
-    if (!imagePath) throw new AppError("Imagem não encontrada.", 404);
+    if (!imagePath) {
+      throw new AppError("Imagem não encontrada.", 404);
+
+    }
 
     fs.unlink(resolvedPath, (err) => {
       if (err) {
         console.log(err);
         throw new AppError("File not deleted.", 500);
+
       }
     });
     return { msg: `file ${fileName} deleted.` };

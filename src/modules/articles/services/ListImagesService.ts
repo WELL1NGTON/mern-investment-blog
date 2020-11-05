@@ -25,7 +25,6 @@ class ListImagesService {
       .skip(page * limit)
       .limit(limit)
       .exec();
-    // .catch((err) => res.status(400).json({ msg: "Error: " + err }));
 
     return {
       msg: `${images.length} imagens encontradas.`,

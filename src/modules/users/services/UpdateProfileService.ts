@@ -15,7 +15,10 @@ class UpdateProfileService {
   public async execute({ name, email }: IRequest): Promise<IResponse> {
     const user = await User.findOne({ email }).exec();
 
-    if (!user) throw new AppError("Usuário não existe.", 400);
+    if (!user) {
+      throw new AppError("Usuário não existe.", 400);
+
+    }
 
     const updatedUser = await User.findByIdAndUpdate(
       { id: user._id },
@@ -24,7 +27,10 @@ class UpdateProfileService {
     ).exec();
 
     if (!updatedUser)
+      {
       throw new AppError("Falha ao alterar a senha de usuário.", 500);
+
+    }
 
     const userInfo: IUserInfo = {
       id: updatedUser._id,

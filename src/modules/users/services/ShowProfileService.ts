@@ -14,7 +14,10 @@ class ShowProfileService {
   public async execute({ email }: IRequest): Promise<IResponse> {
     const user = await User.findOne({ email }).exec();
 
-    if (!user) throw new AppError("Usuário não existe.", 400);
+    if (!user) {
+      throw new AppError("Usuário não existe.", 400);
+
+    }
 
     const userInfo: IUserInfo = {
       id: user._id,

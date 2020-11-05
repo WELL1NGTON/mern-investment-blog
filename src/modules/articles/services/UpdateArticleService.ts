@@ -32,11 +32,16 @@ class UpdateArticleService {
   }: IRequest): Promise<IResponse> {
     const date = new Date(Date.parse(String(dateStr)));
 
-    if (!date) throw new AppError("Formato de data incorreto.", 400);
+    if (!date) {
+      throw new AppError("Formato de data incorreto.", 400);
+    }
 
     const article = await Article.findOne({ slug }).exec();
 
-    if (!article) throw new AppError("Artigo não encontrado.", 404);
+    if (!article) {
+      throw new AppError("Artigo não encontrado.", 404);
+    }
+
 
     const updatedArticle = await Article.findByIdAndUpdate(
       { id: article._id },
@@ -53,7 +58,9 @@ class UpdateArticleService {
       { upsert: true }
     );
 
-    if (!updatedArticle) throw new AppError("Falha ao alterar o artigo.", 500);
+    if (!updatedArticle) {
+      throw new AppError("Falha ao alterar o artigo.", 500);
+    }
 
     const updateCategories = new UpdateCategoriesService();
 

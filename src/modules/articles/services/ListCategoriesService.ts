@@ -21,7 +21,6 @@ class ListArticlesService {
     const categories: ICategory[] = await Category.find({ visible: true })
       .sort({ createdAt: "desc" })
       .exec();
-    // .catch((err) => throw new AppError(err, 400));
 
     return { msg: `${categories.length} categorias encontrados.`, categories };
   }

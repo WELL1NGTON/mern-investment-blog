@@ -15,12 +15,18 @@ class SendForgotPasswordService {
   public async execute({ email }: IRequest): Promise<IResponse> {
     const user = await User.findOne({ email }).exec();
 
-    if (!user) throw new AppError("Usuário não existe.", 400);
+    if (!user) {
+      throw new AppError("Usuário não existe.", 400);
+
+    }
 
     const resetPasswordToken = generateResetPasswordToken(email);
 
     if (!resetPasswordToken)
+      {
       throw new AppError("Falha ao gerar token de recuperação.", 500);
+
+    }
 
     const updatedUser = await User.findOneAndUpdate(
       { email },
@@ -28,10 +34,13 @@ class SendForgotPasswordService {
     ).exec();
 
     if (!updatedUser)
+      {
       throw new AppError(
         "Falha ao gerar vincular o token de recuperação ao usuário.",
         500
       );
+    }
+
 
     const mailHost = process.env.MAIL_HOST;
     const mailPort = process.env.MAIL_PORT || 465;
@@ -40,10 +49,13 @@ class SendForgotPasswordService {
     const mailPassword = process.env.MAIL_AUTH_PASSWORD;
 
     if (!mailHost || !mailUser || !mailPassword)
+      {
       throw new AppError(
         "Email de envio de recuperação de senhas não configurado.",
         500
       );
+    }
+
 
     const resetLink = `http://localhost:3000/reset/${resetPasswordToken}`; //TODO: Precisa ser alterado
 
@@ -66,7 +78,10 @@ class SendForgotPasswordService {
     });
 
     if (mail?.messageId) return { resetLink };
-    else throw new AppError("Falha ao enviar email de recuperação.", 500);
+    else {
+      throw new AppError("Falha ao enviar email de recuperação.", 500);
+
+    }
   }
 }
 

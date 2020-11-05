@@ -37,7 +37,9 @@ export default class SessionsController {
     // const logoutOption = request.body.logoutOption;
 
     if (typeof refreshToken !== "string")
+    {
       throw new AppError("Usuário não está autenticado.", 400);
+    }
 
     const token = RefreshToken.findOneAndDelete({ token: refreshToken });
 
@@ -47,6 +49,8 @@ export default class SessionsController {
         .clearCookie("access-token")
         .status(200)
         .json({ msg: "Usuário desautenticado com sucesso!", success: true });
-    else throw new AppError("Falha ao desautenticar usuário.", 500);
+    else {
+      throw new AppError("Falha ao desautenticar usuário.", 500);
+    }
   }
 }
