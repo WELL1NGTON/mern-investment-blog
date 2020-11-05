@@ -4,6 +4,7 @@ import UpdateArticleService from "@modules/articles/services/UpdateArticleServic
 import DeleteArticleService from "@modules/articles/services/DeleteArticleService";
 import ListArticlesService from "@modules/articles/services/ListArticlesService";
 import ShowArticleService from "@modules/articles/services/ShowArticleService";
+// import { container } from "tsyringe";
 
 export default class ArticlesController {
   public async show(request: Request, response: Response): Promise<Response> {
@@ -113,9 +114,12 @@ export default class ArticlesController {
     // if (categories.length > 0)
     //   condition["$and"].push({ tags: { $all: categories } });
 
-    const ListArticles = new ListArticlesService();
+    const listArticles = new ListArticlesService();
+    // const listArticles = container.resolve(ListArticlesService);
 
-    const articles = await ListArticles.execute({
+    let articles;
+
+    articles = await listArticles.execute({
       limit,
       page,
       search: String(search),
@@ -124,7 +128,7 @@ export default class ArticlesController {
       visibility,
     });
 
-    return response.status(201).json(articles);
+    return response.status(200).json(articles);
   }
 
   public async listAll(
@@ -144,7 +148,12 @@ export default class ArticlesController {
         ? request.query["visibility"]
         : "";
 
-    if (state !== "EDITING" && state !== "PUBLISHED" && state !== "DELETED")
+    if (
+      state !== "EDITING" &&
+      state !== "PUBLISHED" &&
+      state !== "DELETED" &&
+      state !== ""
+    )
       return response.status(404).json({
         msg: "Invalid state.",
       });
@@ -152,15 +161,17 @@ export default class ArticlesController {
     if (
       visibility !== "ALL" &&
       visibility !== "EDITORS" &&
-      visibility !== "USERS"
+      visibility !== "USERS" &&
+      visibility !== ""
     )
       return response.status(404).json({
         msg: "Invalid visibility.",
       });
 
-    const ListArticles = new ListArticlesService();
+    const listArticles = new ListArticlesService();
+    // const listArticles = container.resolve(ListArticlesService);
 
-    const articles = await ListArticles.execute({
+    const articles = await listArticles.execute({
       limit,
       page,
       search: String(search),
@@ -169,6 +180,6 @@ export default class ArticlesController {
       visibility,
     });
 
-    return response.status(201).json(articles);
+    return response.status(200).json(articles);
   }
 }

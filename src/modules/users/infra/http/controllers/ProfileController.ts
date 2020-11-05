@@ -5,7 +5,7 @@ import UpdateProfileService from "@modules/users/services/UpdateProfileService";
 
 export default class ProfileController {
   public async show(request: Request, response: Response): Promise<Response> {
-    const { email } = request.body;
+    const { email } = request.body.user;
 
     const showProfile = new ShowProfileService();
 

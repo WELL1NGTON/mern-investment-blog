@@ -9,8 +9,6 @@ const forgotPassword = new ForgotPasswordController();
 // @route   delete auth/forgot
 // @desc    Logout user
 // @access  Private
-router.route("/:token").post((req: Request, res: Response) => {
-  forgotPassword.reset(req, res);
-});
+router.route("/:token").post(forgotPassword.reset);
 
 export default router;

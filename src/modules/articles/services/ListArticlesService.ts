@@ -1,3 +1,4 @@
+import AppError from "@shared/errors/AppError";
 import Article, { IArticle } from "@shared/models/article.model";
 import { FilterQuery } from "mongoose";
 
@@ -6,8 +7,8 @@ interface IRequest {
   page: number;
   search: string[] | string;
   categories: string[] | string;
-  state: "EDITING" | "PUBLISHED" | "DELETED";
-  visibility: "ALL" | "EDITORS" | "USERS";
+  state: "EDITING" | "PUBLISHED" | "DELETED" | "";
+  visibility: "ALL" | "EDITORS" | "USERS" | "";
 }
 interface IResponse {
   msg: string;

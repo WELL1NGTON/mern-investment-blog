@@ -16,29 +16,21 @@ const forgotPasswordController = new ForgotPasswordController();
 // @route   POST auth/
 // @desc    Auth user (login)
 // @access  Public
-router.route("/").post((req: Request, res: Response) => {
-  sessionController.login(req, res);
-});
+router.route("/").post(sessionController.login);
 
 // @route   get auth/
 // @desc    Return current user
 // @access  Private
-router.route("/").get(ensureAuthenticated, (req: Request, res: Response) => {
-  profileController.show(req, res);
-});
+router.route("/").get(ensureAuthenticated, profileController.show);
 
 // @route   delete auth/
 // @desc    Logout user
 // @access  Private
-router.route("/").delete(ensureAuthenticated, (req: Request, res: Response) => {
-  sessionController.logout(req, res);
-});
+router.route("/").delete(ensureAuthenticated, sessionController.logout);
 
 // @route   POST auth/forgot
 // @desc    Logout user
 // @access  Private
-router.route("/forgot").post((req: Request, res: Response) => {
-  forgotPasswordController.sendToken(req, res);
-});
+router.route("/forgot").post(forgotPasswordController.sendToken);
 
-module.exports = router;
+export default router;

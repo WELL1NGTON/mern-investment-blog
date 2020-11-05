@@ -21,8 +21,6 @@ router.route("/").post(ensureAuthenticated, (req, res) => {
 // @route   POST users
 // @desc    Update user
 // @access  Private
-router.route("/:email").post(ensureAuthenticated, (req, res) => {
-  profileController.update(req, res);
-});
+router.route("/:email").post(ensureAuthenticated, profileController.update);
 
-module.exports = router;
+export default router;

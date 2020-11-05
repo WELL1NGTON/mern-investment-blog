@@ -9,30 +9,18 @@ const imagesController = new ImagesController();
 // @route   GET images/
 // @desc    Get an array of all images
 // @access  Private
-router.route("/").get(ensureAuthenticated, (req: Request, res: Response) => {
-  imagesController.list(req, res);
-});
+router.route("/").get(ensureAuthenticated, imagesController.list);
 
 // @route   POST images/
 // @desc    Save new image on file-system
 // @access  Private
 router
   .route("/")
-  .post(
-    multer.single("image"),
-    ensureAuthenticated,
-    (req: Request, res: Response) => {
-      imagesController.upload(req, res);
-    }
-  );
+  .post(multer.single("image"), ensureAuthenticated, imagesController.upload);
 
 // @route   DELETE images/:fileName
 // @desc    Remove image from file-system
 // @access  Private
-router
-  .route("/:fileName")
-  .delete(ensureAuthenticated, (req: Request, res: Response) => {
-    imagesController.delete(req, res);
-  });
+router.route("/:fileName").delete(ensureAuthenticated, imagesController.delete);
 
 export default router;

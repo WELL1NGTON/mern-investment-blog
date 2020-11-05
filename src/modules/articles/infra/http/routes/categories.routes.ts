@@ -8,8 +8,6 @@ const categoriesController = new CategoriesController();
 // @route   GET categories
 // @desc    Get all categories
 // @access  Public
-router.route("/").get((req: Request, res: Response) => {
-  categoriesController.list(req, res);
-});
+router.route("/").get(categoriesController.list);
 
 export default router;
