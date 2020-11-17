@@ -108,14 +108,14 @@ export default class ArticlesController {
     const state = "PUBLISHED";
     const visibility = "ALL";
 
-    // //setting the conditions
-    // let condition: FilterQuery<IArticle> = {};
-    // condition["$and"] = [{ state }, { visibility }];
-    // if (categories.length > 0)
-    //   condition["$and"].push({ tags: { $all: categories } });
-
     const listArticles = new ListArticlesService();
-    // const listArticles = container.resolve(ListArticlesService);
+
+    let categoriesString: string[] = [];
+    for (const category of categories) {
+      if (typeof category === "string") {
+        categoriesString.push(category);
+      }
+    }
 
     let articles;
 
@@ -123,7 +123,7 @@ export default class ArticlesController {
       limit,
       page,
       search: String(search),
-      categories: [], //TODO: fix categories search!
+      categories: categoriesString,
       state,
       visibility,
     });

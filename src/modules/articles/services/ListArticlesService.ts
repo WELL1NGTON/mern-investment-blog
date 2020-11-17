@@ -6,7 +6,7 @@ interface IRequest {
   limit: number;
   page: number;
   search: string[] | string;
-  categories: string[] | string;
+  categories: string[];
   state: "EDITING" | "PUBLISHED" | "DELETED" | "";
   visibility: "ALL" | "EDITORS" | "USERS" | "";
 }
@@ -24,23 +24,23 @@ class ListArticlesService {
     state,
     visibility,
   }: IRequest): Promise<IResponse> {
-    let condition: FilterQuery<IArticle> = {};
-    if (categories.length > 0 || state.length > 0 || visibility.length > 0)
-      condition["$and"] = [];
-    if (categories.length > 0)
-      condition["$and"]?.push({ tags: { $all: Array(categories) } });
-    if (state.length > 0) condition["$and"]?.push({ state });
-    if (visibility.length > 0) condition["$and"]?.push({ visibility });
+    let condition: FilterQuery<IArticle>[] = [];
+    // console.log(categories);
+    // if (categories.length > 0 || state.length > 0 || visibility.length > 0)
+    //   condition["$and"] = [];
+    if (categories.length > 0) condition.push({ tags: { $all: categories } });
+    if (state.length > 0) condition.push({ state });
+    if (visibility.length > 0) condition.push({ visibility });
 
-    const articles: IArticle[] = await Article.fuzzySearch(
-      String(search),
-      condition
-    )
+    let queryArticles = Article.fuzzySearch(String(search))
       .sort({ date: "desc" })
       .skip(page * limit)
       .limit(limit)
-      .select("-markdownArticle")
-      .exec();
+      .select("-markdownArticle");
+
+    if (condition.length > 0) queryArticles = queryArticles.and(condition);
+
+    const articles: IArticle[] = await queryArticles.exec();
     // .catch((err) => throw new AppError(err, 400));
 
     return { msg: `${articles.length} artigos encontrados.`, articles };
