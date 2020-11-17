@@ -41,10 +41,8 @@ class UpdateArticleService {
     if (!article) {
       throw new AppError("Artigo não encontrado.", 404);
     }
-
-
     const updatedArticle = await Article.findByIdAndUpdate(
-      { id: article._id },
+      article._id,
       {
         title,
         description,

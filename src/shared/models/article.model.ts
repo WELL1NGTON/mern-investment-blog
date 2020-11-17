@@ -1,7 +1,8 @@
 import mongoose, { Schema, Document } from "mongoose";
-import mongoose_fuzzy_search from "typings/mongoose_fuzzy_search";
 import slugify from "slugify";
-const mongoose_fuzzy_searching = require("mongoose-fuzzy-searching");
+import mongoose_fuzzy_searching, {
+  MongooseFuzzyModel,
+} from "mongoose-fuzzy-searching";
 // import Category from "../models/category.model";
 
 export interface IArticle extends Document {
@@ -118,4 +119,4 @@ ArticleSchema.pre<IArticle>("validate", function (next) {
 export default mongoose.model<IArticle>(
   "Article",
   ArticleSchema
-) as mongoose_fuzzy_search.MongooseFuzzyModel<IArticle>;
+) as MongooseFuzzyModel<IArticle>;

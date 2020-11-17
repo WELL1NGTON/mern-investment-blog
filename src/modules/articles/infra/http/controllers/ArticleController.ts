@@ -40,7 +40,7 @@ export default class ArticlesController {
       title,
       description,
       markdownArticle,
-      dateStr: date,
+      dateStr: date ? date : Date.now(),
       tags,
       author,
       state,
@@ -168,6 +168,13 @@ export default class ArticlesController {
         msg: "Invalid visibility.",
       });
 
+    let categoriesString: string[] = [];
+    for (const category of categories) {
+      if (typeof category === "string") {
+        categoriesString.push(category);
+      }
+    }
+
     const listArticles = new ListArticlesService();
     // const listArticles = container.resolve(ListArticlesService);
 
@@ -175,7 +182,7 @@ export default class ArticlesController {
       limit,
       page,
       search: String(search),
-      categories: [], //TODO: fix categories search!
+      categories: categoriesString,
       state,
       visibility,
     });
