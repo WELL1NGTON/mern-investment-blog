@@ -11,6 +11,7 @@ interface IRequest {
   state: "EDITING" | "PUBLISHED" | "DELETED";
   visibility: "ALL" | "EDITORS" | "USERS";
   dateStr: string;
+  category: string;
   tags: string[];
 }
 interface IResponse {
@@ -28,6 +29,7 @@ class UpdateArticleService {
     state,
     visibility,
     dateStr,
+    category,
     tags,
   }: IRequest): Promise<IResponse> {
     const date = new Date(Date.parse(String(dateStr)));
@@ -44,7 +46,7 @@ class UpdateArticleService {
 
 
     const updatedArticle = await Article.findByIdAndUpdate(
-      { id: article._id },
+      article._id,
       {
         title,
         description,
@@ -53,6 +55,7 @@ class UpdateArticleService {
         state,
         visibility,
         date,
+        category,
         tags,
       },
       { upsert: true }
