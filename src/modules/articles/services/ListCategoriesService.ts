@@ -10,14 +10,13 @@ interface IResponse {
   categories: ICategory[];
 }
 
-class ListArticlesService {
-  public async execute({}: // limit,
-  // page,
-  // search,
-  // categories,
-  // state,
-  // visibility,
-  IRequest): Promise<IResponse> {
+class ListCategoriesService {
+  /**
+   * @description Returns all categories.
+   * @returns {*}  {Promise<IResponse>}
+   * @memberof ListCategoriesService
+   */
+  public async execute(): Promise<IResponse> {
     const categories: ICategory[] = await Category.find({ visible: true })
       .sort({ createdAt: "desc" })
       .exec();
@@ -26,4 +25,4 @@ class ListArticlesService {
   }
 }
 
-export default ListArticlesService;
+export default ListCategoriesService;

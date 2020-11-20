@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import Category from "@shared/models/category.model";
 import CategoriesController from "@modules/articles/infra/http/controllers/CategoriesController";
+import { ensureAuthenticated } from "@shared/middleware/ensureAuthenticated";
 
 const router = express.Router();
 const categoriesController = new CategoriesController();
@@ -8,6 +9,11 @@ const categoriesController = new CategoriesController();
 // @route   GET categories
 // @desc    Get all categories
 // @access  Public
-router.route("/").get(categoriesController.list);
+router.get("/", categoriesController.list);
+
+// @route   POST categories
+// @desc    Create new category
+// @access  Pricate
+router.post("/", ensureAuthenticated, categoriesController.post);
 
 export default router;

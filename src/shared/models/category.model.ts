@@ -2,9 +2,10 @@ import mongoose, { Schema, Document } from "mongoose";
 
 export interface ICategory extends Document {
   name: string;
-  posts_count: number;
-  last_entry: Date;
+  // posts_count: number;
+  // last_entry: Date;
   visible: boolean;
+  color: string;
 }
 
 const CategorySchema: Schema = new Schema(
@@ -16,8 +17,13 @@ const CategorySchema: Schema = new Schema(
       trim: true,
       minlength: 3,
     },
-    posts_count: { type: Number, required: true },
-    last_entry: { type: Date, default: Date.now },
+    color: {
+      type: String,
+      default: "#2874A6",
+      match: /^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/,
+    },
+    // posts_count: { type: Number, required: true },
+    // last_entry: { type: Date, default: Date.now },
     visible: { type: Boolean, default: true },
   },
   {

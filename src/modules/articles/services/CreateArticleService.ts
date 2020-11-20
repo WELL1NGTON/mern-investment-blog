@@ -1,5 +1,4 @@
 import Article, { IArticle } from "@shared/models/article.model";
-import UpdateCategoriesService from "./UpdateCategoriesService";
 
 interface IRequest {
   title: string;
@@ -8,8 +7,8 @@ interface IRequest {
   author: string;
   state: "EDITING" | "PUBLISHED" | "DELETED";
   visibility: "ALL" | "EDITORS" | "USERS";
-  dateStr: string;
-  category: string;
+  dateStr?: string;
+  category?: string;
   tags: string[];
 }
 
@@ -30,9 +29,8 @@ class CreateArticleService {
     dateStr,
     tags,
   }: IRequest): Promise<IResponse> {
-   // const date = Date.parse(String(dateStr));
-
-    const date = Date.now();
+    let date = new Date(Date.now());
+    if (dateStr) date = new Date(Number(dateStr));
 
     const newArticle = new Article({
       title,

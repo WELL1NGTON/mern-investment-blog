@@ -10,13 +10,14 @@ export interface IArticle extends Document {
   description: string;
   markdownArticle: string;
   date: Date;
-  tags: Array<string>;
+  tags: string[];
   author: string;
   previewImg: string;
-  images: Array<string>;
+  images: string[];
   visibility: string;
   state: string;
   slug: string;
+  category?: string;
 }
 
 const ArticleSchema: Schema = new Schema(
@@ -34,6 +35,7 @@ const ArticleSchema: Schema = new Schema(
     author: { type: String, required: true },
     previewImg: { type: String, default: "" },
     images: { type: [String], default: [] },
+    category: { type: String, default: "" },
     visibility: {
       type: String,
       enum: ["ALL", "EDITORS", "USERS"],

@@ -5,6 +5,9 @@ import DeleteArticleService from "@modules/articles/services/DeleteArticleServic
 import ListArticlesService from "@modules/articles/services/ListArticlesService";
 import ShowArticleService from "@modules/articles/services/ShowArticleService";
 // import { container } from "tsyringe";
+import StatusCodes from "http-status-codes";
+
+const { CREATED, OK, NO_CONTENT } = StatusCodes;
 
 export default class ArticlesController {
   public async show(request: Request, response: Response): Promise<Response> {
@@ -16,7 +19,7 @@ export default class ArticlesController {
       slug,
     });
 
-    return response.status(200).json({
+    return response.status(OK).json({
       msg: "Artigo encontrado!",
       article,
     });
@@ -34,6 +37,8 @@ export default class ArticlesController {
       visibility,
     } = request.body;
 
+    console.log("date", date);
+
     const createArticle = new CreateArticleService();
 
     const { article } = await createArticle.execute({
@@ -47,7 +52,7 @@ export default class ArticlesController {
       visibility,
     });
 
-    return response.status(201).json({
+    return response.status(CREATED).json({
       msg: "Artigo criado com sucesso!",
       article: article,
     });
@@ -63,6 +68,7 @@ export default class ArticlesController {
       author,
       state,
       visibility,
+      category,
     } = request.body;
     const slug = request.params.slug;
 
@@ -78,9 +84,10 @@ export default class ArticlesController {
       author,
       state,
       visibility,
+      category,
     });
 
-    return response.status(201).json({
+    return response.status(CREATED).json({
       msg: `Artigo ${slug} atualizado com sucesso!`,
       article: article,
     });
@@ -93,7 +100,7 @@ export default class ArticlesController {
 
     await deleteArticle.execute({ slug });
 
-    return response.status(201).json({
+    return response.status(NO_CONTENT).json({
       msg: `Artigo ${slug} excluido com sucesso!`,
     });
   }
@@ -128,7 +135,7 @@ export default class ArticlesController {
       visibility,
     });
 
-    return response.status(200).json(articles);
+    return response.status(OK).json(articles);
   }
 
   public async listAll(
@@ -187,6 +194,6 @@ export default class ArticlesController {
       visibility,
     });
 
-    return response.status(200).json(articles);
+    return response.status(OK).json(articles);
   }
 }

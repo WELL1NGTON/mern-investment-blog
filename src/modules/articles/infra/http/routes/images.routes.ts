@@ -9,14 +9,17 @@ const imagesController = new ImagesController();
 // @route   GET images/
 // @desc    Get an array of all images
 // @access  Private
-router.route("/").get(ensureAuthenticated, imagesController.list);
+router.get("/", ensureAuthenticated, imagesController.list);
 
 // @route   POST images/
 // @desc    Save new image on file-system
 // @access  Private
-router
-  .route("/")
-  .post(multer.single("image"), ensureAuthenticated, imagesController.upload);
+router.post(
+  "/",
+  multer.single("image"),
+  ensureAuthenticated,
+  imagesController.upload
+);
 
 // @route   DELETE images/:fileName
 // @desc    Remove image from file-system

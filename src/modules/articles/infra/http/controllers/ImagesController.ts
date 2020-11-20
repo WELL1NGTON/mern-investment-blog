@@ -2,13 +2,17 @@ import { Request, Response } from "express";
 import UploadImageService from "@modules/articles/services/UploadImageService";
 import ListImagesService from "@modules/articles/services/ListImagesService";
 import DeleteImageService from "@modules/articles/services/DeleteImageService";
+import StatusCodes from "http-status-codes";
 
+const { CREATED, OK, NO_CONTENT, BAD_REQUEST } = StatusCodes;
 export default class ImagesController {
   public async upload(request: Request, response: Response): Promise<Response> {
     const file = request.file;
 
     if (!file)
-      return response.status(400).json({ msg: "Erro no upload do arquivo." });
+      return response
+        .status(BAD_REQUEST)
+        .json({ msg: "Erro no upload do arquivo." });
 
     const size = request.body.size ? parseInt(request.body.size) : null;
 
@@ -33,7 +37,7 @@ export default class ImagesController {
       size,
     });
 
-    return response.status(201).json(res);
+    return response.status(CREATED).json(res);
   }
 
   public async delete(request: Request, response: Response): Promise<Response> {
@@ -43,7 +47,7 @@ export default class ImagesController {
 
     await deleteImage.execute({ fileName });
 
-    return response.status(201).json({
+    return response.status(NO_CONTENT).json({
       msg: `Imagem ${fileName} excluida com sucesso!`,
     });
   }
@@ -61,6 +65,6 @@ export default class ImagesController {
 
     const imageList = await ListImages.execute({ limit, page, tags });
 
-    return response.status(201).json(imageList);
+    return response.status(OK).json(imageList);
   }
 }

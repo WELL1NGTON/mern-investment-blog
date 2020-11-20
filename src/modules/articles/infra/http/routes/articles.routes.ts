@@ -9,31 +9,31 @@ const articleController = new ArticleController();
 // @route   GET articles
 // @desc    Get visible and published articles
 // @access  Public
-router.route("/").get(articleController.list);
+router.get("/", articleController.list);
 
 // @route   GET articles/all
 // @desc    Get all articles without restrictions
-// @access  Public
-router.route("/all").get(ensureAuthenticated, articleController.listAll);
+// @access  Private
+router.get("/all", ensureAuthenticated, articleController.listAll);
 
 // @route   POST articles
 // @desc    Create a new article
 // @access  Private
-router.route("/").post(ensureAuthenticated, articleController.create);
+router.post("/", ensureAuthenticated, articleController.create);
 
 // @route   GET articles/:slug
 // @desc    Get article
 // @access  Public
-router.route("/:slug").get(articleController.show);
+router.get("/:slug", articleController.show);
 
 // @route   DELETE articles/:slug
 // @desc    Delete article
 // @access  Private
-router.route("/:slug").delete(ensureAuthenticated, articleController.delete);
+router.delete("/:slug", ensureAuthenticated, articleController.delete);
 
 // @route   POST articles/:slug
 // @desc    Update article
 // @access  Private
-router.route("/:slug").post(articleController.update);
+router.post("/:slug", ensureAuthenticated, articleController.update);
 
 export default router;
