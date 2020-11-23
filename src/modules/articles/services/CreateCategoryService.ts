@@ -13,7 +13,7 @@ interface IResponse {
 
 class CreateCategoryService {
   /**
-   * @description Saves a new category onto the database.
+   * @description Save a new category onto the database.
    * @param {IRequest} { name, visible, color }
    * @returns {*}  {Promise<IResponse>}
    * @memberof CreateCategoryService

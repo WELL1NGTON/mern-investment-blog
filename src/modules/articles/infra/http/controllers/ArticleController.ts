@@ -6,6 +6,7 @@ import ListArticlesService from "@modules/articles/services/ListArticlesService"
 import ShowArticleService from "@modules/articles/services/ShowArticleService";
 // import { container } from "tsyringe";
 import StatusCodes from "http-status-codes";
+import aqp from "api-query-params";
 
 const { CREATED, OK, NO_CONTENT } = StatusCodes;
 
@@ -106,31 +107,22 @@ export default class ArticlesController {
   }
 
   public async list(request: Request, response: Response): Promise<Response> {
-    const limit = Number(request.query["limit"]) || 10;
-    const page = Number(request.query["page"]) || 0;
+    const { filter, skip, limit } = aqp(request.query, {
+      blacklist: ["state", "visibility", "search"],
+      skipKey: "page",
+    });
+
     const search = request.query["search"] || "";
-    const categories = request.query["category"]
-      ? Array(request.query["category"])
-      : [];
     const state = "PUBLISHED";
     const visibility = "ALL";
 
     const listArticles = new ListArticlesService();
 
-    let categoriesString: string[] = [];
-    for (const category of categories) {
-      if (typeof category === "string") {
-        categoriesString.push(category);
-      }
-    }
-
-    let articles;
-
-    articles = await listArticles.execute({
+    const articles = await listArticles.execute({
       limit,
-      page,
+      skip,
       search: String(search),
-      categories: categoriesString,
+      filter,
       state,
       visibility,
     });
@@ -142,56 +134,19 @@ export default class ArticlesController {
     request: Request,
     response: Response
   ): Promise<Response> {
-    const limit = Number(request.query["limit"]) || 10;
-    const page = Number(request.query["page"]) || 0;
+    const { filter, skip, limit } = aqp(request.query, {
+      blacklist: ["search"],
+      skipKey: "page",
+    });
     const search = request.query["search"] || "";
-    const categories = request.query["category"]
-      ? Array(request.query["category"])
-      : [];
-    const state: string =
-      typeof request.query["state"] === "string" ? request.query["state"] : "";
-    const visibility: string =
-      typeof request.query["visibility"] === "string"
-        ? request.query["visibility"]
-        : "";
-
-    if (
-      state !== "EDITING" &&
-      state !== "PUBLISHED" &&
-      state !== "DELETED" &&
-      state !== ""
-    )
-      return response.status(404).json({
-        msg: "Invalid state.",
-      });
-
-    if (
-      visibility !== "ALL" &&
-      visibility !== "EDITORS" &&
-      visibility !== "USERS" &&
-      visibility !== ""
-    )
-      return response.status(404).json({
-        msg: "Invalid visibility.",
-      });
-
-    let categoriesString: string[] = [];
-    for (const category of categories) {
-      if (typeof category === "string") {
-        categoriesString.push(category);
-      }
-    }
 
     const listArticles = new ListArticlesService();
-    // const listArticles = container.resolve(ListArticlesService);
 
     const articles = await listArticles.execute({
       limit,
-      page,
+      skip,
       search: String(search),
-      categories: categoriesString,
-      state,
-      visibility,
+      filter,
     });
 
     return response.status(OK).json(articles);

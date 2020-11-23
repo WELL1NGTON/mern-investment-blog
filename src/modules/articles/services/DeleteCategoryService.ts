@@ -12,6 +12,12 @@ interface IResponse {
 }
 
 class DeleteCategoryService {
+  /**
+   * @description Find (by id) and remove this category from the database.
+   * @param {IRequest} { id }
+   * @returns {*}  {Promise<IResponse>}
+   * @memberof DeleteCategoryService
+   */
   public async execute({ id }: IRequest): Promise<IResponse> {
     const category = await Category.findById(id).exec();
 

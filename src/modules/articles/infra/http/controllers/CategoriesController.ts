@@ -11,7 +11,7 @@ export default class CategoriesController {
   public async list(request: Request, response: Response): Promise<Response> {
     const listCategories = new ListCategoriesService();
 
-    const categoriesResponse = await listCategories.execute({});
+    const categoriesResponse = await listCategories.execute();
 
     return response.status(OK).json(categoriesResponse);
   }

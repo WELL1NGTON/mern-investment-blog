@@ -14,6 +14,6 @@ router.get("/", categoriesController.list);
 // @route   POST categories
 // @desc    Create new category
 // @access  Pricate
-router.post("/", ensureAuthenticated, categoriesController.post);
+router.post("/", ensureAuthenticated, categoriesController.create);
 
 export default router;

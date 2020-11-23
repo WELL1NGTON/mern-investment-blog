@@ -11,6 +11,12 @@ interface IResponse {
 }
 
 class UploadImageService {
+  /**
+   * @description Delete image from local storage.
+   * @param {IRequest} { fileName }
+   * @returns {*}  {Promise<IResponse>}
+   * @memberof UploadImageService
+   */
   public async execute({ fileName }: IRequest): Promise<IResponse> {
     const filePath = `./public/images/${fileName}`;
     const resolvedPath = path.resolve(filePath);

@@ -9,6 +9,12 @@ interface IResponse {
 }
 
 class DeleteArticleService {
+  /**
+   * @description Find one article by it's "slug" field and delete it
+   * @param {IRequest} { slug }
+   * @returns {*}  {Promise<IResponse>}
+   * @memberof DeleteArticleService
+   */
   public async execute({ slug }: IRequest): Promise<IResponse> {
     const article = await Article.findOne({ slug }).exec();
 

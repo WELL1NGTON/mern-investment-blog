@@ -18,6 +18,22 @@ interface IResponse {
 }
 
 class CreateArticleService {
+  /**
+   * @description Save new article on the database.
+   * @param {IRequest} {
+   *     title,
+   *     description,
+   *     markdownArticle,
+   *     author,
+   *     state,
+   *     visibility,
+   *     category,
+   *     dateStr,
+   *     tags,
+   *   }
+   * @returns {*}  {Promise<IResponse>}
+   * @memberof CreateArticleService
+   */
   public async execute({
     title,
     description,
