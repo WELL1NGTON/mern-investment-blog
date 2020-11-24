@@ -2,39 +2,75 @@ import { Request, Response } from "express";
 import UploadImageService from "@modules/articles/services/UploadImageService";
 import ListImagesService from "@modules/articles/services/ListImagesService";
 import DeleteImageService from "@modules/articles/services/DeleteImageService";
+import ShowImageService from "@modules/articles/services/ShowImageService";
 import StatusCodes from "http-status-codes";
+import AppError from "@shared/errors/AppError";
 
 const { CREATED, OK, NO_CONTENT, BAD_REQUEST } = StatusCodes;
+
 export default class ImagesController {
+  public async show(request: Request, response: Response): Promise<Response> {
+    const { slug } = request.params;
+
+    const showImage = new ShowImageService();
+
+    const { imageInfo } = await showImage.execute({
+      slug,
+    });
+
+    // return response.status(OK).json({
+    //   msg: "Artigo encontrado!",
+    //   article,
+    // });
+    // console.log(imageInfo);
+
+    return response
+      .header("Content-Type", "image/jpg")
+      .send(imageInfo.image.data);
+  }
+
   public async upload(request: Request, response: Response): Promise<Response> {
     const file = request.file;
 
-    if (!file)
-      return response
-        .status(BAD_REQUEST)
-        .json({ msg: "Erro no upload do arquivo." });
+    if (!file) throw new AppError("Erro no upload do arquivo.", BAD_REQUEST);
 
-    const size = request.body.size ? parseInt(request.body.size) : null;
+    // const tags = request.body.tags ? request.body.tags.map((tag: string) => tag.toUpperCase()) : [];
 
-    const tags = request.body.tags
-      ? request.body.tags.map((tag: string) => tag.toUpperCase())
+    // const protocol = request.protocol;
+
+    // const host = request.get("host");
+
+    const regex = /[\u00C0-\u00FF]*?\b[\w\u00C0-\u00FF\s\-.']+\b/gim;
+
+    const tagsStr: string = request.body.tags;
+
+    const regexMatch = tagsStr.match(regex);
+
+    const tags = regexMatch
+      ? regexMatch.map((tag: string) => tag.toUpperCase())
       : [];
 
-    const protocol = request.protocol;
+    let size: string | number = request.body.size;
 
-    const host = request.get("host");
+    if (typeof size === "string") size = Number(size);
+
+    const name = request.body.name;
+
+    // const tags = request.body.tags;
+
+    const format = request.body.format;
 
     const uploadImage = new UploadImageService();
 
-    const userId = request.body.user.id;
+    const uploadedBy = request.body.user.id;
 
     const res = await uploadImage.execute({
       file,
-      protocol,
-      host: host ? host : "",
-      userId,
+      name,
       tags,
       size,
+      format,
+      uploadedBy,
     });
 
     return response.status(CREATED).json(res);

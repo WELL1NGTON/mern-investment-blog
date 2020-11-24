@@ -1,11 +1,11 @@
-import express, { Request,Response, NextFunction } from "express";
+import express, { Request, Response, NextFunction } from "express";
 import "express-async-errors";
 
 import cors from "cors";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import routes from "./routes";
-import AppError from '@shared/errors/AppError';
+import AppError from "@shared/errors/AppError";
 
 const nodemailer = require("nodemailer");
 // const rateLimiterMiddleware = require("./middleware/rateLimiter");
@@ -27,10 +27,10 @@ app.use(
   })
 );
 app.use(express.json());
-app.use(express.static("public")); //folder public so user can receive the images
+
+// app.use(express.static("public")); //folder public so user can receive the images
+
 // app.use(rateLimiterMiddleware);
-
-
 
 // const uri = process.env.ATLAS_URI;
 const uri = process.env.MONGO_URI;

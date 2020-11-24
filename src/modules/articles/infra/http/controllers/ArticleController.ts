@@ -7,6 +7,7 @@ import ShowArticleService from "@modules/articles/services/ShowArticleService";
 // import { container } from "tsyringe";
 import StatusCodes from "http-status-codes";
 import aqp from "api-query-params";
+import { IArticle } from "@shared/models/article.model";
 
 const { CREATED, OK, NO_CONTENT } = StatusCodes;
 
@@ -107,7 +108,7 @@ export default class ArticlesController {
   }
 
   public async list(request: Request, response: Response): Promise<Response> {
-    const { filter, skip, limit } = aqp(request.query, {
+    const { filter, skip, limit } = aqp<IArticle>(request.query, {
       blacklist: ["state", "visibility", "search"],
       skipKey: "page",
     });
@@ -134,7 +135,7 @@ export default class ArticlesController {
     request: Request,
     response: Response
   ): Promise<Response> {
-    const { filter, skip, limit } = aqp(request.query, {
+    const { filter, skip, limit } = aqp<IArticle>(request.query, {
       blacklist: ["search"],
       skipKey: "page",
     });

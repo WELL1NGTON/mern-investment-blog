@@ -1,4 +1,4 @@
-import ImagePath, { IImagePath } from "@shared/models/imagePath.model";
+import Image, { IImage } from "@shared/models/image.model";
 
 interface IRequest {
   limit?: number;
@@ -7,7 +7,7 @@ interface IRequest {
 }
 interface IResponse {
   msg: string;
-  images: IImagePath[];
+  images: IImage[];
 }
 
 class ListImagesService {
@@ -20,7 +20,7 @@ class ListImagesService {
     if (tags.length > 0 || tags.length > 0 || tags.length > 0)
       condition["$and"] = [];
 
-    const images = await ImagePath.find(condition)
+    const images = await Image.find(condition)
       .sort({ createdAt: "desc" })
       .skip(page * limit)
       .limit(limit)

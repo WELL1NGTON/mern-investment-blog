@@ -13,7 +13,7 @@ export interface IArticle extends Document {
   tags: string[];
   author: string;
   previewImg: string;
-  images: string[];
+  // images: string[];
   visibility: string;
   state: string;
   slug: string;
@@ -34,7 +34,7 @@ const ArticleSchema: Schema = new Schema(
     tags: { type: [String], default: [] },
     author: { type: String, required: true },
     previewImg: { type: String, default: "" },
-    images: { type: [String], default: [] },
+    // images: { type: [String], default: [] },
     category: { type: String, default: "" },
     visibility: {
       type: String,
