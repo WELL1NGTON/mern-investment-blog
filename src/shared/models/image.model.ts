@@ -5,7 +5,7 @@ export interface IImage extends Document {
   slug: string;
   name: string;
   tags: string[];
-  image: { data: Buffer; contentType: string };
+  binData: { data: Buffer; contentType: string };
   uploadedBy: Schema.Types.ObjectId;
 }
 
@@ -23,7 +23,7 @@ const ImageSchema: Schema = new Schema(
       unique: true,
     },
     tags: { type: [String], default: [] },
-    image: { data: Buffer, contentType: String },
+    binData: { data: Buffer, contentType: String },
     uploadedBy: {
       type: Schema.Types.ObjectId,
       ref: "User",

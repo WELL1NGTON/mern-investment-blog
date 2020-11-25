@@ -77,7 +77,7 @@ class UploadImageService {
       name: `${name}.${format}`,
       tags,
       // image: buffer,
-      image: { data: buffer, contentType: "image/" + format },
+      binData: { data: buffer, contentType: "image/" + format },
       uploadedBy,
     });
 

@@ -24,6 +24,7 @@ class ListImagesService {
       .sort({ createdAt: "desc" })
       .skip(page * limit)
       .limit(limit)
+      .select("-binData")
       .exec();
 
     return {

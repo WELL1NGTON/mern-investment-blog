@@ -32,6 +32,6 @@ router.post(
  * @desc    Remove image from file-system
  * @access  Private
  */
-router.delete("/:fileName", ensureAuthenticated, imagesController.delete);
+router.delete("/:slug", ensureAuthenticated, imagesController.delete);
 
 export default router;

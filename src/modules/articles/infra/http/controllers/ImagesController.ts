@@ -26,7 +26,7 @@ export default class ImagesController {
 
     return response
       .header("Content-Type", "image/jpg")
-      .send(imageInfo.image.data);
+      .send(imageInfo.binData.data);
   }
 
   public async upload(request: Request, response: Response): Promise<Response> {
@@ -54,6 +54,10 @@ export default class ImagesController {
 
     if (typeof size === "string") size = Number(size);
 
+    let quality: string | number = request.body.quality;
+
+    if (typeof quality === "string") quality = Number(quality);
+
     const name = request.body.name;
 
     // const tags = request.body.tags;
@@ -70,6 +74,7 @@ export default class ImagesController {
       tags,
       size,
       format,
+      quality,
       uploadedBy,
     });
 
@@ -77,14 +82,14 @@ export default class ImagesController {
   }
 
   public async delete(request: Request, response: Response): Promise<Response> {
-    const { fileName } = request.params;
+    const { slug } = request.params;
 
     const deleteImage = new DeleteImageService();
 
-    await deleteImage.execute({ fileName });
+    await deleteImage.execute({ slug });
 
     return response.status(NO_CONTENT).json({
-      msg: `Imagem ${fileName} excluida com sucesso!`,
+      msg: `Imagem ${slug} excluida com sucesso!`,
     });
   }
 
