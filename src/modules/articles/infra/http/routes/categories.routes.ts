@@ -18,7 +18,6 @@ router.get("/", categoriesController.list);
  * @desc    Create new category
  * @access  Private
  */
-
 router.post("/", ensureAuthenticated, categoriesController.create);
 
 export default router;

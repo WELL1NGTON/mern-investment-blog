@@ -5,6 +5,8 @@ import DeleteImageService from "@modules/articles/services/DeleteImageService";
 import ShowImageService from "@modules/articles/services/ShowImageService";
 import StatusCodes from "http-status-codes";
 import AppError from "@shared/errors/AppError";
+import aqp from "api-query-params";
+import { IImage } from "@shared/models/image.model";
 
 const { CREATED, OK, NO_CONTENT, BAD_REQUEST } = StatusCodes;
 
@@ -22,7 +24,6 @@ export default class ImagesController {
     //   msg: "Artigo encontrado!",
     //   article,
     // });
-    // console.log(imageInfo);
 
     return response
       .header("Content-Type", "image/jpg")
@@ -94,17 +95,19 @@ export default class ImagesController {
   }
 
   public async list(request: Request, response: Response): Promise<Response> {
-    const limit = Number(request.query["limit"]) || 10;
-    const page = Number(request.query["page"]) || 0;
-    const tags: Array<any> = request.query["tag"]
-      ? Array(request.query["tag"])
-      : [];
+    const { filter, skip, limit } = aqp<IImage>(request.query);
 
-    const { fileName } = request.params;
+    // const limit = Number(request.query["limit"]) || 10;
+    // const page = Number(request.query["page"]) || 0;
+    // const tags: Array<any> = request.query["tag"]
+    //   ? Array(request.query["tag"])
+    //   : [];
+
+    // const { fileName } = request.params;
 
     const ListImages = new ListImagesService();
 
-    const imageList = await ListImages.execute({ limit, page, tags });
+    const imageList = await ListImages.execute({ filter, limit, skip });
 
     return response.status(OK).json(imageList);
   }

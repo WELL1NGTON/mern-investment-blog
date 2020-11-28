@@ -1,9 +1,10 @@
+import { FilterQuery } from "mongoose";
 import Image, { IImage } from "@shared/models/image.model";
 
 interface IRequest {
+  filter: FilterQuery<IImage>;
   limit?: number;
-  page?: number;
-  tags?: string[];
+  skip?: number;
 }
 interface IResponse {
   msg: string;
@@ -12,17 +13,17 @@ interface IResponse {
 
 class ListImagesService {
   public async execute({
-    limit = 10,
-    page = 0,
-    tags = [],
+    limit = 20,
+    skip = 0,
+    filter,
   }: IRequest): Promise<IResponse> {
-    let condition: { [k: string]: any } = {};
-    if (tags.length > 0 || tags.length > 0 || tags.length > 0)
-      condition["$and"] = [];
+    // let condition: { [k: string]: any } = {};
+    // if (tags.length > 0 || tags.length > 0 || tags.length > 0)
+    //   condition["$and"] = [];
 
-    const images = await Image.find(condition)
+    const images = await Image.find(filter)
       .sort({ createdAt: "desc" })
-      .skip(page * limit)
+      .skip(skip)
       .limit(limit)
       .select("-binData")
       .exec();

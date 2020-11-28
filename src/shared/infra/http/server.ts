@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import "express-async-errors";
-
+import BodyParser from "body-parser";
 import cors from "cors";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
@@ -13,6 +13,8 @@ const nodemailer = require("nodemailer");
 //environment variables
 // require("dotenv").config();
 import "dotenv/config";
+import { CelebrateError } from "celebrate";
+import { BAD_REQUEST } from "http-status-codes";
 
 //express server
 const app = express();
@@ -49,18 +51,30 @@ if (uri) {
 app.use(routes);
 
 app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
+  console.log(err);
+
   if (err instanceof AppError) {
     return response.status(err.statusCode).json({
-      status: "error",
-      message: err.msg,
+      status: "Error",
+      message: err.message,
     });
   }
 
-  console.log(err);
+  if (err instanceof CelebrateError) {
+    let errMessage = "";
+    err.details.forEach((value) => {
+      errMessage += value.message + "\n";
+    });
+    return response.status(BAD_REQUEST).json({
+      status: "Error",
+      message: errMessage,
+    });
+  }
 
   return response.status(500).json({
-    status: "error",
-    message: "Internal server error",
+    status: "Error",
+    // message: "Internal server error",
+    message: err.message,
   });
 });
 

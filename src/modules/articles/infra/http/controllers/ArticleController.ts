@@ -39,8 +39,6 @@ export default class ArticlesController {
       visibility,
     } = request.body;
 
-    console.log("date", date);
-
     const createArticle = new CreateArticleService();
 
     const { article } = await createArticle.execute({

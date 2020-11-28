@@ -46,24 +46,22 @@ class UpdateArticleService {
       throw new AppError("Artigo não encontrado.", NOT_FOUND);
     }
 
-    const updatedArticle = (
-      await Article.findByIdAndUpdate(
-        article._id,
-        {
-          title,
-          description,
-          markdownArticle,
-          author,
-          state,
-          visibility,
-          date,
-          category,
-          tags,
-        },
-        { upsert: true, new: true }
-      )
-    ).value;
-
+    const updatedArticle = <IArticle>await Article.findByIdAndUpdate(
+      article._id,
+      {
+        title,
+        description,
+        markdownArticle,
+        author,
+        state,
+        visibility,
+        date,
+        category,
+        tags,
+      },
+      { upsert: true, new: true }
+    );
+    console.log(updatedArticle);
     if (!updatedArticle) {
       throw new AppError("Falha ao alterar o artigo.", INTERNAL_SERVER_ERROR);
     }

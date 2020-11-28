@@ -52,7 +52,10 @@ class UpdateCategoryService {
     ).value;
 
     if (!updatedCategory) {
-      throw new AppError("Falha ao alterar o artigo.", INTERNAL_SERVER_ERROR);
+      throw new AppError(
+        "Falha ao alterar a categoria.",
+        INTERNAL_SERVER_ERROR
+      );
     }
 
     const response: IResponse = {
