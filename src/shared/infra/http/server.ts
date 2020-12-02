@@ -14,11 +14,11 @@ const nodemailer = require("nodemailer");
 // require("dotenv").config();
 import "dotenv/config";
 import { CelebrateError } from "celebrate";
-import { BAD_REQUEST } from "http-status-codes";
+import { StatusCodes } from "http-status-codes";
 
 //express server
 const app = express();
-const port = process.env.port || 5000;
+const port = process.env.PORT || 5000;
 
 //middleware
 app.use(cookieParser());
@@ -65,16 +65,16 @@ app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
     err.details.forEach((value) => {
       errMessage += value.message + "\n";
     });
-    return response.status(BAD_REQUEST).json({
+    return response.status(StatusCodes.BAD_REQUEST).json({
       status: "Error",
       message: errMessage,
     });
   }
 
-  return response.status(500).json({
+  return response.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
     status: "Error",
-    // message: "Internal server error",
-    message: err.message,
+    message: "Internal server error",
+    // message: err.message,
   });
 });
 
