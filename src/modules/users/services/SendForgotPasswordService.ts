@@ -17,15 +17,12 @@ class SendForgotPasswordService {
 
     if (!user) {
       throw new AppError("Usuário não existe.", 400);
-
     }
 
     const resetPasswordToken = generateResetPasswordToken(email);
 
-    if (!resetPasswordToken)
-      {
+    if (!resetPasswordToken) {
       throw new AppError("Falha ao gerar token de recuperação.", 500);
-
     }
 
     const updatedUser = await User.findOneAndUpdate(
@@ -33,14 +30,12 @@ class SendForgotPasswordService {
       { resetPasswordToken }
     ).exec();
 
-    if (!updatedUser)
-      {
+    if (!updatedUser) {
       throw new AppError(
         "Falha ao gerar vincular o token de recuperação ao usuário.",
         500
       );
     }
-
 
     const mailHost = process.env.MAIL_HOST;
     const mailPort = process.env.MAIL_PORT || 465;
@@ -48,16 +43,14 @@ class SendForgotPasswordService {
     const mailUser = process.env.MAIL_AUTH_USER;
     const mailPassword = process.env.MAIL_AUTH_PASSWORD;
 
-    if (!mailHost || !mailUser || !mailPassword)
-      {
+    if (!mailHost || !mailUser || !mailPassword) {
       throw new AppError(
         "Email de envio de recuperação de senhas não configurado.",
         500
       );
     }
 
-
-    const resetLink = `http://localhost:3000/reset/${resetPasswordToken}`; //TODO: Precisa ser alterado
+    const resetLink = `https://herokuinvestmentblog.herokuapp.com/reset/${resetPasswordToken}`; //TODO: Precisa ser alterado
 
     const transporter = nodemailer.createTransport({
       host: mailHost,
@@ -80,7 +73,6 @@ class SendForgotPasswordService {
     if (mail?.messageId) return { resetLink };
     else {
       throw new AppError("Falha ao enviar email de recuperação.", 500);
-
     }
   }
 }

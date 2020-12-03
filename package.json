@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files --no-copy-ignored && cd client && yarn run build",
+    "build": "yarn babel src --extensions \".js,.ts\" --out-dir dist --copy-files --no-copy-ignored && yarn --cwd client run build",
     "install-client": "cd client && yarn install",
     "heroku-postbuild": "yarn run install-client && yarn run build",
     "client": "cd client && yarn start",
