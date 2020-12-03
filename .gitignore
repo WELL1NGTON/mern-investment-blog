@@ -9,3 +9,4 @@ yarn-error.log
 #Blog images folder
 public/images/*
 !public/images/.gitkeep
+dist

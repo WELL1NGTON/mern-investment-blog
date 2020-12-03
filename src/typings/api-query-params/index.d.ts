@@ -62,7 +62,7 @@ declare module "api-query-params" {
      * @type {Record<string,}
      * @memberof ApiQueryParamsOptions
      */
-    casters?: Record<string, function(string): any>;
+    casters?: Record<string, (string) => any>;
     /**
      * @description object which map keys to casters (built-in or custom ones using the casters option).
      * @type {(Record<keyof T | string, string>)}
@@ -77,7 +77,7 @@ declare module "api-query-params" {
    * @interface ApiQuery
    * @template T
    */
-  export interface ApiQuery<T>{
+  export interface ApiQuery<T> {
     /**
      * @description contains the query criteria
      * @type {FilterQuery<T>}
@@ -115,7 +115,6 @@ declare module "api-query-params" {
      */
     population: string | any;
   }
-
 
   /**
    * @description Convert query parameters from API urls to MongoDB queries (advanced querying, filtering, sorting, …)
