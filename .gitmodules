@@ -1,0 +1,4 @@
+[submodule "client"]
+	path = client
+	url = https://github.com/WELL1NGTON/investment-blog-ts
+	branch = master

@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import routes from "./routes";
 import AppError from "@shared/errors/AppError";
+import path from "path";
 
 const nodemailer = require("nodemailer");
 // const rateLimiterMiddleware = require("./middleware/rateLimiter");
@@ -48,8 +49,18 @@ if (uri) {
     console.log("MongoDB database connection established successfully");
   });
 }
-app.use(routes);
+app.use("/api", routes);
 
+if (process.env.NODE_ENV === "production") {
+  // Set static folder
+  app.use(express.static("client/build"));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
+}
+
+//Serve static assets if in production
 app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
   console.log(err);
 
