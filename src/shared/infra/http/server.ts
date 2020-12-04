@@ -25,7 +25,7 @@ const port = process.env.PORT || 5000;
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "https://herokuinvestmentblog.herokuapp.com:3000", //frontend
+    origin: "http://localhost:3000", //frontend
     credentials: true,
   })
 );

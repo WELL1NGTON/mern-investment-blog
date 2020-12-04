@@ -50,7 +50,7 @@ class SendForgotPasswordService {
       );
     }
 
-    const resetLink = `https://herokuinvestmentblog.herokuapp.com/reset/${resetPasswordToken}`; //TODO: Precisa ser alterado
+    const resetLink = `http://localhost:3000/reset/${resetPasswordToken}`; //TODO: Precisa ser alterado
 
     const transporter = nodemailer.createTransport({
       host: mailHost,
