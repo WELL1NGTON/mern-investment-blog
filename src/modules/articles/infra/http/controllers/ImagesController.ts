@@ -21,7 +21,7 @@ export default class ImagesController {
     });
 
     // return response.status(OK).json({
-    //   msg: "Artigo encontrado!",
+    //   message: "Artigo encontrado!",
     //   article,
     // });
 
@@ -90,7 +90,7 @@ export default class ImagesController {
     await deleteImage.execute({ slug });
 
     return response.status(NO_CONTENT).json({
-      msg: `Imagem ${slug} excluida com sucesso!`,
+      message: `Imagem ${slug} excluida com sucesso!`,
     });
   }
 

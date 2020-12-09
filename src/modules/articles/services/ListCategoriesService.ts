@@ -6,7 +6,7 @@ interface IRequest {
   // search: string[];
 }
 interface IResponse {
-  msg: string;
+  message: string;
   categories: ICategory[];
 }
 
@@ -21,7 +21,10 @@ class ListCategoriesService {
       .sort({ createdAt: "desc" })
       .exec();
 
-    return { msg: `${categories.length} categorias encontrados.`, categories };
+    return {
+      message: `${categories.length} categorias encontrados.`,
+      categories,
+    };
   }
 }
 

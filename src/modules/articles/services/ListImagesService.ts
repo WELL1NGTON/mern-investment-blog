@@ -7,7 +7,7 @@ interface IRequest {
   skip?: number;
 }
 interface IResponse {
-  msg: string;
+  message: string;
   images: IImage[];
 }
 
@@ -29,7 +29,7 @@ class ListImagesService {
       .exec();
 
     return {
-      msg: `${images.length} imagens encontradas.`,
+      message: `${images.length} imagens encontradas.`,
       images,
     };
   }

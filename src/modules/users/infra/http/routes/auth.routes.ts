@@ -1,3 +1,10 @@
+/**
+ * @swagger
+ * tags:
+ *   name: Auth
+ *   description: User management teste
+ */
+
 import express, { Request, Response } from "express";
 import { ensureAuthenticated } from "@shared/middleware/ensureAuthenticated";
 
@@ -13,9 +20,26 @@ const sessionController = new SessionController();
 const profileController = new ProfileController();
 const forgotPasswordController = new ForgotPasswordController();
 
-// @route   POST auth/
-// @desc    Auth user (login)
-// @access  Public
+/**
+ * @swagger
+ *  /auth/:
+ *    post:
+ *      summary: User login
+ *      tags: [Users]
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            email: string
+ *            password: string
+ *      responses:
+ *        "200":
+ *          description: A user schema
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/User'
+ */
 router.route("/").post(sessionController.login);
 
 // @route   get auth/

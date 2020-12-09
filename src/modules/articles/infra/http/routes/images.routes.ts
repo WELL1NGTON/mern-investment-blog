@@ -1,3 +1,10 @@
+/**
+ * @swagger
+ * tags:
+ *   name: Images
+ *   description: User management teste
+ */
+
 import multer from "@shared/middleware/multer";
 import express from "express";
 import { ensureAuthenticated } from "@shared/middleware/ensureAuthenticated";

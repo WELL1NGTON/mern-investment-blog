@@ -1,3 +1,10 @@
+/**
+ * @swagger
+ * tags:
+ *   name: Articles
+ *   description: Articles management
+ */
+
 import { Router, Request, Response } from "express";
 import { ensureAuthenticated } from "@shared/middleware/ensureAuthenticated";
 import ArticleController from "@modules/articles/infra/http/controllers/ArticleController";
@@ -11,9 +18,28 @@ const router = Router();
 const articleController = new ArticleController();
 
 /**
- * @route   GET articles
- * @desc    Get visible and published articles
- * @access  Public
+ * @swagger
+ *  /articles:
+ *    get:
+ *      summary: Get visible and published articles
+ *      description: Get visible and published articles
+ *      produces:
+ *        - application/json
+ *      tags: [Articles]
+ *      responses:
+ *        200:
+ *          description: Show articles.
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  message:
+ *                    type: string
+ *                  articles:
+ *                    type: array
+ *                    items:
+ *                      $ref: '#/components/schemas/Article'
  */
 router.get(
   "/",
@@ -34,9 +60,28 @@ router.get(
 );
 
 /**
- * @route   GET articles/all
- * @desc    Get all articles without restrictions
- * @access  Private
+ * @swagger
+ *  /articles/all:
+ *    get:
+ *      summary: Get all articles without restrictions
+ *      description: Get all articles without restrictions
+ *      produces:
+ *        - application/json
+ *      tags: [Articles]
+ *      responses:
+ *        200:
+ *          description: Show articles.
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  message:
+ *                    type: string
+ *                  articles:
+ *                    type: array
+ *                    items:
+ *                      $ref: '#/components/schemas/Article'
  */
 router.get(
   "/all",
@@ -64,9 +109,70 @@ router.get(
 );
 
 /**
- * @route   POST articles
- * @desc    Create a new article
- * @access  Private
+ * @swagger
+ *  /articles:
+ *    post:
+ *      summary: Create a new article
+ *      description: Create a new article
+ *      produces:
+ *        - application/json
+ *      tags: [Articles]
+ *      parameters:
+ *        - name: body
+ *          in: body
+ *          schema:
+ *            $ref: '#/definitions/Article'
+ *            type: object
+ *            properties:
+ *              title:
+ *                type: string
+ *              description:
+ *                type: string
+ *              author:
+ *                type: string
+ *              markdownArticle:
+ *                type: string
+ *              date:
+ *                type: string
+ *              tags:
+ *                type: string
+ *              previewImg:
+ *                type: string
+ *              visibility:
+ *                type: string
+ *                enum:
+ *                  - ALL
+ *                  - EDITORS
+ *                  - USERS
+ *              state:
+ *                type: string
+ *                enum:
+ *                  - EDITING
+ *                  - PUBLISHED
+ *                  - DELETED
+ *              category:
+ *                type: string
+ *            required:
+ *              - title
+ *              - author
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Article'
+ *      responses:
+ *        200:
+ *          description: Artigo criado com sucesso.
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  message:
+ *                    type: string
+ *                  articles:
+ *                    $ref: '#/components/schemas/Article'
  */
 router.post(
   "/",
@@ -98,23 +204,134 @@ router.post(
 );
 
 /**
- * @route   GET articles/:slug
- * @desc    Get article
- * @access  Public
+ * @swagger
+ *  /articles/:slug:
+ *    get:
+ *      summary: Get article
+ *      description: Get article
+ *      produces:
+ *        - application/json
+ *      tags: [Articles]
+ *      responses:
+ *        200:
+ *          description: Show articles.
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  message:
+ *                    type: string
+ *                  article:
+ *                    $ref: '#/components/schemas/Article'
+ *        404:
+ *          description: Article not found
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/definitions/Error'
  */
 router.get("/:slug", articleController.show);
 
 /**
- * @route   DELETE articles/:slug
- * @desc    Delete article
- * @access  Private
+ * @swagger
+ *  /articles/:slug:
+ *    delete:
+ *      summary: Delete article
+ *      description: Delete article
+ *      produces:
+ *        - application/json
+ *      tags: [Articles]
+ *      responses:
+ *        204:
+ *          description: Artigo excluido com sucesso.
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  message:
+ *                    type: string
+ *        404:
+ *          description: Article not found
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/definitions/Error'
  */
 router.delete("/:slug", ensureAuthenticated, articleController.delete);
 
 /**
- * @route   POST articles/:slug
- * @desc    Update article
- * @access  Private
+ * @swagger
+ *  /articles/:slug:
+ *    post:
+ *      summary: Update article
+ *      description: Update article
+ *      produces:
+ *        - application/json
+ *      tags: [Articles]
+ *      parameters:
+ *        - name: body
+ *          in: body
+ *          schema:
+ *            $ref: '#/definitions/Article'
+ *            type: object
+ *            properties:
+ *              title:
+ *                type: string
+ *              description:
+ *                type: string
+ *              author:
+ *                type: string
+ *              markdownArticle:
+ *                type: string
+ *              date:
+ *                type: string
+ *              tags:
+ *                type: string
+ *              previewImg:
+ *                type: string
+ *              visibility:
+ *                type: string
+ *                enum:
+ *                  - ALL
+ *                  - EDITORS
+ *                  - USERS
+ *              state:
+ *                type: string
+ *                enum:
+ *                  - EDITING
+ *                  - PUBLISHED
+ *                  - DELETED
+ *              category:
+ *                type: string
+ *            required:
+ *              - title
+ *              - author
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Article'
+ *      responses:
+ *        200:
+ *          description: Artigo atualizado com sucesso.
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  message:
+ *                    type: string
+ *                  article:
+ *                    $ref: '#/components/schemas/Article'
+ *        404:
+ *          description: Article not found
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/definitions/Error'
  */
 router.post(
   "/:slug",

@@ -7,7 +7,7 @@ interface IRequest {
   slug: string;
 }
 interface IResponse {
-  msg: string;
+  message: string;
 }
 
 class UploadImageService {
@@ -33,7 +33,7 @@ class UploadImageService {
     //     throw new AppError("File not deleted.", 500);
     //   }
     // });
-    return { msg: `Arquivo ${image.name} deletado.` };
+    return { message: `Arquivo ${image.name} deletado.` };
   }
 }
 

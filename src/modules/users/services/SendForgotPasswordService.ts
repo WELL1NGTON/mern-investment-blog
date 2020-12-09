@@ -50,7 +50,9 @@ class SendForgotPasswordService {
       );
     }
 
-    const resetLink = `http://localhost:3000/reset/${resetPasswordToken}`; //TODO: Precisa ser alterado
+    const resetLink =
+      (process.env.FRONTEND_URL || "http://localhost:3000") +
+      `/reset/${resetPasswordToken}`;
 
     const transporter = nodemailer.createTransport({
       host: mailHost,

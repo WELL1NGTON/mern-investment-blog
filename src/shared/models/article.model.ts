@@ -1,3 +1,66 @@
+/**
+ * @swagger
+ *  components:
+ *    schemas:
+ *      Article:
+ *        type: object
+ *        required:
+ *          - slug
+ *          - title
+ *          - author
+ *          - description
+ *          - tags
+ *          - markdownArticle
+ *          - date
+ *          - previewImg
+ *          - visibility
+ *          - state
+ *          - category
+ *        properties:
+ *          slug:
+ *            type: string
+ *          title:
+ *            type: string
+ *          author:
+ *            type: string
+ *          description:
+ *            type: string
+ *          tags:
+ *            type: string[]
+ *          markdownArticle:
+ *            type: string
+ *          previewImg:
+ *            type: Date
+ *          visibility:
+ *            type: string
+ *            description: ALL | EDITORS | USERS
+ *            enum:
+ *              - ALL
+ *              - EDITORS
+ *              - USERS
+ *          state:
+ *            type: string
+ *            description: EDITING | PUBLISHED | DELETED
+ *            enum:
+ *              - EDITING
+ *              - PUBLISHED
+ *              - DELETED
+ *          category:
+ *            type: string
+ *        example:
+ *           slug: article-example
+ *           title: Article Example
+ *           author: Author Name
+ *           description: Short article description example.
+ *           tags: ["TAG EXAMPLE 1", "TAG EXAMPLE 2"]
+ *           markdownArticle: "#MARKDOWN TITLE/n/nMarkdown text"
+ *           date: 2020-11-20T20:29:05.220+00:00
+ *           previewImg: https://herokuinvestmentblog.herokuapp.com/api/images/teste-image.jpg
+ *           visibility: EDITORS
+ *           state: EDITING
+ *           category: CATEGORY EXAMPLE
+ */
+
 import mongoose, { Schema, Document } from "mongoose";
 import slugify from "slugify";
 import mongoose_fuzzy_searching, {

@@ -25,7 +25,7 @@ export default class SessionsController {
       .cookie("refresh-token", refreshToken, { httpOnly: true })
       .status(200)
       .json({
-        msg: "Usuário autenticado com sucesso!",
+        message: "Usuário autenticado com sucesso!",
         user: userInfo,
       });
   }
@@ -36,8 +36,7 @@ export default class SessionsController {
 
     // const logoutOption = request.body.logoutOption;
 
-    if (typeof refreshToken !== "string")
-    {
+    if (typeof refreshToken !== "string") {
       throw new AppError("Usuário não está autenticado.", 400);
     }
 
@@ -48,7 +47,10 @@ export default class SessionsController {
         .clearCookie("refresh-token")
         .clearCookie("access-token")
         .status(200)
-        .json({ msg: "Usuário desautenticado com sucesso!", success: true });
+        .json({
+          message: "Usuário desautenticado com sucesso!",
+          success: true,
+        });
     else {
       throw new AppError("Falha ao desautenticar usuário.", 500);
     }

@@ -14,7 +14,7 @@ export default class ProfileController {
     });
 
     return response.status(200).json({
-      msg: `Usuário ${email} encontrado!`,
+      message: `Usuário ${email} encontrado!`,
       user: userInfo,
     });
   }
@@ -30,7 +30,7 @@ export default class ProfileController {
     });
 
     return response.status(200).json({
-      msg: `Usuário ${email} atualizado!`,
+      message: `Usuário ${email} atualizado!`,
       user: userInfo,
     });
   }

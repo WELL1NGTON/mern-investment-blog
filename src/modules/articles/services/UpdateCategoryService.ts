@@ -12,7 +12,7 @@ interface IRequest {
   visible?: boolean;
 }
 interface IResponse {
-  msg: string;
+  message: string;
   category: ICategory;
 }
 
@@ -59,7 +59,7 @@ class UpdateCategoryService {
     }
 
     const response: IResponse = {
-      msg: "Artigo alterado com sucesso!",
+      message: "Artigo alterado com sucesso!",
       category: updatedCategory,
     };
 
@@ -100,7 +100,7 @@ class UpdateCategoryService {
     //     })
     //     .catch((err) => console.log("Error: " + err));
     // });
-    // return { msg: "success", updatedTags: tagsToUpdate };
+    // return { message: "success", updatedTags: tagsToUpdate };
   }
 }
 

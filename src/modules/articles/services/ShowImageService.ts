@@ -6,7 +6,7 @@ interface IRequest {
 }
 
 interface IResponse {
-  msg: string;
+  message: string;
   imageInfo: IImage;
 }
 
@@ -18,7 +18,7 @@ class ShowArticleService {
       throw new AppError("File not found.", 404);
     }
 
-    return { msg: `Imagem encontrada com sucesso.`, imageInfo };
+    return { message: `Imagem encontrada com sucesso.`, imageInfo };
   }
 }
 

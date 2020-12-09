@@ -17,7 +17,7 @@ interface IRequest {
   tags: string[];
 }
 interface IResponse {
-  msg: string;
+  message: string;
   article: IArticle;
 }
 
@@ -75,7 +75,7 @@ class UpdateArticleService {
     // });
 
     const response: IResponse = {
-      msg: "Artigo alterado com sucesso!",
+      message: "Artigo alterado com sucesso!",
       article: updatedArticle,
     };
 

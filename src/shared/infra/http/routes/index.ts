@@ -1,4 +1,7 @@
 import { Router } from "express";
+import swaggerJsdoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
+import swaggerOptions from "@shared/util/swaggerOptions";
 
 import articles from "@modules/articles/infra/http/routes/articles.routes";
 import categories from "@modules/articles/infra/http/routes/categories.routes";
@@ -8,14 +11,24 @@ import users from "@modules/users/infra/http/routes/users.routes";
 import auth from "@modules/users/infra/http/routes/auth.routes";
 import reset from "@modules/users/infra/http/routes/reset.routes";
 
-const routes = Router();
+const router = Router();
 
-routes.use("/articles", articles);
-routes.use("/images", images);
-routes.use("/categories", categories);
+// Swagger JSDoc
+const specs = swaggerJsdoc(swaggerOptions);
+router.use("/docs", swaggerUi.serve);
+router.get(
+  "/docs",
+  swaggerUi.setup(specs, {
+    explorer: true,
+  })
+);
 
-routes.use("/users", users);
-routes.use("/auth", auth);
-routes.use("/reset", reset);
+router.use("/articles", articles);
+router.use("/images", images);
+router.use("/categories", categories);
 
-export default routes;
+router.use("/users", users);
+router.use("/auth", auth);
+router.use("/reset", reset);
+
+export default router;

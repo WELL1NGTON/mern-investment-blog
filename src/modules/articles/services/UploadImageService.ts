@@ -11,7 +11,7 @@ import { compressImage } from "@shared/util/fileHelper";
 //   size?: number | null;
 // }
 // interface IResponse {
-//   msg: string;
+//   message: string;
 //   image: IImagePath;
 // }
 
@@ -40,7 +40,7 @@ import { compressImage } from "@shared/util/fileHelper";
 //     const savedImagePath = await newImagePath.save();
 
 //     return {
-//       msg: "",
+//       message: "",
 //       image: savedImagePath,
 //     };
 //   }
@@ -56,7 +56,7 @@ interface IRequest {
   size?: number;
 }
 interface IResponse {
-  msg: string;
+  message: string;
   image: IImage;
 }
 
@@ -86,7 +86,7 @@ class UploadImageService {
     const savedImage = await newImage.save();
 
     return {
-      msg: "",
+      message: "",
       image: savedImage,
     };
   }

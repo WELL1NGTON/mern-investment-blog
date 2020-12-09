@@ -5,7 +5,7 @@ interface IRequest {
   slug: string;
 }
 interface IResponse {
-  msg: string;
+  message: string;
 }
 
 class DeleteArticleService {
@@ -24,7 +24,7 @@ class DeleteArticleService {
 
     await Article.findByIdAndDelete({ id: article._id });
 
-    return { msg: "Success!" };
+    return { message: "Success!" };
   }
 }
 

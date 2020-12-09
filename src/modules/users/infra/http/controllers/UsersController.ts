@@ -16,7 +16,7 @@ export default class SessionsController {
     });
 
     return response.status(201).json({
-      msg: "Usuário criado com sucesso!",
+      message: "Usuário criado com sucesso!",
       user: userInfo,
     });
   }

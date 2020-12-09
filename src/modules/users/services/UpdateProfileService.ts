@@ -17,7 +17,6 @@ class UpdateProfileService {
 
     if (!user) {
       throw new AppError("Usuário não existe.", 400);
-
     }
 
     const updatedUser = await User.findByIdAndUpdate(
@@ -26,10 +25,8 @@ class UpdateProfileService {
       { upsert: false }
     ).exec();
 
-    if (!updatedUser)
-      {
+    if (!updatedUser) {
       throw new AppError("Falha ao alterar a senha de usuário.", 500);
-
     }
 
     const userInfo: IUserInfo = {

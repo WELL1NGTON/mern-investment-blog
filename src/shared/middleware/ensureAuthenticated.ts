@@ -29,7 +29,7 @@ export async function ensureAuthenticated(
 
   // Check for token
   if (!accessToken || !refreshToken)
-    return res.status(401).json({ msg: "No token, authorization denied" });
+    return res.status(401).json({ message: "No token, authorization denied" });
 
   // Verify token
   const decodedAccess = decodeAccessToken(accessToken);
@@ -46,7 +46,7 @@ export async function ensureAuthenticated(
         .status(400)
         .clearCookie("refresh-token")
         .clearCookie("access-token")
-        .json({ msg: "Token is not valid" });
+        .json({ message: "Token is not valid" });
     }
 
     const { newAccessToken, decoded } = await refreshAccessToken(refreshToken);
@@ -56,7 +56,7 @@ export async function ensureAuthenticated(
         .status(400)
         .clearCookie("refresh-token")
         .clearCookie("access-token")
-        .json({ msg: "Refresh token is not valid" });
+        .json({ message: "Refresh token is not valid" });
     } else {
       req.body.user = decoded;
       req.cookies["access-token"] = newAccessToken;

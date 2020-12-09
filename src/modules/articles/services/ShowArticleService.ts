@@ -5,7 +5,7 @@ interface IRequest {
   slug: string;
 }
 interface IResponse {
-  msg: string;
+  message: string;
   article: IArticle;
 }
 
@@ -17,7 +17,7 @@ class ShowArticleService {
       throw new AppError("File not found.", 404);
     }
 
-    return { msg: `Artigo salvo com sucesso.`, article };
+    return { message: `Artigo salvo com sucesso.`, article };
   }
 }
 

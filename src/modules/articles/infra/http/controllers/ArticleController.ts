@@ -5,11 +5,9 @@ import DeleteArticleService from "@modules/articles/services/DeleteArticleServic
 import ListArticlesService from "@modules/articles/services/ListArticlesService";
 import ShowArticleService from "@modules/articles/services/ShowArticleService";
 // import { container } from "tsyringe";
-import StatusCodes from "http-status-codes";
+import { StatusCodes } from "http-status-codes";
 import aqp from "api-query-params";
 import { IArticle } from "@shared/models/article.model";
-
-const { CREATED, OK, NO_CONTENT } = StatusCodes;
 
 export default class ArticlesController {
   public async show(request: Request, response: Response): Promise<Response> {
@@ -21,8 +19,8 @@ export default class ArticlesController {
       slug,
     });
 
-    return response.status(OK).json({
-      msg: "Artigo encontrado!",
+    return response.status(StatusCodes.OK).json({
+      message: "Artigo encontrado!",
       article,
     });
   }
@@ -52,8 +50,8 @@ export default class ArticlesController {
       visibility,
     });
 
-    return response.status(CREATED).json({
-      msg: "Artigo criado com sucesso!",
+    return response.status(StatusCodes.CREATED).json({
+      message: "Artigo criado com sucesso!",
       article: article,
     });
   }
@@ -87,8 +85,8 @@ export default class ArticlesController {
       category,
     });
 
-    return response.status(CREATED).json({
-      msg: `Artigo ${slug} atualizado com sucesso!`,
+    return response.status(StatusCodes.CREATED).json({
+      message: `Artigo ${slug} atualizado com sucesso!`,
       article: article,
     });
   }
@@ -100,8 +98,8 @@ export default class ArticlesController {
 
     await deleteArticle.execute({ slug });
 
-    return response.status(NO_CONTENT).json({
-      msg: `Artigo ${slug} excluido com sucesso!`,
+    return response.status(StatusCodes.NO_CONTENT).json({
+      message: `Artigo ${slug} excluido com sucesso!`,
     });
   }
 
@@ -126,7 +124,7 @@ export default class ArticlesController {
       visibility,
     });
 
-    return response.status(OK).json(articles);
+    return response.status(StatusCodes.OK).json(articles);
   }
 
   public async listAll(
@@ -148,6 +146,6 @@ export default class ArticlesController {
       filter,
     });
 
-    return response.status(OK).json(articles);
+    return response.status(StatusCodes.OK).json(articles);
   }
 }

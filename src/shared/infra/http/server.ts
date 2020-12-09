@@ -4,7 +4,7 @@ import BodyParser from "body-parser";
 import cors from "cors";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
-import routes from "./routes";
+import router from "./routes";
 import AppError from "@shared/errors/AppError";
 import path from "path";
 
@@ -12,7 +12,6 @@ const nodemailer = require("nodemailer");
 // const rateLimiterMiddleware = require("./middleware/rateLimiter");
 
 //environment variables
-// require("dotenv").config();
 import "dotenv/config";
 import { CelebrateError } from "celebrate";
 import { StatusCodes } from "http-status-codes";
@@ -25,7 +24,7 @@ const port = process.env.PORT || 5000;
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost:3000", //frontend
+    origin: process.env.FRONTEND_URL || "http://localhost:3000", //frontend
     credentials: true,
   })
 );
@@ -49,14 +48,14 @@ if (uri) {
     console.log("MongoDB database connection established successfully");
   });
 }
-app.use("/api", routes);
+app.use("/api", router);
 
 if (process.env.NODE_ENV === "production") {
   // Set static folder
   app.use(express.static("client/build"));
 
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  app.get("*", (request: Request, response: Response) => {
+    response.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
   });
 }
 

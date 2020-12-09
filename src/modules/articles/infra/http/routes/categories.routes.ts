@@ -1,3 +1,10 @@
+/**
+ * @swagger
+ * tags:
+ *   name: Categories
+ *   description: User management teste
+ */
+
 import express, { Request, Response } from "express";
 import Category from "@shared/models/category.model";
 import CategoriesController from "@modules/articles/infra/http/controllers/CategoriesController";

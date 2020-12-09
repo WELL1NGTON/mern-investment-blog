@@ -1,3 +1,26 @@
+/**
+ * @swagger
+ *  components:
+ *    schemas:
+ *      Category:
+ *        type: object
+ *        required:
+ *          - name
+ *          - visible
+ *          - color
+ *        properties:
+ *          name:
+ *            type: string
+ *          visible:
+ *            type: boolean
+ *          color:
+ *            type: string
+ *        example:
+ *            name: Category Example
+ *            visible: true
+ *            color: "#2874A6"
+ */
+
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface ICategory extends Document {

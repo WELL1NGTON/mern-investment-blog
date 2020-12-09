@@ -7,7 +7,7 @@ interface IRequest {
 }
 
 interface IResponse {
-  msg: string;
+  message: string;
   category: ICategory;
 }
 
@@ -23,7 +23,7 @@ class CreateCategoryService {
 
     const saved = await category.save();
 
-    return { msg: `Categoria salva com sucesso.`, category: saved };
+    return { message: `Categoria salva com sucesso.`, category: saved };
   }
 }
 

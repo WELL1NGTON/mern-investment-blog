@@ -13,7 +13,7 @@ interface IRequest {
   visibility?: "ALL" | "EDITORS" | "USERS" | "";
 }
 interface IResponse {
-  msg: string;
+  message: string;
   articles: IArticle[];
 }
 
@@ -62,7 +62,7 @@ class ListArticlesService {
     const articles: IArticle[] = await queryArticles.exec();
     // .catch((err) => throw new AppError(err, 400));
 
-    return { msg: `${articles.length} artigos encontrados.`, articles };
+    return { message: `${articles.length} artigos encontrados.`, articles };
   }
 }
 

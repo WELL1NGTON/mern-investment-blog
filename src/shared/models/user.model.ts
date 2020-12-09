@@ -1,3 +1,34 @@
+/**
+ * @swagger
+ *  components:
+ *    schemas:
+ *      User:
+ *        type: object
+ *        required:
+ *          - name
+ *          - email
+ *          - password
+ *          - role
+ *        properties:
+ *          name:
+ *            type: string
+ *          email:
+ *            type: string
+ *            format: email
+ *            description: Email for the user, needs to be unique.
+ *          password:
+ *            type: string
+ *            format: password
+ *          role:
+ *            type: string
+ *            description: ADMIN | WRITER
+ *        example:
+ *           name: User Example
+ *           email: fake@email.com
+ *           password: 123456
+ *           role: ADMIN
+ */
+
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface IUser extends Document {

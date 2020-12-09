@@ -13,7 +13,7 @@ interface IRequest {
 }
 
 interface IResponse {
-  msg: string;
+  message: string;
   article: IArticle;
 }
 
@@ -71,7 +71,7 @@ class CreateArticleService {
     //   oldTags: [],
     // });
 
-    return { msg: `Artigo salvo com sucesso.`, article: articleSaved };
+    return { message: `Artigo salvo com sucesso.`, article: articleSaved };
   }
 }
 

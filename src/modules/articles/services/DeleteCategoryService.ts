@@ -8,7 +8,7 @@ interface IRequest {
   id: string;
 }
 interface IResponse {
-  msg: string;
+  message: string;
 }
 
 class DeleteCategoryService {
@@ -27,7 +27,7 @@ class DeleteCategoryService {
 
     await Category.findByIdAndDelete(id);
 
-    return { msg: "Success!" };
+    return { message: "Success!" };
   }
 }
 

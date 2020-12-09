@@ -20,7 +20,7 @@ export default class ForgotPasswordController {
     });
 
     return response.json({
-      msg: "Email enviado com sucesso!",
+      message: "Email enviado com sucesso!",
     });
   }
 
@@ -31,7 +31,7 @@ export default class ForgotPasswordController {
     const res = await changePassword.execute({ password, token });
 
     return response.json({
-      msg: "Email enviado com sucesso!",
+      message: "Email enviado com sucesso!",
       res,
     });
   }
