@@ -61,6 +61,7 @@ const ImageSchema: Schema = new Schema(
       required: true,
       trim: true,
       minlength: 3,
+      unique: true,
     },
     slug: {
       type: String,
@@ -71,6 +72,7 @@ const ImageSchema: Schema = new Schema(
     binData: { data: Buffer, contentType: String },
     url: {
       type: String,
+      required: true,
       unique: true,
     },
     uploadedBy: {
@@ -87,6 +89,8 @@ const ImageSchema: Schema = new Schema(
 ImageSchema.pre<IImage>("validate", function (next) {
   if (this.name) {
     this.slug = slugify(this.name, { lower: true });
+    this.url =
+      "https://herokuinvestmentblog.herokuapp.com/api/images/" + this.slug;
     this.tags = this.tags.map((tag: string) => tag.toUpperCase());
   }
 
