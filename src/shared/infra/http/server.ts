@@ -50,12 +50,20 @@ if (uri) {
 }
 app.use("/api", router);
 
-if (process.env.NODE_ENV === "production") {
+if ("teste") {
   // Set static folder
   app.use(express.static("client/build"));
 
   app.get("*", (request: Request, response: Response) => {
-    response.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+    console.log(__dirname);
+    response.sendFile(
+      path.resolve(
+        __dirname + "../../../../../", //gambiarra???
+        "client",
+        "build",
+        "index.html"
+      )
+    );
   });
 }
 
