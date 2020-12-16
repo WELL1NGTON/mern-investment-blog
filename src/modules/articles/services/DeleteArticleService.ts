@@ -22,7 +22,7 @@ class DeleteArticleService {
       throw new AppError("Artigo não encontrado.", 404);
     }
 
-    await Article.findByIdAndDelete({ id: article._id });
+    await Article.findByIdAndDelete(article._id);
 
     return { message: "Success!" };
   }
