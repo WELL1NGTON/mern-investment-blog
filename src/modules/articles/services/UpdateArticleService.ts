@@ -15,6 +15,7 @@ interface IRequest {
   dateStr: string;
   category: string;
   tags: string[];
+  previewImg?: string;
 }
 interface IResponse {
   message: string;
@@ -33,6 +34,7 @@ class UpdateArticleService {
     dateStr,
     category,
     tags,
+    previewImg,
   }: IRequest): Promise<IResponse> {
     const date = new Date(Date.parse(String(dateStr)));
 
@@ -58,6 +60,7 @@ class UpdateArticleService {
         date,
         category,
         tags,
+        previewImg,
       },
       { upsert: true, new: true }
     );

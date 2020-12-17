@@ -10,6 +10,7 @@ interface IRequest {
   dateStr?: string;
   category?: string;
   tags: string[];
+  previewImg?: string;
 }
 
 interface IResponse {
@@ -44,6 +45,7 @@ class CreateArticleService {
     category,
     dateStr,
     tags,
+    previewImg,
   }: IRequest): Promise<IResponse> {
     let date = new Date(Date.now());
     if (dateStr) date = new Date(Number(dateStr));
@@ -58,7 +60,7 @@ class CreateArticleService {
       state,
       visibility,
       category,
-      // previewImg: imgUrl
+      previewImg,
     });
 
     const articleSaved = await newArticle.save();

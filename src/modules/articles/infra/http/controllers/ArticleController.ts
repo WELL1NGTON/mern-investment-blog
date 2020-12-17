@@ -35,6 +35,7 @@ export default class ArticlesController {
       author,
       state,
       visibility,
+      previewImg,
     } = request.body;
 
     const createArticle = new CreateArticleService();
@@ -48,6 +49,7 @@ export default class ArticlesController {
       author,
       state,
       visibility,
+      previewImg,
     });
 
     return response.status(StatusCodes.CREATED).json({
@@ -67,6 +69,7 @@ export default class ArticlesController {
       state,
       visibility,
       category,
+      previewImg,
     } = request.body;
     const slug = request.params.slug;
 
@@ -83,6 +86,7 @@ export default class ArticlesController {
       state,
       visibility,
       category,
+      previewImg,
     });
 
     return response.status(StatusCodes.CREATED).json({
