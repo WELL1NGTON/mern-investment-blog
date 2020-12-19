@@ -51,6 +51,7 @@ router.get(
         tags: Joi.alternatives(Joi.string(), Joi.array()).optional(),
         date: Joi.date().optional(), //Don't work with inequality symbols. ex.: date>yyyy-MM-dd
         author: Joi.string().optional(),
+        category: Joi.string().optional(),
       },
     },
     { abortEarly: false }
@@ -99,6 +100,7 @@ router.get(
         author: Joi.string().optional(),
         visibility: Joi.string().optional(),
         state: Joi.string().optional(),
+        category: Joi.string().optional(),
       },
     },
     { abortEarly: false }
