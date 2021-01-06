@@ -36,6 +36,8 @@ export interface IUser extends Document {
   name: string;
   password: string;
   role: string;
+  image?: string;
+  info?: string;
 }
 
 const UserSchema: Schema = new Schema(
@@ -51,6 +53,8 @@ const UserSchema: Schema = new Schema(
     password: { type: String, required: true },
     role: { type: String, required: true },
     resetPasswordToken: { type: String, required: false, unique: true },
+    image: String,
+    info: String
   },
   {
     timestamps: true,
