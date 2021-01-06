@@ -42,7 +42,12 @@ router.get(
   imagesController.list
 );
 
-router.get("/:slug", ensureAuthenticated, imagesController.show);
+/**
+ * @route   GET images/:slug
+ * @desc    Get an array of all images
+ * @access  Private
+ */
+router.get("/:slug", imagesController.show);
 
 /**
  * @route   POST images/
