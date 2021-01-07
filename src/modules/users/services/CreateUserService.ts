@@ -9,6 +9,8 @@ interface IRequest {
   email: string;
   password: string;
   role: string;
+  image?: string;
+  info?: string;
 }
 interface IResponse {
   userInfo: IUserInfo;
@@ -20,6 +22,8 @@ class CreateUserService {
     email,
     password,
     role,
+    image,
+    info
   }: IRequest): Promise<IResponse> {
     const user = await User.findOne({ email }).exec();
 
@@ -33,6 +37,8 @@ class CreateUserService {
       email,
       password,
       role,
+      image,
+      info
     });
 
     try {
@@ -48,6 +54,8 @@ class CreateUserService {
         name: savedUser.name,
         email: savedUser.email,
         role: savedUser.role,
+        info: savedUser.info,
+        image: savedUser.image,
       };
 
       return { userInfo };

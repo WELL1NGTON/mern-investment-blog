@@ -9,6 +9,8 @@ export interface IUserInfo {
   name: string;
   email: string;
   role: string;
+  image?: string;
+  info?: string;
 }
 
 const generateAccessToken = (user: IUserInfo): string | null => {

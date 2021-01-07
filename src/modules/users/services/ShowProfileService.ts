@@ -24,6 +24,8 @@ class ShowProfileService {
       name: user.name,
       email: user.email,
       role: user.role,
+      info: user.info,
+      image: user.image,
     };
 
     const response: IResponse = {

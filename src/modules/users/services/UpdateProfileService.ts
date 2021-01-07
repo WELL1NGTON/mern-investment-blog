@@ -5,6 +5,8 @@ import AppError from "@shared/errors/AppError";
 interface IRequest {
   name: string;
   email: string;
+  image?: string;
+  info?: string;
 }
 
 interface IResponse {
@@ -12,7 +14,7 @@ interface IResponse {
 }
 
 class UpdateProfileService {
-  public async execute({ name, email }: IRequest): Promise<IResponse> {
+  public async execute({ name, email, image, info }: IRequest): Promise<IResponse> {
     const user = await User.findOne({ email }).exec();
 
     if (!user) {
@@ -21,7 +23,7 @@ class UpdateProfileService {
 
     const updatedUser = await User.findByIdAndUpdate(
       { id: user._id },
-      { name },
+      { name, image, info },
       { upsert: false }
     ).exec();
 
@@ -34,6 +36,8 @@ class UpdateProfileService {
       name: updatedUser.name,
       email: updatedUser.email,
       role: updatedUser.role,
+      info: updatedUser.info,
+      image: updatedUser.image,
     };
 
     const response: IResponse = { userInfo };

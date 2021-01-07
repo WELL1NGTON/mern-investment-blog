@@ -20,13 +20,15 @@ export default class ProfileController {
   }
 
   public async update(request: Request, response: Response): Promise<Response> {
-    const { email, name } = request.body;
+    const { email, name, info, image } = request.body;
 
     const updateProfile = new UpdateProfileService();
 
     const { userInfo } = await updateProfile.execute({
       email,
       name,
+      info,
+      image
     });
 
     return response.status(200).json({

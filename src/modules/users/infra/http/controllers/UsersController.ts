@@ -4,7 +4,7 @@ import CreateUserService from "@modules/users/services/CreateUserService";
 
 export default class SessionsController {
   public async create(request: Request, response: Response): Promise<Response> {
-    const { name, email, password, role } = request.body;
+    const { name, email, password, role, info, image } = request.body;
 
     const createUser = new CreateUserService();
 
@@ -13,6 +13,8 @@ export default class SessionsController {
       password,
       name,
       role,
+      info,
+      image
     });
 
     return response.status(201).json({
