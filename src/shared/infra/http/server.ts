@@ -8,6 +8,8 @@ import router from "./routes";
 import AppError from "@shared/errors/AppError";
 import path from "path";
 
+import User, { IUser } from "@shared/models/user.model";
+
 const nodemailer = require("nodemailer");
 // const rateLimiterMiddleware = require("./middleware/rateLimiter");
 
@@ -46,6 +48,21 @@ if (uri) {
   const connection = mongoose.connection;
   connection.once("open", () => {
     console.log("MongoDB database connection established successfully");
+
+    // const newUser = new User({
+    //   title,
+    //   description,
+    //   markdownArticle,
+    //   date,
+    //   tags,
+    //   author,
+    //   state,
+    //   visibility,
+    //   category,
+    //   previewImg,
+    // });
+
+    // const savedUser = await newUser.save();
   });
 }
 app.use("/api", router);

@@ -1,5 +1,5 @@
 import AppError from "@shared/errors/AppError";
-import Image from "@shared/models/image.model";
+import ImagePath from "@shared/models/imagePath.model";
 // import path from "path";
 // import fs from "fs";
 
@@ -21,7 +21,7 @@ class UploadImageService {
     // const filePath = `./public/images/${fileName}`;
     // const resolvedPath = path.resolve(filePath);
 
-    const image = await Image.findOneAndDelete({ slug });
+    const image = await ImagePath.findOneAndDelete({ slug });
 
     if (!image) {
       throw new AppError("Imagem não encontrada.", 404);

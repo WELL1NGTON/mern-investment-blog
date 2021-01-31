@@ -1,12 +1,13 @@
 import { Request, Response } from "express";
-import UploadImageService from "@modules/articles/services/UploadImageService";
-import ListImagesService from "@modules/articles/services/ListImagesService";
+
+import AppError from "@shared/errors/AppError";
 import DeleteImageService from "@modules/articles/services/DeleteImageService";
+import { IImage } from "@shared/models/image.model";
+import ListImagesService from "@modules/articles/services/ListImagesService";
 import ShowImageService from "@modules/articles/services/ShowImageService";
 import StatusCodes from "http-status-codes";
-import AppError from "@shared/errors/AppError";
+import UploadImageService from "@modules/articles/services/UploadImageFirebaseService";
 import aqp from "api-query-params";
-import { IImage } from "@shared/models/image.model";
 
 const { CREATED, OK, NO_CONTENT, BAD_REQUEST } = StatusCodes;
 

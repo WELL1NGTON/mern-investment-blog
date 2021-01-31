@@ -1,7 +1,7 @@
 import AppError from "@shared/errors/AppError";
+import { StatusCodes } from "http-status-codes";
 import fs from "fs";
 import sharp from "sharp";
-import StatusCodes from "http-status-codes";
 
 const { INTERNAL_SERVER_ERROR } = StatusCodes;
 
@@ -36,7 +36,7 @@ const { INTERNAL_SERVER_ERROR } = StatusCodes;
 //     });
 // };
 
-const compressImage = async (
+export default async (
   file: Express.Multer.File,
   format: "jpg" | "jpeg" | "png" | "webp" = "jpg",
   quality: number = 80,
@@ -70,6 +70,11 @@ const compressImage = async (
         .webp({ quality })
         .toBuffer();
       break;
+
+    default:
+      data = await sharp(file.path)
+        .toBuffer();
+      break;
   }
 
   fs.unlink(file.path, (err) => {
@@ -79,11 +84,9 @@ const compressImage = async (
   if (!data) {
     throw new AppError(
       "Erro ao comprimir/converter a imagem",
-      INTERNAL_SERVER_ERROR
+      StatusCodes.INTERNAL_SERVER_ERROR
     );
   }
 
   return data;
 };
-
-export { compressImage };

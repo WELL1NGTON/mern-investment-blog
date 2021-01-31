@@ -5,6 +5,7 @@ npm-debug.log
 .DS_Store
 requests.rest
 yarn-error.log
+googleApplicationCresentials.json
 
 #Blog images folder
 public/images/*

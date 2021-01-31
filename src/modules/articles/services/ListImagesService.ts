@@ -1,14 +1,15 @@
+import ImagePath, { IImagePath } from "@shared/models/imagePath.model";
+
 import { FilterQuery } from "mongoose";
-import Image, { IImage } from "@shared/models/image.model";
 
 interface IRequest {
-  filter: FilterQuery<IImage>;
+  filter: FilterQuery<IImagePath>;
   limit?: number;
   skip?: number;
 }
 interface IResponse {
   message: string;
-  images: IImage[];
+  images: IImagePath[];
 }
 
 class ListImagesService {
@@ -21,7 +22,7 @@ class ListImagesService {
     // if (tags.length > 0 || tags.length > 0 || tags.length > 0)
     //   condition["$and"] = [];
 
-    const images = await Image.find(filter)
+    const images = await ImagePath.find(filter)
       .sort({ createdAt: "desc" })
       .skip(skip)
       .limit(limit)
