@@ -15,14 +15,23 @@
 
 import { StatusCodes } from "http-status-codes";
 
-class AppError {
+/**
+ * @typedef Error
+ * @property {string} code.required
+ */
+
+class AppError extends Error {
   public readonly message: string;
 
   public readonly statusCode: number;
 
   constructor(message: string, statusCode = StatusCodes.BAD_REQUEST) {
+    super(message);
+
     this.message = message;
     this.statusCode = statusCode;
+
+    Error.captureStackTrace(this, this.constructor);
   }
 }
 

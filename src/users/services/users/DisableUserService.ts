@@ -1,0 +1,46 @@
+import AppError from "@shared/errors/AppError";
+import Password from "@shared/richObjects/Password";
+import Service from "@shared/services/Service";
+import IUserRepository from "@users/models/IUserRepository";
+import { StatusCodes } from "http-status-codes";
+import { injectable, inject } from "tsyringe";
+
+interface IRequest {
+  id: string;
+}
+
+@injectable()
+class DisableUserService extends Service {
+  constructor(
+    @inject("UserRepository")
+    private userRepository: IUserRepository
+  ) {
+    super();
+  }
+
+  public async execute({ id }: IRequest) {
+    const user = await this.userRepository.getById(id);
+
+    // Check if user exists
+    if (user === null)
+      throw new AppError(
+        "Falha ao desabilitar a conta de usuário pois o usuário não foi encontrado",
+        StatusCodes.NOT_FOUND
+      );
+
+    // Disable user's account
+    user.isActive = false;
+
+    // Try to commit changes
+    try {
+      return await this.userRepository.update(user);
+    } catch {
+      throw new AppError(
+        "Ocorreu um erro ao tentar desabilitar a conta de usuário",
+        StatusCodes.INTERNAL_SERVER_ERROR
+      );
+    }
+  }
+}
+
+export default DisableUserService;
