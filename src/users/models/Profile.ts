@@ -1,4 +1,4 @@
-import Entity from '@shared/models/Entity';
+import Entity from "@shared/models/Entity";
 
 class Profile extends Entity {
   name!: string;
@@ -19,14 +19,14 @@ class Profile extends Entity {
     this.contact = contact;
   }
 
-  public toJSON(){
+  public toJSON() {
     return {
       id: this.id,
       name: this.name,
       about: this.about,
-      profileImage:this.profileImage,
-      contact: this.contact
-    }
+      profileImage: this.profileImage,
+      contact: this.contact,
+    };
   }
 }
 

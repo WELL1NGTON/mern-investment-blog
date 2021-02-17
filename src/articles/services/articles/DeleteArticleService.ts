@@ -1,5 +1,5 @@
-import IArticleRepository from '@articles/models/IArticleRepository';
-import { inject, injectable } from 'tsyringe';
+import IArticleRepository from "@articles/models/IArticleRepository";
+import { inject, injectable } from "tsyringe";
 
 interface IRequest {
   slug: string;
@@ -8,7 +8,7 @@ interface IRequest {
 @injectable()
 class DeleteArticleService {
   constructor(
-    @inject('ArticleRepository')
+    @inject("ArticleRepository")
     private articleRepository: IArticleRepository
   ) {}
 

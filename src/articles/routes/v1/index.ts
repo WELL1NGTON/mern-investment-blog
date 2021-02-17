@@ -1,10 +1,10 @@
-import articlesRoutes from './articlesRoutes';
-import { Router } from 'express';
-import categoriesRoutes from './categoriesRoutes';
+import { Router } from "express";
+import articlesRoutes from "./articlesRoutes";
+import categoriesRoutes from "./categoriesRoutes";
 
 const router = Router();
 
-router.use('/articles', articlesRoutes);
-router.use('/categories', categoriesRoutes);
+router.use("/articles", articlesRoutes);
+router.use("/categories", categoriesRoutes);
 
 export default router;

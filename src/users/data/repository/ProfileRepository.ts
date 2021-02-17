@@ -35,7 +35,7 @@ const profileEntityToDocument = (
 };
 
 class ProfileRepository implements IProfileRepository {
-  constructor() { }
+  constructor() {}
 
   public getAll = async (
     pageSize: number = 10,
@@ -72,9 +72,7 @@ class ProfileRepository implements IProfileRepository {
     let result: IProfileMongooseDocument[];
     let total: number = 0;
     try {
-      result = await ProfileModel.find()
-        .sort({ name: "desc" })
-        .exec();
+      result = await ProfileModel.find().sort({ name: "desc" }).exec();
       total = await ProfileModel.count();
     } catch (e) {
       result = [];
@@ -84,15 +82,8 @@ class ProfileRepository implements IProfileRepository {
       this.documentToEntity(doc)
     );
 
-    return new PagedResult<Profile>(
-      categories,
-      total,
-      1,
-      total,
-      ""
-    );
+    return new PagedResult<Profile>(categories, total, 1, total, "");
   };
-
 
   public getById = async (id: string): Promise<Profile | null> => {
     const profile = await ProfileModel.findById(id).exec();

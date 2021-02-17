@@ -38,9 +38,7 @@ class UserRepository implements IUserRepository {
     let result: IUserMongooseDocument[];
     let total: number = 0;
     try {
-      result = await UserModel.find()
-        .sort({ date: "desc" })
-        .exec();
+      result = await UserModel.find().sort({ date: "desc" }).exec();
       total = await UserModel.count();
     } catch (e) {
       result = [];
@@ -61,9 +59,7 @@ class UserRepository implements IUserRepository {
     let result: IUserMongooseDocument[];
     let total: number = 0;
     try {
-      result = await UserModel.find()
-        .sort({ date: "desc" })
-        .exec();
+      result = await UserModel.find().sort({ date: "desc" }).exec();
       total = await UserModel.count();
     } catch (e) {
       result = [];
@@ -71,13 +67,7 @@ class UserRepository implements IUserRepository {
 
     const categories: User[] = result.map((doc) => this.documentToEntity(doc));
 
-    return new PagedResult<User>(
-      categories,
-      total,
-      1,
-      total,
-      ""
-    );
+    return new PagedResult<User>(categories, total, 1, total, "");
   };
 
   public getById = async (id: string): Promise<User | null> => {

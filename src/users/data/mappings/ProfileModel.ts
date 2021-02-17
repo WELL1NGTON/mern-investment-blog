@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import mongoose, { Document, Schema } from "mongoose";
 
 // TODO: Find a better way to use interfaces for mapping
 // ! Need to be changed if Article.ts changes... Not the best implmentation, but it will do for now
@@ -40,6 +40,6 @@ const ProfileSchema: Schema = new Schema(
 );
 
 export default mongoose.model<IProfileMongooseDocument>(
-  'Profile',
+  "Profile",
   ProfileSchema
 );

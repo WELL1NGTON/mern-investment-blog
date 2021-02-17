@@ -70,9 +70,7 @@ class CategoryRepository implements ICategoryRepository {
     let result: ICategoryMongooseDocument[];
     let total: number = 0;
     try {
-      result = await CategoryModel.find()
-        .sort({ name: "asc" })
-        .exec();
+      result = await CategoryModel.find().sort({ name: "asc" }).exec();
       total = await CategoryModel.count();
     } catch (e) {
       result = [];
@@ -82,13 +80,7 @@ class CategoryRepository implements ICategoryRepository {
       this.documentToEntity(doc)
     );
 
-    return new PagedResult<Category>(
-      categories,
-      total,
-      1,
-      total,
-      ""
-    );
+    return new PagedResult<Category>(categories, total, 1, total, "");
   };
 
   public async getById(id: string): Promise<Category | null> {

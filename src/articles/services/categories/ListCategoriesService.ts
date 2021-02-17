@@ -1,5 +1,5 @@
-import ICategoryRepository from '@articles/models/ICategoryRepository';
-import { inject, injectable } from 'tsyringe';
+import ICategoryRepository from "@articles/models/ICategoryRepository";
+import { inject, injectable } from "tsyringe";
 
 interface IRequest {
   pageSize?: number;
@@ -9,7 +9,7 @@ interface IRequest {
 @injectable()
 class ListCategoryService {
   constructor(
-    @inject('CategoryRepository')
+    @inject("CategoryRepository")
     private categoryRepository: ICategoryRepository
   ) {}
 

@@ -80,13 +80,7 @@ class RefreshTokenRepository implements IRefreshTokenRepository {
       this.documentToEntity(doc)
     );
 
-    return new PagedResult<RefreshToken>(
-      refreshTokens,
-      total,
-      1,
-      total,
-      ""
-    );
+    return new PagedResult<RefreshToken>(refreshTokens, total, 1, total, "");
   };
 
   public getById = async (id: string): Promise<RefreshToken | null> => {

@@ -14,13 +14,13 @@ class RefreshToken extends Entity {
   token: string;
   expirationDate: Date;
 
-  public toJSON(){
+  public toJSON() {
     return {
       id: this.id,
       email: this.email,
       token: this.token,
-      expirationDate: this.expirationDate
-    }
+      expirationDate: this.expirationDate,
+    };
   }
 }
 

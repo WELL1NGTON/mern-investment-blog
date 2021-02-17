@@ -1,5 +1,5 @@
-import ICategoryRepository from '@articles/models/ICategoryRepository';
-import { inject, injectable } from 'tsyringe';
+import ICategoryRepository from "@articles/models/ICategoryRepository";
+import { inject, injectable } from "tsyringe";
 
 interface IRequest {
   id: string;
@@ -8,7 +8,7 @@ interface IRequest {
 @injectable()
 class DeleteCategoryService {
   constructor(
-    @inject('CategoryRepository')
+    @inject("CategoryRepository")
     private categoryRepository: ICategoryRepository
   ) {}
 

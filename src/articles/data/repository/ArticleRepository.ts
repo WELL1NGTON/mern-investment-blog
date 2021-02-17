@@ -59,7 +59,7 @@ const articleEntityToDocument = (
 
 @injectable()
 class ArticleRepository implements IArticleRepository {
-  constructor() { }
+  constructor() {}
 
   public async getAll(
     pageSize: number = 10,
@@ -84,8 +84,6 @@ class ArticleRepository implements IArticleRepository {
     const articles: Article[] = result.map((doc) => {
       return articleDocumentToEntity(doc);
     });
-
-
 
     return new PagedResult<Article>(
       articles,
@@ -114,13 +112,7 @@ class ArticleRepository implements IArticleRepository {
       return articleDocumentToEntity(doc);
     });
 
-    return new PagedResult<Article>(
-      articles,
-      total,
-      1,
-      total,
-      ""
-    );
+    return new PagedResult<Article>(articles, total, 1, total, "");
   };
 
   public async getById(id: string): Promise<Article | null> {
@@ -148,7 +140,7 @@ class ArticleRepository implements IArticleRepository {
         StatusCodes.INTERNAL_SERVER_ERROR
       );
     }
-  };
+  }
 
   public async update(article: Article): Promise<null> {
     let foundArticle = await this.getById(article.id);
@@ -170,7 +162,7 @@ class ArticleRepository implements IArticleRepository {
         StatusCodes.INTERNAL_SERVER_ERROR
       );
     }
-  };
+  }
 
   public async delete(id: string): Promise<null> {
     let foundArticle = await this.getById(id);
@@ -190,7 +182,7 @@ class ArticleRepository implements IArticleRepository {
         StatusCodes.INTERNAL_SERVER_ERROR
       );
     }
-  };
+  }
 
   public async deleteBySlug(slug: string): Promise<null> {
     let foundArticle = await this.getBySlug(slug);
@@ -210,7 +202,7 @@ class ArticleRepository implements IArticleRepository {
         StatusCodes.INTERNAL_SERVER_ERROR
       );
     }
-  };
+  }
 
   // public static documentToEntity =
 

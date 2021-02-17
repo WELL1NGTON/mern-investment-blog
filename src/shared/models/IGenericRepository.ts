@@ -1,6 +1,6 @@
-import { Document } from 'mongoose';
-import Entity from './Entity';
-import PagedResult from '@shared/models/PagedResult';
+import { Document } from "mongoose";
+import Entity from "./Entity";
+import PagedResult from "@shared/models/PagedResult";
 
 interface IGenericRepository<T extends Entity, U extends Document> {
   getAll: (
