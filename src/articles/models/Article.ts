@@ -2,16 +2,15 @@ import ArticleState, { defaultArticleState } from "@shared/types/ArticleState";
 import Visibility, { defaultVisibility } from "@shared/types/Visibility";
 
 import Entity from "@shared/models/Entity";
-import slugify from "slugify";
-import slugifyOptions from "@articles/configurations/slugifyOptions";
+import Slug from "@shared/richObjects/Slug";
 
 class Article extends Entity {
-  private _slug: string = "";
-  private _title: string = "";
+  private _slug: Slug;
+  private _title = "";
   category?: string;
   author?: string;
-  description: string = "";
-  markdownArticle: string = "";
+  description = "";
+  markdownArticle = "";
   date: Date = new Date(Date.now());
   visibility: Visibility = "ALL";
   state: ArticleState = "EDITING";
@@ -44,7 +43,7 @@ class Article extends Entity {
   }
 
   public get slug() {
-    return this._slug;
+    return this._slug.value;
   }
 
   public get title() {
@@ -53,7 +52,7 @@ class Article extends Entity {
 
   public set title(theTitle: string) {
     this._title = theTitle;
-    this._slug = slugify(this._title, slugifyOptions);
+    this._slug.value = theTitle;
   }
 
   public setTags(tagsStr: string) {
@@ -65,7 +64,7 @@ class Article extends Entity {
   public toJSON() {
     return {
       id: this.id,
-      slug: this._slug,
+      slug: this.slug,
       title: this._title,
       description: this.description,
       markdownArticle: this.markdownArticle,

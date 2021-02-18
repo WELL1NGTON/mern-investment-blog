@@ -1,0 +1,15 @@
+parser: "@typescript-eslint"
+
+plugins:
+  - "@typescript-eslint"
+
+extends:
+  - "eslint:recommended"
+  - "plugin:@typescript-eslint/recommended"
+  - "prettier/@typescript-eslint"
+  - "plugin:prettier/recommended"
+
+rules:
+  "@typescript-eslint/no-inferrable-types":
+    ignoreParameters: true
+    ignoreProperties: true

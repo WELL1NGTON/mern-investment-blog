@@ -1,16 +1,13 @@
-import ArticleState, { articleStates } from "@shared/types/ArticleState";
-import CategoryModel, { ICategoryMongooseDocument } from "./CategoryModel";
-import Visibility, { visibilities } from "@shared/types/Visibility";
-import mongoose, { Document, ObjectId, Schema } from "mongoose";
+import ArticleState, { articleStates } from '@shared/types/ArticleState';
+import Visibility, { visibilities } from '@shared/types/Visibility';
+import mongoose, { Document, ObjectId, Schema } from 'mongoose';
 
-import Article from "@articles/models/Article";
-import { IProfileMongooseDocument } from "@users/data/mappings/ProfileModel";
-import Profile from "@users/models/Profile";
-import mongoosePaginate from "mongoose-paginate-v2";
+import Article from '@articles/models/Article';
+import mongoosePaginate from 'mongoose-paginate-v2';
+import slugify from 'slugify';
+import slugifyOptions from '@shared/configurations/slugifyOptions';
+
 // import mongoose_fuzzy_searching from 'mongoose-fuzzy-searching';
-import slugify from "slugify";
-import slugifyOptions from "@articles/configurations/slugifyOptions";
-
 // #region Mongoose-Document-Interface
 // TODO: Find a better way to use interfaces for mapping
 // ! Need to be changed if Article.ts changes... Not the best implmentation, but it will do for now
