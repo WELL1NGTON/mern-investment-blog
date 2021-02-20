@@ -3680,6 +3680,11 @@ supports-color@^7.1.0:
   dependencies:
     has-flag "^4.0.0"
 
+swagger-express-ts@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/swagger-express-ts/-/swagger-express-ts-1.0.1.tgz#53a7dc87db3a9e219a9932e15eb81e85fce4e491"
+  integrity sha512-zNEslZ1Cp/+mXa6EjChJEQuZzoRiRkK5n4VTlz2vNM9eeAfzO4WcgRs+DLPH9SB2Ht1zP7b3dAJqx/69US4nzA==
+
 swagger-jsdoc@^6.0.5:
   version "6.0.6"
   resolved "https://registry.yarnpkg.com/swagger-jsdoc/-/swagger-jsdoc-6.0.6.tgz#b94a57deb128631461d58812bae306a887bd3b18"
