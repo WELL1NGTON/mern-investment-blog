@@ -22,7 +22,7 @@ class Category extends Entity {
    * @type {string}
    * @memberof Category
    */
-  name: string = "";
+  name = "";
 
   /**
    * @description Inform to who it will appear
@@ -38,7 +38,7 @@ class Category extends Entity {
    */
   color: Color;
 
-  public toJSON() {
+  public toJSON(): unknown {
     return {
       id: this.id,
       name: this.name,

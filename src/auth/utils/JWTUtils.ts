@@ -19,15 +19,24 @@ class JWTUtils {
     }
   }
 
-  static decodeToken(token: string, jwtOptions: IJWTTokenOptions) {
+  static decodeToken(
+    token: string,
+    jwtOptions: IJWTTokenOptions
+  ): string | any {
     return jwt.verify(token, jwtOptions.secret);
   }
 
-  static getAccessToken(request: Request) {
+  static getAccessToken(request: Request): string {
+    // TODO: find a better way of handling this
+    if (typeof request.cookies[accessTokenOptions.property] !== "string")
+      throw new Error();
     return request.cookies[accessTokenOptions.property];
   }
 
-  static getRefreshToken(request: Request) {
+  static getRefreshToken(request: Request): string {
+    // TODO: find a better way of handling this
+    if (typeof request.cookies[refreshTokenOptions.property] !== "string")
+      throw new Error();
     return request.cookies[refreshTokenOptions.property];
   }
 }

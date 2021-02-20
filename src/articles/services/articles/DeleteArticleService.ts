@@ -12,7 +12,7 @@ class DeleteArticleService {
     private articleRepository: IArticleRepository
   ) {}
 
-  public async execute({ slug }: IRequest) {
+  public async execute({ slug }: IRequest): Promise<null> {
     return await this.articleRepository.delete(slug);
   }
 }

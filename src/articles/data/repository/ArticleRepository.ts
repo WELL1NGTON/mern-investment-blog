@@ -1,9 +1,6 @@
 import ArticleModel, {
   IArticleMongooseDocument,
 } from "../mappings/ArticleModel";
-import CategoryRepository, {
-  categoryDocumentToEntity,
-} from "./CategoryRepository";
 
 import AppError from "@shared/errors/AppError";
 import Article from "src/articles/models/Article";
@@ -12,7 +9,6 @@ import PagedResult from "@shared/models/PagedResult";
 import { StatusCodes } from "http-status-codes";
 import { injectable } from "tsyringe";
 import mongoose from "mongoose";
-import { profileDocumentToEntity } from "@users/data/repository/ProfileRepository";
 
 const articleDocumentToEntity = (
   document: IArticleMongooseDocument
@@ -59,15 +55,13 @@ const articleEntityToDocument = (
 
 @injectable()
 class ArticleRepository implements IArticleRepository {
-  constructor() {}
-
   public async getAll(
-    pageSize: number = 10,
-    currentPage: number = 1,
+    pageSize = 10,
+    currentPage = 1,
     query?: string | undefined
   ): Promise<PagedResult<Article>> {
     let result: IArticleMongooseDocument[];
-    let total: number = 0;
+    let total = 0;
     try {
       result = await ArticleModel.find()
         .sort({ date: "desc" })
@@ -96,7 +90,7 @@ class ArticleRepository implements IArticleRepository {
 
   getAllIgnoringPageSize = async (): Promise<PagedResult<Article>> => {
     let result: IArticleMongooseDocument[];
-    let total: number = 0;
+    let total = 0;
     try {
       result = await ArticleModel.find()
         .sort({ date: "desc" })
@@ -143,7 +137,7 @@ class ArticleRepository implements IArticleRepository {
   }
 
   public async update(article: Article): Promise<null> {
-    let foundArticle = await this.getById(article.id);
+    const foundArticle = await this.getById(article.id);
     if (!foundArticle)
       throw new AppError(
         "Artigo não pode ser alterado pois não foi encontrado",
@@ -165,7 +159,7 @@ class ArticleRepository implements IArticleRepository {
   }
 
   public async delete(id: string): Promise<null> {
-    let foundArticle = await this.getById(id);
+    const foundArticle = await this.getById(id);
     if (!foundArticle)
       throw new AppError(
         "Artigo não pode ser excluido pois não foi encontrado",
@@ -185,7 +179,7 @@ class ArticleRepository implements IArticleRepository {
   }
 
   public async deleteBySlug(slug: string): Promise<null> {
-    let foundArticle = await this.getBySlug(slug);
+    const foundArticle = await this.getBySlug(slug);
     if (!foundArticle)
       throw new AppError(
         "Artigo não pode ser excluido pois não foi encontrado",

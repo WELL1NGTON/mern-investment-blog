@@ -1,14 +1,16 @@
-import express, { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 
 import AppError from "@shared/errors/AppError";
 import { CelebrateError } from "celebrate";
 import { StatusCodes } from "http-status-codes";
 import logger from "@app/services/Logger";
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const errorHandling = (
   err: Error,
   request: Request,
   response: Response,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _: NextFunction
 ) => {
   logger.err(err, true);

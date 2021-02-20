@@ -39,9 +39,9 @@ class TRGBHexByteValues {
 }
 
 class TRGBHexNumberValues {
-  r: number = 0;
-  g: number = 0;
-  b: number = 0;
+  r = 0;
+  g = 0;
+  b = 0;
 }
 
 class ColorError extends Error {
@@ -70,7 +70,7 @@ class Color extends TRGBHexStringValues {
   /**
    * Default "value" for color
    */
-  public get value() {
+  public get value(): string {
     return this.hexString;
   }
 
@@ -81,7 +81,7 @@ class Color extends TRGBHexStringValues {
     this.hexString = color;
   }
 
-  public get hexString() {
+  public get hexString(): string {
     return `#${this.r}${this.g}${this.b}`;
   }
 
@@ -93,7 +93,7 @@ class Color extends TRGBHexStringValues {
     this.setColor(color);
   }
 
-  public get RGBStringValues() {
+  public get RGBStringValues(): TRGBHexStringValues {
     return {
       r: this.r,
       g: this.g,
@@ -104,7 +104,7 @@ class Color extends TRGBHexStringValues {
     this.setColor(color);
   }
 
-  public get RGBByteValues() {
+  public get RGBByteValues(): TRGBHexByteValues {
     return {
       r: parseInt(this.r),
       g: parseInt(this.g),
@@ -116,7 +116,7 @@ class Color extends TRGBHexStringValues {
     this.setColor(color);
   }
 
-  public get RGBNumberValues() {
+  public get RGBNumberValues(): TRGBHexNumberValues {
     return {
       r: parseInt(this.r),
       g: parseInt(this.g),
@@ -124,7 +124,7 @@ class Color extends TRGBHexStringValues {
     } as TRGBHexNumberValues;
   }
 
-  setRGBValues(r: TByteHex, g: TByteHex, b: TByteHex) {
+  setRGBValues(r: TByteHex, g: TByteHex, b: TByteHex): void {
     this.r = r;
     this.g = g;
     this.b = b;
@@ -144,7 +144,7 @@ class Color extends TRGBHexStringValues {
       | TRGBHexStringValues
       | TRGBHexByteValues
       | TRGBHexNumberValues
-  ) {
+  ): void {
     if (typeof color === "string") {
       if (!Color.isValid(color))
         throw new Color.ColorError("Invalid color format");
@@ -187,7 +187,7 @@ class Color extends TRGBHexStringValues {
     }
   }
 
-  public toString() {
+  public toString(): string {
     return this.hexString;
   }
 

@@ -7,7 +7,6 @@ import Visibility, {
 
 import Color from "@shared/richObjects/Color";
 import Command from "@shared/messages/Command";
-import Entity from "@shared/models/Entity";
 import { isValidObjectId } from "mongoose";
 
 class UpdateCategoryCommand extends Command {

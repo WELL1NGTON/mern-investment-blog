@@ -2,8 +2,6 @@ import { Joi, Segments, celebrate } from "celebrate";
 import { Request, RequestHandler } from "express";
 
 import Command from "@shared/messages/Command";
-import Email from "@shared/richObjects/Email";
-import Password from "@shared/richObjects/Password";
 
 class LoginCommand extends Command {
   email: string;

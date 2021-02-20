@@ -4,8 +4,6 @@ import ArticleRepository from "@articles/data/repository/ArticleRepository";
 import ArticleState from "@shared/types/ArticleState";
 import Category from "@articles/models/Category";
 import CategoryRepository from "@articles/data/repository/CategoryRepository";
-import Color from "@shared/richObjects/Color";
-import Password from "@shared/richObjects/Password";
 import Profile from "@users/models/Profile";
 import ProfileRepository from "@users/data/repository/ProfileRepository";
 import Role from "@shared/types/Role";
@@ -18,7 +16,7 @@ import markdowns from "@app/data/testData/markdowns";
 import profilesJson from "@app/data/testData/profiles.json";
 import usersJson from "@app/data/testData/users.json";
 
-const addTestData = async () => {
+const addTestData = async (): Promise<void> => {
   const categories = categoriesJson.map((category) => {
     const cat = new Category(
       category.name,

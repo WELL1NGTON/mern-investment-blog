@@ -1,10 +1,6 @@
-import { Segments, celebrate } from "celebrate";
-
-import Joi from "joi";
 import ProfilesController from "@users/controllers/ProfilesController";
 import { Router } from "express";
 import UpdateCategoryCommand from "@articles/commands/UpdateCategoryCommand";
-import { container } from "tsyringe";
 
 const router = Router();
 

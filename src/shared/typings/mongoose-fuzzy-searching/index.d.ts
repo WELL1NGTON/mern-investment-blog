@@ -1,26 +1,28 @@
-declare module "mongoose-fuzzy-searching" {
-  import { Document, DocumentQuery, Model, Schema } from "mongoose";
+// TODO: Fix fuzzy search
 
-  export interface MongooseFuzzyOptions<T> {
-    // fields: (T extends Object ? keyof T : string)[];
-    fields: Record<keyof T, string | number>[] | (keyof T)[];
-  }
+// declare module "mongoose-fuzzy-searching" {
+//   import { Document, DocumentQuery, Model, Schema } from "mongoose";
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  export interface MongooseFuzzyModel<T extends Document, QueryHelpers = {}>
-    extends Model<T, QueryHelpers> {
-    fuzzySearch(
-      search: string,
-      callBack?: (err: any, data: Model<T, QueryHelpers>[]) => void
-    ): DocumentQuery<T[], T, QueryHelpers>;
-  }
+//   export interface MongooseFuzzyOptions<T> {
+//     // fields: (T extends Object ? keyof T : string)[];
+//     fields: Record<keyof T, string | number>[] | (keyof T)[];
+//   }
 
-  function fuzzyPlugin<T>(
-    schema: Schema<T>,
-    options: MongooseFuzzyOptions<T>
-  ): void;
+//   // eslint-disable-next-line @typescript-eslint/ban-types
+//   export interface MongooseFuzzyModel<T extends Document, QueryHelpers = {}>
+//     extends Model<T, QueryHelpers> {
+//     fuzzySearch(
+//       search: string,
+//       callBack?: (err: any, data: Model<T, QueryHelpers>[]) => void
+//     ): DocumentQuery<T[], T, QueryHelpers>;
+//   }
 
-  export default fuzzyPlugin;
-}
+//   function fuzzyPlugin<T>(
+//     schema: Schema<T>,
+//     options: MongooseFuzzyOptions<T>
+//   ): void;
 
-// plugin<T>(plugin: (schema: Schema, options: T) => void, opts: T): this;
+//   export default fuzzyPlugin;
+// }
+
+// // plugin<T>(plugin: (schema: Schema, options: T) => void, opts: T): this;

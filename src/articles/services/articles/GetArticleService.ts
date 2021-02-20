@@ -1,3 +1,4 @@
+import Article from "@articles/models/Article";
 import IArticleRepository from "@articles/models/IArticleRepository";
 import { inject, injectable } from "tsyringe";
 
@@ -12,7 +13,7 @@ class GetArticleService {
     private articleRepository: IArticleRepository
   ) {}
 
-  public async execute({ slug }: IRequest) {
+  public async execute({ slug }: IRequest): Promise<Article | null> {
     return await this.articleRepository.getBySlug(slug);
   }
 }

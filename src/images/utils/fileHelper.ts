@@ -10,9 +10,9 @@ import sharp from "sharp";
 export default async (
   file: Express.Multer.File,
   format: SupportedImageFormat = defaultImageFormat,
-  quality: number = 80,
+  quality = 80,
   size?: number
-) => {
+): Promise<Buffer> => {
   let data: Buffer;
   switch (format) {
     case "jpeg":

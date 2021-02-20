@@ -2,7 +2,6 @@ import UpdateCategoryCommand from "@articles/commands/UpdateCategoryCommand";
 import Category from "@articles/models/Category";
 import ICategoryRepository from "@articles/models/ICategoryRepository";
 import AppError from "@shared/errors/AppError";
-import Color from "@shared/richObjects/Color";
 import { StatusCodes } from "http-status-codes";
 import { inject, injectable } from "tsyringe";
 
@@ -13,7 +12,7 @@ class UpdateCategoryService {
     private categoryRepository: ICategoryRepository
   ) {}
 
-  public async execute(command: UpdateCategoryCommand) {
+  public async execute(command: UpdateCategoryCommand): Promise<void> {
     const storedCategory = await this.categoryRepository.getById(command.id);
 
     if (!storedCategory)

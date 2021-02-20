@@ -1,5 +1,4 @@
 import AppError from "@shared/errors/AppError";
-import Password from "@shared/richObjects/Password";
 import Service from "@shared/services/Service";
 import CreateUserAndProfileCommand from "@users/commands/CreateUserAndProfileCommand";
 import IProfileRepository from "@users/models/IProfileRepository";
@@ -20,7 +19,7 @@ class CreateUserAndProfileService extends Service {
     super();
   }
 
-  public async execute(command: CreateUserAndProfileCommand) {
+  public async execute(command: CreateUserAndProfileCommand): Promise<null> {
     const user = new User(
       command.email,
       command.password,

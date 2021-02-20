@@ -1,6 +1,11 @@
 import { Request } from "express";
 
-const extractJWTTokens = (req: Request) => {
+const extractJWTTokens = (
+  req: Request
+): {
+  accessToken: string | null;
+  refreshToken: string | null;
+} => {
   let accessToken = null;
   let refreshToken = null;
   if (req && req.cookies) {

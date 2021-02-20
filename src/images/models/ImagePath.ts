@@ -1,5 +1,4 @@
 import Entity from "@shared/models/Entity";
-import Profile from "@users/models/Profile";
 import Slug from "@shared/richObjects/Slug";
 
 class ImagePath extends Entity {
@@ -32,7 +31,7 @@ class ImagePath extends Entity {
     this.uploadedBy = uploadedBy;
   }
 
-  public get slug() {
+  public get slug(): string {
     return this._slug.toString();
   }
 
@@ -41,15 +40,15 @@ class ImagePath extends Entity {
     this._slug.value = name;
   }
 
-  public get name() {
+  public get name(): string {
     return this._name;
   }
 
-  public toString() {
+  public toString(): string {
     return this.url;
   }
 
-  public toJSON() {
+  public toJSON(): unknown {
     return {
       slug: this.slug,
       name: this.name,

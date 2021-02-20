@@ -3,7 +3,7 @@ import ArticleState, {
   matchArticleStates,
 } from "@shared/types/ArticleState";
 import { Joi, Segments, celebrate } from "celebrate";
-import { Request, RequestHandler, request } from "express";
+import { Request, RequestHandler } from "express";
 import Visibility, {
   defaultVisibility,
   matchVilibilities,

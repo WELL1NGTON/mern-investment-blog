@@ -1,12 +1,8 @@
-import { Segments, celebrate } from "celebrate";
-
 import ChangeUserPasswordCommand from "@users/commands/ChangeUserPasswordCommand";
 import CreateUserAndProfileCommand from "@users/commands/CreateUserAndProfileCommand";
-import Joi from "joi";
 import { Router } from "express";
 import UpdateUserCommand from "@users/commands/UpdateUserCommand";
 import UsersController from "@users/controllers/UsersController";
-import { container } from "tsyringe";
 
 const router = Router();
 

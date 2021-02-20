@@ -19,7 +19,7 @@ class UpdateArticleService {
     private profileRepository: IProfileRepository
   ) {}
 
-  public async execute(command: UpdateArticleCommand) {
+  public async execute(command: UpdateArticleCommand): Promise<void> {
     const storedArticle = await this.articleRepository.getBySlug(command.slug);
 
     if (!storedArticle)

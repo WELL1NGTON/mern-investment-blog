@@ -31,12 +31,12 @@ const userEntityToDocument = (user: User): IUserMongooseDocument => {
 
 class UserRepository implements IUserRepository {
   public getAll = async (
-    pageSize: number = 10,
-    currentPage: number = 1,
+    pageSize = 10,
+    currentPage = 1,
     query?: string | undefined
   ): Promise<PagedResult<User>> => {
     let result: IUserMongooseDocument[];
-    let total: number = 0;
+    let total = 0;
     try {
       result = await UserModel.find().sort({ date: "desc" }).exec();
       total = await UserModel.count();
@@ -57,7 +57,7 @@ class UserRepository implements IUserRepository {
 
   getAllIgnoringPageSize = async (): Promise<PagedResult<User>> => {
     let result: IUserMongooseDocument[];
-    let total: number = 0;
+    let total = 0;
     try {
       result = await UserModel.find().sort({ date: "desc" }).exec();
       total = await UserModel.count();

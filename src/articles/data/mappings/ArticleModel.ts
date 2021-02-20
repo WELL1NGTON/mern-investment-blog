@@ -1,11 +1,11 @@
-import ArticleState, { articleStates } from '@shared/types/ArticleState';
-import Visibility, { visibilities } from '@shared/types/Visibility';
-import mongoose, { Document, ObjectId, Schema } from 'mongoose';
+import ArticleState, { articleStates } from "@shared/types/ArticleState";
+import Visibility, { visibilities } from "@shared/types/Visibility";
+import mongoose, { Document, Schema } from "mongoose";
 
-import Article from '@articles/models/Article';
-import mongoosePaginate from 'mongoose-paginate-v2';
-import slugify from 'slugify';
-import slugifyOptions from '@shared/configurations/slugifyOptions';
+import Article from "@articles/models/Article";
+import mongoosePaginate from "mongoose-paginate-v2";
+import slugify from "slugify";
+import slugifyOptions from "@shared/configurations/slugifyOptions";
 
 // import mongoose_fuzzy_searching from 'mongoose-fuzzy-searching';
 // #region Mongoose-Document-Interface

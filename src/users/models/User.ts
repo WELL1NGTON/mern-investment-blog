@@ -17,7 +17,7 @@ class User extends Entity {
     email: string,
     password: string,
     role: Role = defaultRole,
-    isActive: boolean = true
+    isActive = true
   ) {
     super();
     this.email = new Email(email);
@@ -30,23 +30,23 @@ class User extends Entity {
     this._password.value = password;
   }
 
-  public get password() {
+  public get password(): string {
     return this._password.value;
   }
 
-  public toString() {
+  public toString(): string {
     return `${this.role} | ${this.email}`;
   }
 
-  public async encryptPassword() {
+  public async encryptPassword(): Promise<void> {
     this._password.value = await Password.encrypt(this._password.value);
   }
 
-  public clearPassword() {
+  public clearPassword(): void {
     this._password.clearPassword();
   }
 
-  public toJSON() {
+  public toJSON(): unknown {
     // Don't return password on json files
     return {
       id: this.id,

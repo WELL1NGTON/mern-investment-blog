@@ -1,9 +1,8 @@
 import AppError from "@shared/errors/AppError";
-import Password from "@shared/richObjects/Password";
 import Service from "@shared/services/Service";
 import IUserRepository from "@users/models/IUserRepository";
 import { StatusCodes } from "http-status-codes";
-import { injectable, inject } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 
 interface IRequest {
   id: string;
@@ -18,7 +17,7 @@ class DisableUserService extends Service {
     super();
   }
 
-  public async execute({ id }: IRequest) {
+  public async execute({ id }: IRequest): Promise<null> {
     const user = await this.userRepository.getById(id);
 
     // Check if user exists

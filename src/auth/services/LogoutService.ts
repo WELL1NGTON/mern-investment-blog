@@ -21,7 +21,7 @@ class LogoutService extends Service {
   }
 
   // TODO: Falhando ao deslogar ?????????? WHY??????
-  public async execute({ accessToken }: IRequest) {
+  public async execute({ accessToken }: IRequest): Promise<null> {
     try {
       const authData = await JWTUtils.decodeToken(
         accessToken,

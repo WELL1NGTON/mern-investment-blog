@@ -19,7 +19,7 @@ class CreateArticleService {
     private profileRepository: IProfileRepository
   ) {}
 
-  public async execute(command: CreateArticleCommand) {
+  public async execute(command: CreateArticleCommand): Promise<null> {
     if (typeof command.authorId === "undefined")
       //TODO: alterar para pegar author do token
       throw new AppError(

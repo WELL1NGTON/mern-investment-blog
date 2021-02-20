@@ -19,7 +19,7 @@ async function ensureAuthenticated(
   request: Request,
   response: Response,
   next: NextFunction
-) {
+): Promise<void> {
   // TODO: está com algum problema ao gerar novo token a partir de refreshtoken
   const accessToken = JWTUtils.getAccessToken(request);
 
@@ -28,7 +28,7 @@ async function ensureAuthenticated(
 
   try {
     // Verify token
-    let decodedAccess = JWTUtils.decodeToken(accessToken, accessTokenOptions);
+    const decodedAccess = JWTUtils.decodeToken(accessToken, accessTokenOptions);
 
     if (!decodedAccess) clearTokenAndRefuse(response);
 

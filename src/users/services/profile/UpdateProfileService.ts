@@ -15,7 +15,7 @@ class GetProfileService extends Service {
     super();
   }
 
-  public async execute(command: UpdateProfileCommand) {
+  public async execute(command: UpdateProfileCommand): Promise<void> {
     const storedProfile = await this.profileRepository.getById(command.id);
 
     if (!storedProfile)

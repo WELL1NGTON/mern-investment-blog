@@ -20,7 +20,7 @@ class DeleteUserAndProfileService extends Service {
     super();
   }
 
-  public async execute({ id }: IRequest) {
+  public async execute({ id }: IRequest): Promise<null> {
     const user = await this.userRepository.getById(id);
     const profile = await this.profileRepository.getById(id);
 

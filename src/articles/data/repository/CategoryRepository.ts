@@ -4,12 +4,10 @@ import CategoryModel, {
 
 import AppError from "@shared/errors/AppError";
 import Category from "@articles/models/Category";
-import Color from "@shared/richObjects/Color";
 import ICategoryRepository from "@articles/models/ICategoryRepository";
 import PagedResult from "@shared/models/PagedResult";
 import { StatusCodes } from "http-status-codes";
 import Visibility from "@shared/types/Visibility";
-import mongoose from "mongoose";
 
 const categoryDocumentToEntity = (
   document: ICategoryMongooseDocument
@@ -37,12 +35,12 @@ const categoryEntityToDocument = (
 
 class CategoryRepository implements ICategoryRepository {
   public async getAll(
-    pageSize: number = 10,
-    currentPage: number = 1,
+    pageSize = 10,
+    currentPage = 1,
     query?: string | undefined
   ): Promise<PagedResult<Category>> {
     let result: ICategoryMongooseDocument[];
-    let total: number = 0;
+    let total = 0;
     try {
       result = await CategoryModel.find()
         .sort({ name: "asc" })
@@ -68,7 +66,7 @@ class CategoryRepository implements ICategoryRepository {
 
   getAllIgnoringPageSize = async (): Promise<PagedResult<Category>> => {
     let result: ICategoryMongooseDocument[];
-    let total: number = 0;
+    let total = 0;
     try {
       result = await CategoryModel.find().sort({ name: "asc" }).exec();
       total = await CategoryModel.count();

@@ -46,12 +46,12 @@ const imagePathEntityToDocument = (
 
 class ImagePathRepository implements IImagePathRepository {
   public async getAll(
-    pageSize: number = 10,
-    currentPage: number = 1,
+    pageSize = 10,
+    currentPage = 1,
     query?: string | undefined
   ): Promise<PagedResult<ImagePath>> {
     let result: IImagePathMongooseDocument[];
-    let total: number = 0;
+    let total = 0;
     try {
       result = await ImagePathModel.find()
         .sort({ name: "asc" })
@@ -77,7 +77,7 @@ class ImagePathRepository implements IImagePathRepository {
 
   getAllIgnoringPageSize = async (): Promise<PagedResult<ImagePath>> => {
     let result: IImagePathMongooseDocument[];
-    let total: number = 0;
+    let total = 0;
     try {
       result = await ImagePathModel.find().sort({ name: "asc" }).exec();
       total = await ImagePathModel.count();

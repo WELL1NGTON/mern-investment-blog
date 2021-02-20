@@ -3,11 +3,12 @@ import {
   mongooseConnectionString,
 } from "../configurations/mongooseConfigurations";
 
-import addTestData from "@app/services/addTestData";
 import logger from "./Logger";
 import mongoose from "mongoose";
 
-const startMongooseAndListen = () => {
+// import addTestData from "./addTestData";
+
+const startMongooseAndListen = (): void => {
   if (mongooseConnectionString) {
     mongoose.connect(mongooseConnectionString, mongooseConnectOptions);
 

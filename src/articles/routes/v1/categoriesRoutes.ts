@@ -1,11 +1,7 @@
-import { Segments, celebrate } from "celebrate";
-
 import CategoriesController from "@articles/controllers/CategoriesController";
 import CreateCategoryCommand from "@articles/commands/CreateCategoryCommand";
-import Joi from "joi";
 import { Router } from "express";
 import UpdateCategoryCommand from "@articles/commands/UpdateCategoryCommand";
-import { container } from "tsyringe";
 
 const router = Router();
 

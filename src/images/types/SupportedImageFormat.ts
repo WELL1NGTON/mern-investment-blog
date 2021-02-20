@@ -6,12 +6,12 @@ const matchSupportedImageFormats = (format: string): boolean => {
   return supportedImageFormats.includes(format as SupportedImageFormat);
 };
 
-const defaultImageFormats = "jpg";
+const defaultImageFormat = "jpg";
 
 export default SupportedImageFormat;
 
 export {
   supportedImageFormats,
   matchSupportedImageFormats,
-  defaultImageFormats,
+  defaultImageFormat,
 };

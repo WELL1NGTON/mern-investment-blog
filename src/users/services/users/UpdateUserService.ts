@@ -15,7 +15,7 @@ class UpdateUserService extends Service {
     super();
   }
 
-  public async execute(command: UpdateUserCommand) {
+  public async execute(command: UpdateUserCommand): Promise<void> {
     const storedUser = await this.userRepository.getById(command.id);
 
     if (!storedUser)
@@ -34,6 +34,8 @@ class UpdateUserService extends Service {
     user.id = command.id;
 
     await this.userRepository.update(user);
+
+    return;
   }
 }
 

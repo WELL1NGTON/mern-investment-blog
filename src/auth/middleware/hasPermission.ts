@@ -8,7 +8,11 @@ import { StatusCodes } from "http-status-codes";
 import mappedPermissions from "@auth/configurations/mappedPermissions";
 
 function hasPermission(permission: Permission) {
-  return function (request: Request, response: Response, next: NextFunction) {
+  return function (
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ): AppError {
     const authData: AuthData = request.body.auth;
 
     if (

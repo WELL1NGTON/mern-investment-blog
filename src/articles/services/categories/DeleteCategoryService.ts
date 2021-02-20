@@ -12,7 +12,7 @@ class DeleteCategoryService {
     private categoryRepository: ICategoryRepository
   ) {}
 
-  public async execute({ id }: IRequest) {
+  public async execute({ id }: IRequest): Promise<null> {
     return await this.categoryRepository.delete(id);
   }
 }

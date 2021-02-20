@@ -35,15 +35,13 @@ const profileEntityToDocument = (
 };
 
 class ProfileRepository implements IProfileRepository {
-  constructor() {}
-
   public getAll = async (
-    pageSize: number = 10,
-    currentPage: number = 1,
+    pageSize = 10,
+    currentPage = 1,
     query?: string
   ): Promise<PagedResult<Profile>> => {
     let result: IProfileMongooseDocument[];
-    let total: number = 0;
+    let total = 0;
     try {
       result = await ProfileModel.find()
         .sort({ name: "desc" })
@@ -70,7 +68,7 @@ class ProfileRepository implements IProfileRepository {
 
   getAllIgnoringPageSize = async (): Promise<PagedResult<Profile>> => {
     let result: IProfileMongooseDocument[];
-    let total: number = 0;
+    let total = 0;
     try {
       result = await ProfileModel.find().sort({ name: "desc" }).exec();
       total = await ProfileModel.count();

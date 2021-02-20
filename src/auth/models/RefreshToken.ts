@@ -14,7 +14,7 @@ class RefreshToken extends Entity {
   token: string;
   expirationDate: Date;
 
-  public toJSON() {
+  public toJSON(): unknown {
     return {
       id: this.id,
       email: this.email,

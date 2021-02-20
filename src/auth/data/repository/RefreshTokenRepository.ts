@@ -34,12 +34,12 @@ const refreshTokenEntityToDocument = (
 
 class RefreshTokenRepository implements IRefreshTokenRepository {
   public getAll = async (
-    pageSize: number = 10,
-    currentPage: number = 1,
+    pageSize = 10,
+    currentPage = 1,
     query?: string
   ): Promise<PagedResult<RefreshToken>> => {
     let result: IRefreshTokenMongooseDocument[];
-    let total: number = 0;
+    let total = 0;
     try {
       result = await RefreshTokenModel.find()
         .sort({ expirationDate: "desc" })
@@ -66,7 +66,7 @@ class RefreshTokenRepository implements IRefreshTokenRepository {
 
   getAllIgnoringPageSize = async (): Promise<PagedResult<RefreshToken>> => {
     let result: IRefreshTokenMongooseDocument[];
-    let total: number = 0;
+    let total = 0;
     try {
       result = await RefreshTokenModel.find()
         .sort({ expirationDate: "desc" })

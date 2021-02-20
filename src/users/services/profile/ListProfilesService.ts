@@ -1,5 +1,7 @@
+import PagedResult from "@shared/models/PagedResult";
 import Service from "@shared/services/Service";
 import IProfileRepository from "@users/models/IProfileRepository";
+import Profile from "@users/models/Profile";
 import { inject, injectable } from "tsyringe";
 
 interface IRequest {
@@ -16,7 +18,10 @@ class GetProfileService extends Service {
     super();
   }
 
-  public async execute({ pageSize, currentPage }: IRequest) {
+  public async execute({
+    pageSize,
+    currentPage,
+  }: IRequest): Promise<PagedResult<Profile>> {
     return await this.profileRepository.getAll(pageSize, currentPage);
   }
 }

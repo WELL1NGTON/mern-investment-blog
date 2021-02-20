@@ -30,6 +30,7 @@ class Article extends Entity {
     previewImg?: string
   ) {
     super();
+    this._slug = new Slug("");
     this.title = title;
     this.description = description;
     this.markdownArticle = markdownArticle;
@@ -42,11 +43,11 @@ class Article extends Entity {
     this.previewImg = previewImg;
   }
 
-  public get slug() {
+  public get slug(): string {
     return this._slug.value;
   }
 
-  public get title() {
+  public get title(): string {
     return this._title;
   }
 
@@ -55,13 +56,13 @@ class Article extends Entity {
     this._slug.value = theTitle;
   }
 
-  public setTags(tagsStr: string) {
+  public setTags(tagsStr: string): void {
     const regex = /[\u00C0-\u00FF]*?\b[\w\u00C0-\u00FF\s\-.']+\b/gim;
 
     this.tags = tagsStr.match(regex) ?? [];
   }
 
-  public toJSON() {
+  public toJSON(): unknown {
     return {
       id: this.id,
       slug: this.slug,

@@ -19,7 +19,7 @@ class Profile extends Entity {
     this.contact = contact;
   }
 
-  public toJSON() {
+  public toJSON(): unknown {
     return {
       id: this.id,
       name: this.name,

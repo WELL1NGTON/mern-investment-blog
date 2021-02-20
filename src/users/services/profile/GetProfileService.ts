@@ -1,5 +1,6 @@
 import Service from "@shared/services/Service";
 import IProfileRepository from "@users/models/IProfileRepository";
+import Profile from "@users/models/Profile";
 import { inject, injectable } from "tsyringe";
 
 interface IRequest {
@@ -15,7 +16,7 @@ class GetProfileService extends Service {
     super();
   }
 
-  public async execute({ id }: IRequest) {
+  public async execute({ id }: IRequest): Promise<Profile | null> {
     return await this.profileRepository.getById(id);
   }
 }

@@ -9,12 +9,12 @@ import { container } from "tsyringe";
 
 class ProfilesController {
   public async list(request: Request, response: Response): Promise<Response> {
-    const orderBy = request.query.orderBy
-      ? {
-          orderBy: request.query.orderBy as string,
-          orderDirection: (request.query.orderBy as string) ?? "ASC",
-        }
-      : undefined;
+    // const orderBy = request.query.orderBy
+    //   ? {
+    //       orderBy: request.query.orderBy as string,
+    //       orderDirection: (request.query.orderBy as string) ?? "ASC",
+    //     }
+    //   : undefined;
 
     const pageSize = request.query.pageSize
       ? parseInt(request.query.pageSize as string)
@@ -40,7 +40,7 @@ class ProfilesController {
     return response.status(status).json(article);
   }
 
-  public async create(request: Request, response: Response): Promise<Response> {
+  public async create(/*request: Request, response: Response*/): Promise<Response> {
     throw new Error("Method not implemented.");
   }
 
@@ -54,7 +54,7 @@ class ProfilesController {
       .send("Artigo atualizado com sucesso");
   }
 
-  public async delete(request: Request, response: Response): Promise<Response> {
+  public async delete(/*request: Request, response: Response*/): Promise<Response> {
     throw new Error("Method not implemented.");
   }
 }

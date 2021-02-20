@@ -21,7 +21,11 @@ class ChangeUserPasswordService extends Service {
   }
 
   // TODO: Alterar para mongoose transaction
-  public async execute({ oldPassword, newPassword, id }: IRequest) {
+  public async execute({
+    oldPassword,
+    newPassword,
+    id,
+  }: IRequest): Promise<null> {
     const user = await this.userRepository.getById(id);
 
     // Check if user exists

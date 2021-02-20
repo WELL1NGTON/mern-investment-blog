@@ -1,3 +1,4 @@
+import Category from "@articles/models/Category";
 import ICategoryRepository from "@articles/models/ICategoryRepository";
 import { inject, injectable } from "tsyringe";
 
@@ -12,7 +13,7 @@ class GetCategoryService {
     private categoryRepository: ICategoryRepository
   ) {}
 
-  public async execute({ id }: IRequest) {
+  public async execute({ id }: IRequest): Promise<Category | null> {
     return await this.categoryRepository.getById(id);
   }
 }

@@ -14,7 +14,7 @@ export interface IUserInfo {
 }
 
 const generateAccessToken = (user: IUserInfo): string | null => {
-  let accessTokenSecret = process.env["ACCESS_TOKEN_SECRET"];
+  const accessTokenSecret = process.env["ACCESS_TOKEN_SECRET"];
   if (!accessTokenSecret) return null;
   return jwt.sign({ user }, accessTokenSecret, {
     expiresIn: ACCESS_TOKEN_EXPIRATION_TIME,
@@ -22,7 +22,7 @@ const generateAccessToken = (user: IUserInfo): string | null => {
 };
 
 const generateRefreshToken = (user: IUserInfo): string | null => {
-  let refreshTokenSecret = process.env["REFRESH_TOKEN_SECRET"];
+  const refreshTokenSecret = process.env["REFRESH_TOKEN_SECRET"];
   if (!refreshTokenSecret) return null;
   return jwt.sign({ user }, refreshTokenSecret, {
     expiresIn: REFRESH_TOKEN_EXPIRATION_TIME,
@@ -30,7 +30,7 @@ const generateRefreshToken = (user: IUserInfo): string | null => {
 };
 
 const generateResetPasswordToken = (email: string): string | null => {
-  let resetPasswordToken = process.env["RESET_PASSWORD_SECRET"];
+  const resetPasswordToken = process.env["RESET_PASSWORD_SECRET"];
   if (!resetPasswordToken) return null;
   return jwt.sign({ email }, resetPasswordToken, {
     expiresIn: RESET_PASSWORD_TOKEN_EXPIRATION_TIME,
@@ -38,7 +38,7 @@ const generateResetPasswordToken = (email: string): string | null => {
 };
 
 const decodeAccessToken = (accessToken: string): IUserInfo | null => {
-  let accessTokenSecret = process.env["ACCESS_TOKEN_SECRET"];
+  const accessTokenSecret = process.env["ACCESS_TOKEN_SECRET"];
   if (!accessTokenSecret) return null;
   try {
     const decoded = <{ user: IUserInfo }>(
@@ -53,7 +53,7 @@ const decodeAccessToken = (accessToken: string): IUserInfo | null => {
 };
 
 const decodeRefreshToken = (refreshToken: string): IUserInfo | null => {
-  let refreshTokenSecret = process.env["REFRESH_TOKEN_SECRET"];
+  const refreshTokenSecret = process.env["REFRESH_TOKEN_SECRET"];
   if (!refreshTokenSecret) return null;
   try {
     const decoded = <{ user: IUserInfo }>(
@@ -68,7 +68,7 @@ const decodeRefreshToken = (refreshToken: string): IUserInfo | null => {
 };
 
 const decodeResetPasswordToken = (refreshToken: string): string | null => {
-  let resetPasswordTokenSecret = process.env["RESET_PASSWORD_SECRET"];
+  const resetPasswordTokenSecret = process.env["RESET_PASSWORD_SECRET"];
   if (!resetPasswordTokenSecret) return null;
   try {
     const decoded = <{ email: string }>(

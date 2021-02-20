@@ -2,7 +2,7 @@ class AuthData {
   email: string;
   role: string;
 
-  public toJSON() {
+  public toJSON(): unknown {
     return {
       email: this.email,
       role: this.role,

@@ -21,16 +21,16 @@ class Password {
     this._value = password;
   }
 
-  public get value() {
+  public get value(): string {
     return this._value;
   }
 
-  public static isValid(unencryptedPassword: string) {
+  public static isValid(unencryptedPassword: string): boolean {
     // TODO: criar uma validação decente de senha
     return unencryptedPassword.length >= 6;
   }
 
-  public static async encrypt(unencryptedPassword: string) {
+  public static async encrypt(unencryptedPassword: string): Promise<string> {
     try {
       const salt = await bcrypt.genSalt(10);
       return bcrypt.hash(unencryptedPassword, salt);
@@ -42,11 +42,11 @@ class Password {
   public static async isMatch(
     unencryptedPassword: string,
     hashedPassword: string
-  ) {
+  ): Promise<boolean> {
     return await bcrypt.compare(unencryptedPassword, hashedPassword);
   }
 
-  public clearPassword() {
+  public clearPassword(): void {
     this._value = "";
   }
 }

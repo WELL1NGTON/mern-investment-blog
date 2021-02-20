@@ -1,10 +1,7 @@
-import { Joi, Segments, celebrate } from "celebrate";
-
 import ArticlesController from "@articles/controllers/ArticlesController";
 import CreateArticleCommand from "@articles/commands/CreateArticleCommand";
 import { Router } from "express";
 import UpdateArticleCommand from "@articles/commands/UpdateArticleCommand";
-import { container } from "tsyringe";
 import ensureAuthenticated from "@auth/middleware/ensureAuthenticated";
 
 const router = Router();

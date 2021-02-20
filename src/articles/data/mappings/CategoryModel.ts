@@ -1,8 +1,6 @@
 import Visibility, { visibilities } from "@shared/types/Visibility";
 import mongoose, { Document, Schema } from "mongoose";
 
-import Color from "@shared/richObjects/Color";
-
 // TODO: Find a better way to use interfaces for mapping
 // ! Need to be changed if Article.ts changes... Not the best implmentation, but it will do for now
 export interface ICategoryMongooseDocument extends Document {

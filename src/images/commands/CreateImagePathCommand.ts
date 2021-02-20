@@ -10,7 +10,7 @@ class CreateImagePathCommand extends Command {
   name: string;
   tags: string[];
   file: Express.Multer.File;
-  changeFile: boolean = false;
+  changeFile = false;
   format?: SupportedImageFormat;
   quality?: number;
   size?: number;
@@ -19,7 +19,7 @@ class CreateImagePathCommand extends Command {
     name: string,
     tags: string[],
     file: Express.Multer.File,
-    changeFile: boolean = false,
+    changeFile = false,
     format?: SupportedImageFormat,
     quality?: number,
     size?: number

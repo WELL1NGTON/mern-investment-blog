@@ -1,4 +1,6 @@
+import Category from "@articles/models/Category";
 import ICategoryRepository from "@articles/models/ICategoryRepository";
+import PagedResult from "@shared/models/PagedResult";
 import { inject, injectable } from "tsyringe";
 
 interface IRequest {
@@ -13,7 +15,10 @@ class ListCategoryService {
     private categoryRepository: ICategoryRepository
   ) {}
 
-  public async execute({ pageSize, currentPage }: IRequest) {
+  public async execute({
+    pageSize,
+    currentPage,
+  }: IRequest): Promise<PagedResult<Category>> {
     return await this.categoryRepository.getAll(pageSize, currentPage);
   }
 }

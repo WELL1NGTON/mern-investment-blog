@@ -15,12 +15,12 @@ class ArticlesController {
     const ignorePageSize =
       request.query.ignorePageSize === "true" ? true : false;
 
-    const orderBy = request.query.orderBy
-      ? {
-          orderBy: request.query.orderBy as string,
-          orderDirection: (request.query.orderBy as string) ?? "ASC",
-        }
-      : undefined;
+    // const orderBy = request.query.orderBy
+    //   ? {
+    //       orderBy: request.query.orderBy as string,
+    //       orderDirection: (request.query.orderBy as string) ?? "ASC",
+    //     }
+    //   : undefined;
 
     const pageSize = request.query.pageSize
       ? parseInt(request.query.pageSize as string)

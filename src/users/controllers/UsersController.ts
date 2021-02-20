@@ -16,12 +16,12 @@ import { container } from "tsyringe";
 
 class UsersController {
   public async list(request: Request, response: Response): Promise<Response> {
-    const orderBy = request.query.orderBy
-      ? {
-          orderBy: request.query.orderBy as string,
-          orderDirection: (request.query.orderBy as string) ?? "ASC",
-        }
-      : undefined;
+    // const orderBy = request.query.orderBy
+    //   ? {
+    //       orderBy: request.query.orderBy as string,
+    //       orderDirection: (request.query.orderBy as string) ?? "ASC",
+    //     }
+    //   : undefined;
 
     const pageSize = request.query.pageSize
       ? parseInt(request.query.pageSize as string)

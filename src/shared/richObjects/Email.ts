@@ -10,7 +10,7 @@ class EmailError extends Error {
 class Email {
   private _value: string;
 
-  constructor(email: string = "example@example.com") {
+  constructor(email = "example@example.com") {
     this._value = email;
   }
 
@@ -20,11 +20,11 @@ class Email {
     this._value = email;
   }
 
-  public get value() {
+  public get value(): string {
     return this._value;
   }
 
-  public toString() {
+  public toString(): string {
     return this.value;
   }
 

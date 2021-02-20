@@ -1,7 +1,6 @@
 import AuthController from "@auth/controllers/AuthController";
 import LoginCommand from "@auth/commands/LoginCommand";
 import { Router } from "express";
-import { container } from "tsyringe";
 import ensureAuthenticated from "@auth/middleware/ensureAuthenticated";
 
 const router = Router();
