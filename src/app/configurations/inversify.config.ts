@@ -1,13 +1,7 @@
-import ChangeUserPasswordService, {
-  IChangeUserPasswordService,
-} from "@users/services/users/ChangeUserPasswordService";
-import { Container, decorate, injectable } from "inversify";
-import ListArticlesService, {
-  IListArticlesService,
-} from "@articles/services/articles/ListArticlesService";
-
 import ArticleRepository from "@articles/data/repository/ArticleRepository";
 import CategoryRepository from "@articles/data/repository/CategoryRepository";
+import ChangeUserPasswordService from "@users/services/users/ChangeUserPasswordService";
+import { Container } from "inversify";
 import CreateArticleService from "@articles/services/articles/CreateArticleService";
 import CreateCategoryService from "@articles/services/categories/CreateCategoryService";
 import CreateUserAndProfileService from "@users/services/CreateUserAndProfileService";
@@ -28,6 +22,7 @@ import IProfileRepository from "@users/models/IProfileRepository";
 import IRefreshTokenRepository from "@auth/models/IRefreshTokenRepository";
 import IUserRepository from "@users/models/IUserRepository";
 import ImagePathRepository from "@images/data/repository/ImagePathRepository";
+import ListArticlesService from "@articles/services/articles/ListArticlesService";
 import ListCategoriesService from "@articles/services/categories/ListCategoriesService";
 import ListProfilesService from "@users/services/profile/ListProfilesService";
 import ListUsersService from "@users/services/users/ListUsersService";
@@ -45,7 +40,6 @@ import UserRepository from "@users/data/repository/UserRepository";
 const container = new Container();
 
 // Repositories
-
 container
   .bind<IArticleRepository>(TYPES.IArticleRepository)
   .to(ArticleRepository);
@@ -137,25 +131,25 @@ container.bind<LogoutService>(TYPES.LogoutService).to(LogoutService);
 //   .to(UpdateCategoryService);
 
 // Users Services
-// container
-//   .bind<ICreateUserAndProfileService>(TYPES.ICreateUserAndProfileService)
-//   .to(CreateUserAndProfileService);
+container
+  .bind<CreateUserAndProfileService>(TYPES.CreateUserAndProfileService)
+  .to(CreateUserAndProfileService);
 
-// container
-//   .bind<IDeleteUserAndProfileService>(TYPES.IDeleteUserAndProfileService)
-//   .to(DeleteUserAndProfileService);
+container
+  .bind<DeleteUserAndProfileService>(TYPES.DeleteUserAndProfileService)
+  .to(DeleteUserAndProfileService);
 
-// container
-//   .bind<IChangeUserPasswordService>(TYPES.IChangeUserPasswordService)
-//   .to(ChangeUserPasswordService);
+container
+  .bind<ChangeUserPasswordService>(TYPES.ChangeUserPasswordService)
+  .to(ChangeUserPasswordService);
 
-// container
-//   .bind<IDisableUserService>(TYPES.IDisableUserService)
-//   .to(DisableUserService);
+container
+  .bind<DisableUserService>(TYPES.DisableUserService)
+  .to(DisableUserService);
 
-// container
-//   .bind<IEnableUserService>(TYPES.IEnableUserService)
-//   .to(EnableUserService);
+container
+  .bind<EnableUserService>(TYPES.EnableUserService)
+  .to(EnableUserService);
 
 container.bind<GetUserService>(TYPES.GetUserService).to(GetUserService);
 
@@ -179,7 +173,6 @@ container
   .to(UpdateProfileService);
 
 // Middleares
-
 container
   .bind<EnsureAuthenticated>(TYPES.EnsureAuthenticated)
   .to(EnsureAuthenticated);

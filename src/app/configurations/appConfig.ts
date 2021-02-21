@@ -1,20 +1,19 @@
 import "@articles/controllers/v1/ArticlesController";
 import "express-async-errors";
 
-// import swaggerJSDocOptions from "./swaggerJSDocOptions";
-// import swaggerUi from "swagger-ui-express";
 import * as swagger from "swagger-express-ts";
 
 import express, { Application, Request, Response } from "express";
 
-import { SwaggerDefinitionConstant } from "swagger-express-ts";
 import cookieParser from "cookie-parser";
 import { cookieProps } from "./cookieProps";
-import errorHandling from "@app/configurations/errorConfigFn";
 import helmet from "helmet";
 import morgan from "morgan";
 import path from "path";
+import swaggerExpressTsOptions from "./swaggerExpressTsOptions";
 
+// import swaggerJSDocOptions from "./swaggerJSDocOptions";
+// import swaggerUi from "swagger-ui-express";
 // import * as bodyParser from "body-parser";
 
 function appConfig(app: Application): void {
@@ -76,20 +75,7 @@ function appConfig(app: Application): void {
       "/api-docs/swagger/assets",
       express.static("node_modules/swagger-ui-dist")
     );
-    app.use(
-      swagger.express({
-        definition: {
-          info: {
-            title: "My api",
-            version: "1.0",
-          },
-          externalDocs: {
-            url: "localhost:5000",
-          },
-          // Models can be defined here
-        },
-      })
-    );
+    app.use(swagger.express(swaggerExpressTsOptions));
   }
 
   /************************************************************************************

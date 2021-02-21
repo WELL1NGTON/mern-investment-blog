@@ -371,13 +371,6 @@
   dependencies:
     helmet "*"
 
-"@types/inversify-binding-decorators@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@types/inversify-binding-decorators/-/inversify-binding-decorators-2.0.0.tgz#6c248f0e5e87f4dafee9d79cc4ae7f757e3eea86"
-  integrity sha1-bCSPDl6H9Nr+6decxK5/dX4+6oY=
-  dependencies:
-    inversify-binding-decorators "*"
-
 "@types/inversify@^2.0.33":
   version "2.0.33"
   resolved "https://registry.yarnpkg.com/@types/inversify/-/inversify-2.0.33.tgz#0770dae2299aaee57803f75235e64a99b74f6de0"
@@ -2672,11 +2665,6 @@ interpret@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-2.2.0.tgz#1a78a0b5965c40a5416d007ad6f50ad27c417df9"
   integrity sha512-Ju0Bz/cEia55xDwUWEa8+olFpCiQoypjnQySseKtmjNrnps3P+xfpUmGr90T7yjlVJmOtybRvPXhKMbHr+fWnw==
-
-inversify-binding-decorators@*:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/inversify-binding-decorators/-/inversify-binding-decorators-4.0.0.tgz#c4d1ac50d7d6531f465ee7894e92031f7471c865"
-  integrity sha512-r8au/oH3vS7ttHj0RivAznwElySeRohLfg8lvOSzbrX6abf/8ik8ptk49XbzdShgrnalvl7CM6MjcskfM7MMqQ==
 
 inversify-express-utils@^6.3.2:
   version "6.3.2"

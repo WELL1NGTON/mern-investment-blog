@@ -2,14 +2,10 @@ import CreateCategoryCommand from "@articles/commands/CreateCategoryCommand";
 import Category from "@articles/models/Category";
 import ICategoryRepository from "@articles/models/ICategoryRepository";
 import TYPES from "@shared/constants/TYPES";
-import { inject, Container, injectable } from "inversify";
-
-export interface ICreateCategoryService {
-  execute(command: CreateCategoryCommand): Promise<null>;
-}
+import { inject, injectable } from "inversify";
 
 @injectable()
-class CreateCategoryService implements ICreateCategoryService {
+class CreateCategoryService {
   constructor(
     @inject(TYPES.ICategoryRepository)
     private categoryRepository: ICategoryRepository

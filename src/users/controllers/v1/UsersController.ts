@@ -21,33 +21,55 @@ import {
   httpPut,
 } from "inversify-express-utils";
 import { inject } from "inversify";
+import TYPES from "@shared/constants/TYPES";
+import {
+  ApiOperationDelete,
+  ApiOperationGet,
+  ApiOperationPost,
+  ApiOperationPut,
+  ApiPath,
+} from "swagger-express-ts";
+import EnsureAuthenticated from "@auth/middleware/EnsureAuthenticated";
 
-// import { container } from "tsyringe";
-
+@ApiPath({
+  path: "/api/v1/users",
+  name: "Users",
+})
 @controller("api/v1/users")
 class UsersController extends BaseHttpController {
   constructor(
-    @inject("ChangeUserPasswordService")
+    @inject(TYPES.ChangeUserPasswordService)
     private changeUserPasswordService: ChangeUserPasswordService,
-    @inject("CreateUserAndProfileService")
+    @inject(TYPES.CreateUserAndProfileService)
     private createUserAndProfileService: CreateUserAndProfileService,
-    @inject("DeleteUserAndProfileService")
+    @inject(TYPES.DeleteUserAndProfileService)
     private deleteUserAndProfileService: DeleteUserAndProfileService,
-    @inject("GetUserService")
+    @inject(TYPES.GetUserService)
     private getUserService: GetUserService,
-    @inject("ListUsersService")
+    @inject(TYPES.ListUsersService)
     private listUsersService: ListUsersService,
-    @inject("UpdateUserService")
+    @inject(TYPES.UpdateUserService)
     private updateUserService: UpdateUserService,
-    @inject("DisableUserService")
+    @inject(TYPES.DisableUserService)
     private disableUserService: DisableUserService,
-    @inject("EnableUserService")
+    @inject(TYPES.EnableUserService)
     private enableUserService: EnableUserService
   ) {
     super();
   }
 
-  @httpGet("/")
+  @ApiOperationGet({
+    summary: "Get a list of Users",
+    description: "Get Users as PagedResult",
+    responses: {
+      [StatusCodes.OK]: {
+        description: "Success",
+        model: "PagedResult",
+      },
+    },
+    security: { basicAuth: [] },
+  })
+  @httpGet("/", EnsureAuthenticated)
   public async list(request: Request, response: Response): Promise<Response> {
     // const orderBy = request.query.orderBy
     //   ? {
@@ -74,7 +96,24 @@ class UsersController extends BaseHttpController {
     return response.status(StatusCodes.OK).json(users);
   }
 
-  @httpGet("/:id")
+  @ApiOperationGet({
+    summary: "Get an existing User",
+    description: "Get User from it's id",
+    path: "/{id}",
+    parameters: { path: { ["id"]: { name: "id" } } },
+    responses: {
+      [StatusCodes.OK]: {
+        description: "Success",
+        model: "User",
+      },
+      [StatusCodes.NOT_FOUND]: {
+        description: "Not Found",
+        model: "AppError",
+      },
+    },
+    security: { basicAuth: [] },
+  })
+  @httpGet("/:id", EnsureAuthenticated)
   public async get(request: Request, response: Response): Promise<Response> {
     const id: string = request.params.id;
 
@@ -88,7 +127,24 @@ class UsersController extends BaseHttpController {
     return response.status(status).json(user);
   }
 
-  @httpPost("/")
+  @ApiOperationPost({
+    summary: "Create new User and it's Profile",
+    description: "Create new User and it's Profile",
+    parameters: {
+      body: {
+        description: "New User and it's Profile",
+        required: true,
+        model: "CreateUserAndProfile",
+      },
+    },
+    responses: {
+      [StatusCodes.OK]: {
+        description: "Success",
+      },
+    },
+    security: { basicAuth: [] },
+  })
+  @httpPost("/", EnsureAuthenticated)
   public async create(request: Request, response: Response): Promise<Response> {
     const command = CreateUserAndProfileCommand.requestToCommand(request);
 
@@ -97,7 +153,30 @@ class UsersController extends BaseHttpController {
     return response.status(StatusCodes.OK).send("Usuário criado com sucesso");
   }
 
-  @httpPut("/:id")
+  @ApiOperationPut({
+    summary: "Update an User",
+    description: "Update an existing User, based on it's id",
+    path: "/{id}",
+    parameters: {
+      path: { ["id"]: { name: "id" } },
+      body: {
+        description: "Updated User",
+        required: true,
+        model: "UpdateUser",
+      },
+    },
+    responses: {
+      [StatusCodes.OK]: {
+        description: "Success",
+      },
+      [StatusCodes.NOT_FOUND]: {
+        description: "Not Found",
+        model: "AppError",
+      },
+    },
+    security: { basicAuth: [] },
+  })
+  @httpPut("/:id", EnsureAuthenticated)
   public async update(request: Request, response: Response): Promise<Response> {
     const command = UpdateUserCommand.requestToCommand(request);
 
@@ -108,7 +187,25 @@ class UsersController extends BaseHttpController {
       .send("Usuário atualizado com sucesso");
   }
 
-  @httpDelete("/:id")
+  @ApiOperationDelete({
+    summary: "Remove an User and it's Profile",
+    description: "Remove an existing User, based on it's id",
+    path: "/{id}",
+    parameters: {
+      path: { ["id"]: { name: "id" } },
+    },
+    responses: {
+      [StatusCodes.OK]: {
+        description: "Success",
+      },
+      [StatusCodes.NOT_FOUND]: {
+        description: "Not Found",
+        model: "AppError",
+      },
+    },
+    security: { basicAuth: [] },
+  })
+  @httpDelete("/:id", EnsureAuthenticated)
   public async delete(request: Request, response: Response): Promise<Response> {
     const id: string = request.params.id;
 
@@ -117,7 +214,27 @@ class UsersController extends BaseHttpController {
     return response.status(StatusCodes.OK);
   }
 
-  @httpPut("/password")
+  // TODO: Move to auth
+  @ApiOperationPost({
+    summary:
+      "Change authenticated user password OBSERVAÇÃO IMPORTANTE, ESSA FUNCIONALIDADE POSSIVELMENTE FIRCARIA MELHOR EM /auth",
+    description: "Change authenticated user password",
+    path: "/password",
+    parameters: {
+      body: {
+        description: "Password info",
+        required: true,
+        model: "ChangePassword",
+      },
+    },
+    responses: {
+      [StatusCodes.OK]: {
+        description: "Success",
+      },
+    },
+    security: { basicAuth: [] },
+  })
+  @httpPut("/password", EnsureAuthenticated)
   public async changePassword(
     request: Request,
     response: Response
@@ -131,7 +248,19 @@ class UsersController extends BaseHttpController {
       .send("Usuário atualizado com sucesso");
   }
 
-  @httpPost("/enable/:id")
+  @ApiOperationPost({
+    summary: "Activate user",
+    description: "Activate an existing User, based on it's id",
+    path: "/enable/{id}",
+    parameters: {},
+    responses: {
+      [StatusCodes.OK]: {
+        description: "Success",
+      },
+    },
+    security: { basicAuth: [] },
+  })
+  @httpPost("/enable/:id", EnsureAuthenticated)
   public async enable(request: Request, response: Response): Promise<Response> {
     const id: string = request.params.id;
 
@@ -140,7 +269,19 @@ class UsersController extends BaseHttpController {
     return response.status(StatusCodes.OK).send("Usuário ativado com sucesso");
   }
 
-  @httpPost("/disable/:id")
+  @ApiOperationPost({
+    summary: "Deactivate user",
+    description: "Deactivate an existing User, based on it's id",
+    path: "/disable/{id}",
+    parameters: {},
+    responses: {
+      [StatusCodes.OK]: {
+        description: "Success",
+      },
+    },
+    security: { basicAuth: [] },
+  })
+  @httpPost("/disable/:id", EnsureAuthenticated)
   public async disable(
     request: Request,
     response: Response

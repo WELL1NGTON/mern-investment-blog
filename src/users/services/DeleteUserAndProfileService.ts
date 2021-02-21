@@ -4,18 +4,13 @@ import IProfileRepository from "@users/models/IProfileRepository";
 import IUserRepository from "@users/models/IUserRepository";
 import { StatusCodes } from "http-status-codes";
 import { inject, Container, injectable } from "inversify";
-import { provide, buildProviderModule } from "inversify-binding-decorators";
 
 interface IRequest {
   id: string;
 }
 
-export interface IDeleteUserAndProfileService {
-  execute({ id }: IRequest): Promise<null>;
-}
-
 @injectable()
-class DeleteUserAndProfileService implements IDeleteUserAndProfileService {
+class DeleteUserAndProfileService {
   constructor(
     @inject(TYPES.IUserRepository)
     private userRepository: IUserRepository,

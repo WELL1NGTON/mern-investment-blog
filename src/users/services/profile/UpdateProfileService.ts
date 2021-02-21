@@ -5,14 +5,9 @@ import IProfileRepository from "@users/models/IProfileRepository";
 import Profile from "@users/models/Profile";
 import { StatusCodes } from "http-status-codes";
 import { inject, Container, injectable } from "inversify";
-import { provide, buildProviderModule } from "inversify-binding-decorators";
-
-export interface IGetProfileService {
-  execute(command: UpdateProfileCommand): Promise<void>;
-}
 
 @injectable()
-class GetProfileService implements IGetProfileService {
+class GetProfileService {
   constructor(
     @inject(TYPES.IProfileRepository)
     private profileRepository: IProfileRepository

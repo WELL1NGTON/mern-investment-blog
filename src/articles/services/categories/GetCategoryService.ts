@@ -6,13 +6,8 @@ import { inject, Container, injectable } from "inversify";
 interface IRequest {
   id: string;
 }
-
-export interface IGetCategoryService {
-  execute({ id }: IRequest): Promise<Category | null>;
-}
-
 @injectable()
-class GetCategoryService implements IGetCategoryService {
+class GetCategoryService {
   constructor(
     @inject(TYPES.ICategoryRepository)
     private categoryRepository: ICategoryRepository

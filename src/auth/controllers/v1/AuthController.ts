@@ -4,8 +4,9 @@ import {
   refreshTokenOptions,
 } from "@auth/configurations/jwtTokenOptions";
 import EnsureAuthenticated from "@auth/middleware/EnsureAuthenticated";
-import { ILoginService } from "@auth/services/LoginService";
-import { ILogoutService } from "@auth/services/LogoutService";
+import LoginService from "@auth/services/LoginService";
+import LogoutService from "@auth/services/LogoutService";
+
 import TYPES from "@shared/constants/TYPES";
 import AppError from "@shared/errors/AppError";
 import { Request, Response } from "express";
@@ -16,20 +17,40 @@ import {
   controller,
   httpPost,
 } from "inversify-express-utils";
+import { ApiOperationPost, ApiPath } from "swagger-express-ts";
 
-// import { container } from "tsyringe";
-
+@ApiPath({
+  path: "/api/v1/auth",
+  name: "Auth",
+})
 @controller("/api/v1/auth")
 class AuthController extends BaseHttpController {
   constructor(
     @inject(TYPES.LoginService)
-    private loginService: ILoginService,
+    private loginService: LoginService,
     @inject(TYPES.LogoutService)
-    private logoutService: ILogoutService
+    private logoutService: LogoutService
   ) {
     super();
   }
 
+  @ApiOperationPost({
+    summary: "Authenticate the user",
+    description: "Authenticate the user",
+    path: "/login",
+    parameters: {
+      body: {
+        description: "Login",
+        required: true,
+        model: "Login",
+      },
+    },
+    responses: {
+      [StatusCodes.OK]: {
+        description: "Success",
+      },
+    },
+  })
   @httpPost("/login", LoginCommand.validator)
   public async login(request: Request, response: Response): Promise<Response> {
     const command = LoginCommand.requestToCommand(request);
@@ -45,6 +66,18 @@ class AuthController extends BaseHttpController {
       .json(auth);
   }
 
+  @ApiOperationPost({
+    summary: "Deauthenticate the user",
+    description: "Deauthenticate the user",
+    path: "/logout",
+    parameters: {},
+    responses: {
+      [StatusCodes.OK]: {
+        description: "Success",
+      },
+    },
+    security: { basicAuth: [] },
+  })
   @httpPost("/logout", TYPES.EnsureAuthenticated)
   public async logout(request: Request, response: Response): Promise<Response> {
     const accessToken = request.cookies[accessTokenOptions.property];

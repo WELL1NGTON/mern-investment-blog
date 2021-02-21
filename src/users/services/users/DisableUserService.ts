@@ -1,3 +1,4 @@
+import TYPES from "@shared/constants/TYPES";
 import AppError from "@shared/errors/AppError";
 import Service from "@shared/services/Service";
 import IUserRepository from "@users/models/IUserRepository";
@@ -11,7 +12,7 @@ interface IRequest {
 @injectable()
 class DisableUserService implements Service {
   constructor(
-    @inject("UserRepository")
+    @inject(TYPES.IUserRepository)
     private userRepository: IUserRepository
   ) {}
 

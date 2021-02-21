@@ -1,4 +1,4 @@
-// reflect-metada
+// reflect-metada (must be first import)
 import "reflect-metadata";
 
 import commandLineArgs from "command-line-args";

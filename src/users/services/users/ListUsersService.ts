@@ -1,8 +1,10 @@
+import TYPES from "@shared/constants/TYPES";
 import PagedResult from "@shared/models/PagedResult";
 import Service from "@shared/services/Service";
 import IUserRepository from "@users/models/IUserRepository";
 import User from "@users/models/User";
 import { inject, injectable } from "inversify";
+import { TYPE } from "inversify-express-utils";
 
 interface IRequest {
   pageSize?: number;
@@ -12,7 +14,7 @@ interface IRequest {
 @injectable()
 class ListUsersService implements Service {
   constructor(
-    @inject("UserRepository")
+    @inject(TYPES.IUserRepository)
     private userRepository: IUserRepository
   ) {}
 

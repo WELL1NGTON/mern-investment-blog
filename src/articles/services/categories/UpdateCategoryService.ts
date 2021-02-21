@@ -6,12 +6,8 @@ import AppError from "@shared/errors/AppError";
 import { StatusCodes } from "http-status-codes";
 import { inject, Container, injectable } from "inversify";
 
-export interface IUpdateCategoryService {
-  execute(command: UpdateCategoryCommand): Promise<void>;
-}
-
 @injectable()
-class UpdateCategoryService implements IUpdateCategoryService {
+class UpdateCategoryService {
   constructor(
     @inject(TYPES.ICategoryRepository)
     private categoryRepository: ICategoryRepository

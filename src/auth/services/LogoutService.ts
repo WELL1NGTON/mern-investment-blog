@@ -7,18 +7,13 @@ import AppError from "@shared/errors/AppError";
 import Service from "@shared/services/Service";
 import { StatusCodes } from "http-status-codes";
 import { inject, Container, injectable } from "inversify";
-import { provide, buildProviderModule } from "inversify-binding-decorators";
 
 interface IRequest {
   accessToken: string;
 }
 
-export interface ILogoutService {
-  execute({ accessToken }: IRequest): Promise<null>;
-}
-
 @injectable()
-class LogoutService implements Service {
+class LogoutService {
   constructor(
     @inject(TYPES.IRefreshTokenRepository)
     private refreshTokenRepository: IRefreshTokenRepository

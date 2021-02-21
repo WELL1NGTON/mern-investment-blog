@@ -9,12 +9,8 @@ interface IRequest {
   currentPage?: number;
 }
 
-export interface IListCategoriesService {
-  execute({ pageSize, currentPage }: IRequest): Promise<PagedResult<Category>>;
-}
-
 @injectable()
-class ListCategoriesService implements IListCategoriesService {
+class ListCategoriesService {
   constructor(
     @inject(TYPES.ICategoryRepository)
     private categoryRepository: ICategoryRepository

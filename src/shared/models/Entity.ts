@@ -1,3 +1,5 @@
+import { ApiModel, ApiModelProperty } from "swagger-express-ts";
+
 import IEntity from "./IEntity";
 import mongoose from "mongoose";
 
@@ -7,6 +9,7 @@ class Entity implements IEntity {
     this.id = id.toHexString();
     // this.id = mongoose.Types.ObjectId().toHexString();
   }
+
   id!: string;
 
   public removeId(): void {

@@ -7,14 +7,9 @@ import Profile from "@users/models/Profile";
 import User from "@users/models/User";
 import { StatusCodes } from "http-status-codes";
 import { inject, Container, injectable } from "inversify";
-import { provide, buildProviderModule } from "inversify-binding-decorators";
-
-export interface ICreateUserAndProfileService {
-  execute(command: CreateUserAndProfileCommand): Promise<null>;
-}
 
 @injectable()
-class CreateUserAndProfileService implements ICreateUserAndProfileService {
+class CreateUserAndProfileService {
   constructor(
     @inject(TYPES.IUserRepository)
     private userRepository: IUserRepository,

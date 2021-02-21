@@ -13,23 +13,41 @@ import { StatusCodes } from "http-status-codes";
 import UpdateProfileCommand from "@users/commands/UpdateProfileCommand";
 import UpdateProfileService from "@users/services/profile/UpdateProfileService";
 import { inject } from "inversify";
+import TYPES from "@shared/constants/TYPES";
+import { ApiOperationGet, ApiOperationPut, ApiPath } from "swagger-express-ts";
+import EnsureAuthenticated from "@auth/middleware/EnsureAuthenticated";
 
 // import { container } from "tsyringe";
 
+@ApiPath({
+  path: "/api/v1/profiles",
+  name: "Profiles",
+})
 @controller("api/v1/profiles")
 class ProfilesController extends BaseHttpController {
   constructor(
-    @inject("GetProfileService")
+    @inject(TYPES.GetProfileService)
     private getProfileService: GetProfileService,
-    @inject("ListProfilesService")
+    @inject(TYPES.ListProfilesService)
     private listProfilesService: ListProfilesService,
-    @inject("UpdateProfileService")
+    @inject(TYPES.UpdateProfileService)
     private updateProfileService: UpdateProfileService
   ) {
     super();
   }
 
-  @httpGet("/")
+  @ApiOperationGet({
+    summary: "Get a list of Profiles",
+    description: "Get Profiles as PagedResult",
+    responses: {
+      [StatusCodes.OK]: {
+        description: "Success",
+        model: "PagedResult",
+      },
+    },
+    security: { basicAuth: [] },
+  })
+  @httpGet("/", EnsureAuthenticated)
   public async list(request: Request, response: Response): Promise<Response> {
     // const orderBy = request.query.orderBy
     //   ? {
@@ -53,7 +71,23 @@ class ProfilesController extends BaseHttpController {
     return response.status(StatusCodes.OK).json(articles);
   }
 
-  @httpGet("/:id")
+  @ApiOperationGet({
+    summary: "Get an existing Profile",
+    description: "Get Profile from it's id",
+    path: "/{id}",
+    parameters: { path: { ["id"]: { name: "id" } } },
+    responses: {
+      [StatusCodes.OK]: {
+        description: "Success",
+        model: "Profile",
+      },
+      [StatusCodes.NOT_FOUND]: {
+        description: "Not Found",
+        model: "AppError",
+      },
+    },
+  })
+  @httpGet("/:id", EnsureAuthenticated)
   public async get(request: Request, response: Response): Promise<Response> {
     const id: string = request.params.id;
 
@@ -69,6 +103,29 @@ class ProfilesController extends BaseHttpController {
     throw new Error("Method not implemented.");
   }
 
+  @ApiOperationPut({
+    summary: "Update an Profile",
+    description: "Update an existing Profile, based on it's id",
+    path: "/{id}",
+    parameters: {
+      path: { ["id"]: { name: "id" } },
+      body: {
+        description: "Updated Profile",
+        required: true,
+        model: "UpdateProfile",
+      },
+    },
+    responses: {
+      [StatusCodes.OK]: {
+        description: "Success",
+      },
+      [StatusCodes.NOT_FOUND]: {
+        description: "Not Found",
+        model: "AppError",
+      },
+    },
+    security: { basicAuth: [] },
+  })
   @httpPut("/:id")
   public async update(request: Request, response: Response): Promise<Response> {
     const command = UpdateProfileCommand.requestToCommand(request);

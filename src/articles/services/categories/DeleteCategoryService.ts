@@ -6,12 +6,8 @@ interface IRequest {
   id: string;
 }
 
-export interface IDeleteCategoryService {
-  execute({ id }: IRequest): Promise<null>;
-}
-
 @injectable()
-class DeleteCategoryService implements IDeleteCategoryService {
+class DeleteCategoryService {
   constructor(
     @inject(TYPES.ICategoryRepository)
     private categoryRepository: ICategoryRepository

@@ -2,19 +2,18 @@ import "express-async-errors";
 // controllers
 import "@articles/controllers/";
 import "@auth/controllers/";
+import "@users/controllers/";
 
 import * as prettyjson from "prettyjson";
 
 import { InversifyExpressServer, getRouteInfo } from "inversify-express-utils";
 
 import appConfig from "./configurations/appConfig";
-import { buildProviderModule } from "inversify-binding-decorators";
 import { container } from "./configurations/inversify.config";
 import errorConfigFn from "./configurations/errorConfigFn";
 import errorHandling from "./configurations/errorConfigFn";
 import startMongooseAndListen from "./services/startMongooseAndListen";
 
-// import "@users/controllers/";
 // import "@images/controllers";
 
 // create server

@@ -1,3 +1,4 @@
+import { ApiModel, ApiModelProperty } from "swagger-express-ts";
 import ArticleState, { defaultArticleState } from "@shared/types/ArticleState";
 import Visibility, { defaultVisibility } from "@shared/types/Visibility";
 

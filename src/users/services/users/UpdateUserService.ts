@@ -1,3 +1,4 @@
+import TYPES from "@shared/constants/TYPES";
 import AppError from "@shared/errors/AppError";
 import Service from "@shared/services/Service";
 import UpdateUserCommand from "@users/commands/UpdateUserCommand";
@@ -9,7 +10,7 @@ import { inject, injectable } from "inversify";
 @injectable()
 class UpdateUserService implements Service {
   constructor(
-    @inject("UserRepository")
+    @inject(TYPES.IUserRepository)
     private userRepository: IUserRepository
   ) {}
 

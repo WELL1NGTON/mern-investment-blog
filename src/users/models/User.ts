@@ -53,6 +53,7 @@ class User extends Entity {
       email: this.email.value,
       role: this.role,
       isActive: this.isActive,
+      password: "********************",
     };
   }
 }

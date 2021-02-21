@@ -10,13 +10,8 @@ interface IRequest {
   newPassword: string;
   id: string;
 }
-
-export interface IChangeUserPasswordService {
-  execute({ oldPassword, newPassword, id }: IRequest): Promise<null>;
-}
-
 @injectable()
-class ChangeUserPasswordService implements IChangeUserPasswordService {
+class ChangeUserPasswordService {
   constructor(
     @inject(TYPES.IUserRepository)
     private userRepository: IUserRepository

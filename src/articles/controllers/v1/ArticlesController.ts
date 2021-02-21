@@ -5,6 +5,7 @@ import { IDeleteArticleService } from "@articles/services/articles/DeleteArticle
 import { IGetArticleService } from "@articles/services/articles/GetArticleService";
 import { IListArticlesService } from "@articles/services/articles/ListArticlesService";
 import { IUpdateArticleService } from "@articles/services/articles/UpdateArticleService";
+import EnsureAuthenticated from "@auth/middleware/EnsureAuthenticated";
 import TYPES from "@shared/constants/TYPES";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
@@ -17,7 +18,18 @@ import {
   httpPost,
   httpPut,
 } from "inversify-express-utils";
+import {
+  ApiOperationDelete,
+  ApiOperationGet,
+  ApiOperationPost,
+  ApiOperationPut,
+  ApiPath,
+} from "swagger-express-ts";
 
+@ApiPath({
+  path: "/api/v1/articles",
+  name: "Articles Controller",
+})
 @controller("/api/v1/articles")
 class ArticlesController extends BaseHttpController {
   constructor(
@@ -35,6 +47,16 @@ class ArticlesController extends BaseHttpController {
     super();
   }
 
+  @ApiOperationGet({
+    summary: "Get a list of Articles",
+    description: "Get Articles as PagedResult",
+    responses: {
+      [StatusCodes.OK]: {
+        description: "Success",
+        model: "PagedResult",
+      },
+    },
+  })
   @httpGet("/")
   public async list(request: Request, response: Response): Promise<Response> {
     const ignorePageSize =
@@ -63,6 +85,22 @@ class ArticlesController extends BaseHttpController {
     return response.status(StatusCodes.OK).json(articles);
   }
 
+  @ApiOperationGet({
+    summary: "Get an existing Article",
+    description: "Get Article from it's id",
+    path: "/{id}",
+    parameters: { path: { ["id"]: { name: "id" } } },
+    responses: {
+      [StatusCodes.OK]: {
+        description: "Success",
+        model: "Article",
+      },
+      [StatusCodes.NOT_FOUND]: {
+        description: "Not Found",
+        model: "AppError",
+      },
+    },
+  })
   @httpGet("/:id")
   public async get(request: Request, response: Response): Promise<Response> {
     const slug: string = request.params.slug;
@@ -74,7 +112,24 @@ class ArticlesController extends BaseHttpController {
     return response.status(status).json(article);
   }
 
-  @httpPost("/")
+  @ApiOperationPost({
+    summary: "Create new Article",
+    description: "Create new Article",
+    parameters: {
+      body: {
+        description: "New Article",
+        required: true,
+        model: "CreateUpdateArticle",
+      },
+    },
+    responses: {
+      [StatusCodes.OK]: {
+        description: "Success",
+      },
+    },
+    security: { basicAuth: [] },
+  })
+  @httpPost("/", EnsureAuthenticated)
   public async create(request: Request, response: Response): Promise<Response> {
     const command = CreateArticleCommand.requestToCommand(request);
 
@@ -84,7 +139,30 @@ class ArticlesController extends BaseHttpController {
     return response.status(StatusCodes.OK).send("Artigo criado com sucesso");
   }
 
-  @httpPut("/:id")
+  @ApiOperationPut({
+    summary: "Update an Article",
+    description: "Update an existing Article, based on it's id",
+    path: "/{id}",
+    parameters: {
+      path: { ["id"]: { name: "id" } },
+      body: {
+        description: "Updated Article",
+        required: true,
+        model: "CreateUpdateArticle",
+      },
+    },
+    responses: {
+      [StatusCodes.OK]: {
+        description: "Success",
+      },
+      [StatusCodes.NOT_FOUND]: {
+        description: "Not Found",
+        model: "AppError",
+      },
+    },
+    security: { basicAuth: [] },
+  })
+  @httpPut("/:id", EnsureAuthenticated)
   public async update(request: Request, response: Response): Promise<Response> {
     const command = UpdateArticleCommand.requestToCommand(request);
 
@@ -95,7 +173,25 @@ class ArticlesController extends BaseHttpController {
       .send("Artigo atualizado com sucesso");
   }
 
-  @httpDelete("/:id")
+  @ApiOperationDelete({
+    summary: "Remove an Article",
+    description: "Remove an existing Article, based on it's id",
+    path: "/{id}",
+    parameters: {
+      path: { ["id"]: { name: "id" } },
+    },
+    responses: {
+      [StatusCodes.OK]: {
+        description: "Success",
+      },
+      [StatusCodes.NOT_FOUND]: {
+        description: "Not Found",
+        model: "AppError",
+      },
+    },
+    security: { basicAuth: [] },
+  })
+  @httpDelete("/:id", EnsureAuthenticated)
   public async delete(request: Request, response: Response): Promise<Response> {
     const slug: string = request.params.slug;
 
