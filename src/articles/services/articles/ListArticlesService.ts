@@ -1,7 +1,8 @@
 import Article from "@articles/models/Article";
 import IArticleRepository from "@articles/models/IArticleRepository";
+import TYPES from "@shared/constants/TYPES";
 import PagedResult from "@shared/models/PagedResult";
-import { inject, injectable } from "tsyringe";
+import { inject, Container, injectable } from "inversify";
 
 interface IRequest {
   pageSize?: number;
@@ -9,10 +10,18 @@ interface IRequest {
   ignorePageSize?: boolean;
 }
 
+export interface IListArticlesService {
+  execute({
+    pageSize,
+    pageIndex,
+    ignorePageSize,
+  }: IRequest): Promise<PagedResult<Article>>;
+}
+
 @injectable()
-class ListArticleService {
+class ListArticlesService implements IListArticlesService {
   constructor(
-    @inject("ArticleRepository")
+    @inject(TYPES.IArticleRepository)
     private articleRepository: IArticleRepository
   ) {}
 
@@ -27,4 +36,4 @@ class ListArticleService {
   }
 }
 
-export default ListArticleService;
+export default ListArticlesService;

@@ -4,16 +4,14 @@ import UpdateUserCommand from "@users/commands/UpdateUserCommand";
 import IUserRepository from "@users/models/IUserRepository";
 import User from "@users/models/User";
 import { StatusCodes } from "http-status-codes";
-import { inject, injectable } from "tsyringe";
+import { inject, injectable } from "inversify";
 
 @injectable()
-class UpdateUserService extends Service {
+class UpdateUserService implements Service {
   constructor(
     @inject("UserRepository")
     private userRepository: IUserRepository
-  ) {
-    super();
-  }
+  ) {}
 
   public async execute(command: UpdateUserCommand): Promise<void> {
     const storedUser = await this.userRepository.getById(command.id);

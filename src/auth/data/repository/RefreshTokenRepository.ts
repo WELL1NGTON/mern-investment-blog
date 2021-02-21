@@ -7,6 +7,7 @@ import IRefreshTokenRepository from "@auth/models/IRefreshTokenRepository";
 import PagedResult from "@shared/models/PagedResult";
 import RefreshToken from "@auth/models/RefreshToken";
 import { StatusCodes } from "http-status-codes";
+import { injectable } from "inversify";
 
 const refreshTokenDocumentToEntity = (
   document: IRefreshTokenMongooseDocument
@@ -32,6 +33,7 @@ const refreshTokenEntityToDocument = (
   });
 };
 
+@injectable()
 class RefreshTokenRepository implements IRefreshTokenRepository {
   public getAll = async (
     pageSize = 10,

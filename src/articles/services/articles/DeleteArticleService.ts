@@ -1,14 +1,18 @@
 import IArticleRepository from "@articles/models/IArticleRepository";
-import { inject, injectable } from "tsyringe";
-
+import TYPES from "@shared/constants/TYPES";
+import { Container, inject, injectable } from "inversify";
 interface IRequest {
   slug: string;
 }
 
+export interface IDeleteArticleService {
+  execute({ slug }: IRequest): Promise<null>;
+}
+
 @injectable()
-class DeleteArticleService {
+class DeleteArticleService implements IDeleteArticleService {
   constructor(
-    @inject("ArticleRepository")
+    @inject(TYPES.IArticleRepository)
     private articleRepository: IArticleRepository
   ) {}
 

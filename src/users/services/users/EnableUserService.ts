@@ -2,20 +2,18 @@ import AppError from "@shared/errors/AppError";
 import Service from "@shared/services/Service";
 import IUserRepository from "@users/models/IUserRepository";
 import { StatusCodes } from "http-status-codes";
-import { inject, injectable } from "tsyringe";
+import { inject, injectable } from "inversify";
 
 interface IRequest {
   id: string;
 }
 
 @injectable()
-class EnableUserService extends Service {
+class EnableUserService implements Service {
   constructor(
     @inject("UserRepository")
     private userRepository: IUserRepository
-  ) {
-    super();
-  }
+  ) {}
 
   public async execute({ id }: IRequest): Promise<null> {
     const user = await this.userRepository.getById(id);

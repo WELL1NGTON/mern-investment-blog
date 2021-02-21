@@ -7,7 +7,8 @@ import Article from "src/articles/models/Article";
 import IArticleRepository from "src/articles/models/IArticleRepository";
 import PagedResult from "@shared/models/PagedResult";
 import { StatusCodes } from "http-status-codes";
-import { injectable } from "tsyringe";
+import TYPES from "@shared/constants/TYPES";
+import { injectable } from "inversify";
 import mongoose from "mongoose";
 
 const articleDocumentToEntity = (

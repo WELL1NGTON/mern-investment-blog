@@ -8,6 +8,7 @@ import ICategoryRepository from "@articles/models/ICategoryRepository";
 import PagedResult from "@shared/models/PagedResult";
 import { StatusCodes } from "http-status-codes";
 import Visibility from "@shared/types/Visibility";
+import { injectable } from "inversify";
 
 const categoryDocumentToEntity = (
   document: ICategoryMongooseDocument
@@ -33,6 +34,7 @@ const categoryEntityToDocument = (
   });
 };
 
+@injectable()
 class CategoryRepository implements ICategoryRepository {
   public async getAll(
     pageSize = 10,

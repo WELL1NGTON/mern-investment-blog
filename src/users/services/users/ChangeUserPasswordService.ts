@@ -1,9 +1,9 @@
+import TYPES from "@shared/constants/TYPES";
 import AppError from "@shared/errors/AppError";
 import Password from "@shared/richObjects/Password";
-import Service from "@shared/services/Service";
 import IUserRepository from "@users/models/IUserRepository";
 import { StatusCodes } from "http-status-codes";
-import { injectable, inject } from "tsyringe";
+import { Container, inject, injectable } from "inversify";
 
 interface IRequest {
   oldPassword: string;
@@ -11,14 +11,16 @@ interface IRequest {
   id: string;
 }
 
+export interface IChangeUserPasswordService {
+  execute({ oldPassword, newPassword, id }: IRequest): Promise<null>;
+}
+
 @injectable()
-class ChangeUserPasswordService extends Service {
+class ChangeUserPasswordService implements IChangeUserPasswordService {
   constructor(
-    @inject("UserRepository")
+    @inject(TYPES.IUserRepository)
     private userRepository: IUserRepository
-  ) {
-    super();
-  }
+  ) {}
 
   // TODO: Alterar para mongoose transaction
   public async execute({

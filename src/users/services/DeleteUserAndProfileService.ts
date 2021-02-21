@@ -1,24 +1,27 @@
+import TYPES from "@shared/constants/TYPES";
 import AppError from "@shared/errors/AppError";
-import Service from "@shared/services/Service";
 import IProfileRepository from "@users/models/IProfileRepository";
 import IUserRepository from "@users/models/IUserRepository";
 import { StatusCodes } from "http-status-codes";
-import { inject, injectable } from "tsyringe";
+import { inject, Container, injectable } from "inversify";
+import { provide, buildProviderModule } from "inversify-binding-decorators";
 
 interface IRequest {
   id: string;
 }
 
+export interface IDeleteUserAndProfileService {
+  execute({ id }: IRequest): Promise<null>;
+}
+
 @injectable()
-class DeleteUserAndProfileService extends Service {
+class DeleteUserAndProfileService implements IDeleteUserAndProfileService {
   constructor(
-    @inject("UserRepository")
+    @inject(TYPES.IUserRepository)
     private userRepository: IUserRepository,
-    @inject("ProfileRepository")
+    @inject(TYPES.IProfileRepository)
     private profileRepository: IProfileRepository
-  ) {
-    super();
-  }
+  ) {}
 
   public async execute({ id }: IRequest): Promise<null> {
     const user = await this.userRepository.getById(id);

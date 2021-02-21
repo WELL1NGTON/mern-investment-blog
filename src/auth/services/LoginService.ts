@@ -4,24 +4,31 @@ import AuthData from "@auth/models/AuthData";
 import IRefreshTokenRepository from "@auth/models/IRefreshTokenRepository";
 import RefreshToken from "@auth/models/RefreshToken";
 import JWTUtils from "@auth/utils/JWTUtils";
+import TYPES from "@shared/constants/TYPES";
 import AppError from "@shared/errors/AppError";
 import Password from "@shared/richObjects/Password";
-import Service from "@shared/services/Service";
 import IUserRepository from "@users/models/IUserRepository";
 import bcrypt from "bcrypt";
 import { StatusCodes } from "http-status-codes";
-import { inject, injectable } from "tsyringe";
+import { inject, Container, injectable } from "inversify";
+
+export interface ILoginService {
+  execute(
+    command: LoginCommand
+  ): Promise<{
+    accessToken: string;
+    refreshToken: string;
+  }>;
+}
 
 @injectable()
-class LoginService extends Service {
+class LoginService implements ILoginService {
   constructor(
-    @inject("UserRepository")
+    @inject(TYPES.IUserRepository)
     private userRepository: IUserRepository,
-    @inject("RefreshTokenRepository")
+    @inject(TYPES.IRefreshTokenRepository)
     private refreshTokenRepository: IRefreshTokenRepository
-  ) {
-    super();
-  }
+  ) {}
 
   public async execute(
     command: LoginCommand

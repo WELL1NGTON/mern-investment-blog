@@ -1,15 +1,20 @@
 import Category from "@articles/models/Category";
 import ICategoryRepository from "@articles/models/ICategoryRepository";
-import { inject, injectable } from "tsyringe";
+import TYPES from "@shared/constants/TYPES";
+import { inject, Container, injectable } from "inversify";
 
 interface IRequest {
   id: string;
 }
 
+export interface IGetCategoryService {
+  execute({ id }: IRequest): Promise<Category | null>;
+}
+
 @injectable()
-class GetCategoryService {
+class GetCategoryService implements IGetCategoryService {
   constructor(
-    @inject("CategoryRepository")
+    @inject(TYPES.ICategoryRepository)
     private categoryRepository: ICategoryRepository
   ) {}
 

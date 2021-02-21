@@ -1,17 +1,22 @@
 import Category from "@articles/models/Category";
 import ICategoryRepository from "@articles/models/ICategoryRepository";
+import TYPES from "@shared/constants/TYPES";
 import PagedResult from "@shared/models/PagedResult";
-import { inject, injectable } from "tsyringe";
+import { inject, Container, injectable } from "inversify";
 
 interface IRequest {
   pageSize?: number;
   currentPage?: number;
 }
 
+export interface IListCategoriesService {
+  execute({ pageSize, currentPage }: IRequest): Promise<PagedResult<Category>>;
+}
+
 @injectable()
-class ListCategoryService {
+class ListCategoriesService implements IListCategoriesService {
   constructor(
-    @inject("CategoryRepository")
+    @inject(TYPES.ICategoryRepository)
     private categoryRepository: ICategoryRepository
   ) {}
 
@@ -23,4 +28,4 @@ class ListCategoryService {
   }
 }
 
-export default ListCategoryService;
+export default ListCategoriesService;

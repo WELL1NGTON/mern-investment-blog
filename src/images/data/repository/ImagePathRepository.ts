@@ -7,6 +7,7 @@ import IImagePathRepository from "@images/models/IImagePathRepository";
 import ImagePath from "@images/models/ImagePath";
 import PagedResult from "@shared/models/PagedResult";
 import { StatusCodes } from "http-status-codes";
+import { injectable } from "inversify";
 import mongoose from "mongoose";
 
 const imagePathDocumentToEntity = (
@@ -44,6 +45,7 @@ const imagePathEntityToDocument = (
   });
 };
 
+@injectable()
 class ImagePathRepository implements IImagePathRepository {
   public async getAll(
     pageSize = 10,

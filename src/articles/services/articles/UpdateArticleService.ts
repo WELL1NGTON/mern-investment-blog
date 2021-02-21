@@ -3,19 +3,23 @@ import Article from "@articles/models/Article";
 import Category from "@articles/models/Category";
 import IArticleRepository from "@articles/models/IArticleRepository";
 import ICategoryRepository from "@articles/models/ICategoryRepository";
+import TYPES from "@shared/constants/TYPES";
 import AppError from "@shared/errors/AppError";
 import IProfileRepository from "@users/models/IProfileRepository";
 import { StatusCodes } from "http-status-codes";
-import { inject, injectable } from "tsyringe";
+import { inject, Container, injectable } from "inversify";
 
+export interface IUpdateArticleService {
+  execute(command: UpdateArticleCommand): Promise<void>;
+}
 @injectable()
-class UpdateArticleService {
+class UpdateArticleService implements IUpdateArticleService {
   constructor(
-    @inject("ArticleRepository")
+    @inject(TYPES.IArticleRepository)
     private articleRepository: IArticleRepository,
-    @inject("CategoryRepository")
+    @inject(TYPES.ICategoryRepository)
     private categoryRepository: ICategoryRepository,
-    @inject("ProfileRepository")
+    @inject(TYPES.IProfileRepository)
     private profileRepository: IProfileRepository
   ) {}
 

@@ -1,5 +1,5 @@
-import multer from "multer";
 import { Request } from "express";
+import multer from "multer";
 
 // module.exports = multer({
 export default multer({

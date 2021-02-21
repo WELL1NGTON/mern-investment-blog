@@ -1,22 +1,25 @@
+import TYPES from "@shared/constants/TYPES";
 import PagedResult from "@shared/models/PagedResult";
-import Service from "@shared/services/Service";
 import IProfileRepository from "@users/models/IProfileRepository";
 import Profile from "@users/models/Profile";
-import { inject, injectable } from "tsyringe";
+import { inject, Container, injectable } from "inversify";
+import { provide, buildProviderModule } from "inversify-binding-decorators";
 
 interface IRequest {
   pageSize?: number;
   currentPage?: number;
 }
 
+export interface IListProfilesService {
+  execute({ pageSize, currentPage }: IRequest): Promise<PagedResult<Profile>>;
+}
+
 @injectable()
-class GetProfileService extends Service {
+class ListProfilesService implements IListProfilesService {
   constructor(
-    @inject("ProfileRepository")
+    @inject(TYPES.IProfileRepository)
     private profileRepository: IProfileRepository
-  ) {
-    super();
-  }
+  ) {}
 
   public async execute({
     pageSize,
@@ -26,4 +29,4 @@ class GetProfileService extends Service {
   }
 }
 
-export default GetProfileService;
+export default ListProfilesService;

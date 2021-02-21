@@ -1,19 +1,22 @@
+import TYPES from "@shared/constants/TYPES";
 import AppError from "@shared/errors/AppError";
-import Service from "@shared/services/Service";
 import UpdateProfileCommand from "@users/commands/UpdateProfileCommand";
 import IProfileRepository from "@users/models/IProfileRepository";
 import Profile from "@users/models/Profile";
 import { StatusCodes } from "http-status-codes";
-import { inject, injectable } from "tsyringe";
+import { inject, Container, injectable } from "inversify";
+import { provide, buildProviderModule } from "inversify-binding-decorators";
+
+export interface IGetProfileService {
+  execute(command: UpdateProfileCommand): Promise<void>;
+}
 
 @injectable()
-class GetProfileService extends Service {
+class GetProfileService implements IGetProfileService {
   constructor(
-    @inject("ProfileRepository")
+    @inject(TYPES.IProfileRepository)
     private profileRepository: IProfileRepository
-  ) {
-    super();
-  }
+  ) {}
 
   public async execute(command: UpdateProfileCommand): Promise<void> {
     const storedProfile = await this.profileRepository.getById(command.id);

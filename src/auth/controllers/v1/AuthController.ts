@@ -1,21 +1,40 @@
-import { Request, Response } from "express";
+import LoginCommand from "@auth/commands/LoginCommand";
 import {
   accessTokenOptions,
   refreshTokenOptions,
 } from "@auth/configurations/jwtTokenOptions";
-
+import EnsureAuthenticated from "@auth/middleware/EnsureAuthenticated";
+import { ILoginService } from "@auth/services/LoginService";
+import { ILogoutService } from "@auth/services/LogoutService";
+import TYPES from "@shared/constants/TYPES";
 import AppError from "@shared/errors/AppError";
-import LoginCommand from "@auth/commands/LoginCommand";
-import LoginService from "@auth/services/LoginService";
-import LogoutService from "@auth/services/LogoutService";
+import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import { container } from "tsyringe";
+import { inject } from "inversify";
+import {
+  BaseHttpController,
+  controller,
+  httpPost,
+} from "inversify-express-utils";
 
-class AuthController {
+// import { container } from "tsyringe";
+
+@controller("/api/v1/auth")
+class AuthController extends BaseHttpController {
+  constructor(
+    @inject(TYPES.LoginService)
+    private loginService: ILoginService,
+    @inject(TYPES.LogoutService)
+    private logoutService: ILogoutService
+  ) {
+    super();
+  }
+
+  @httpPost("/login", LoginCommand.validator)
   public async login(request: Request, response: Response): Promise<Response> {
     const command = LoginCommand.requestToCommand(request);
 
-    const auth = await container.resolve(LoginService).execute(command);
+    const auth = await this.loginService.execute(command);
 
     return response
       .cookie(accessTokenOptions.property, auth.accessToken, { httpOnly: true })
@@ -26,15 +45,14 @@ class AuthController {
       .json(auth);
   }
 
+  @httpPost("/logout", TYPES.EnsureAuthenticated)
   public async logout(request: Request, response: Response): Promise<Response> {
     const accessToken = request.cookies[accessTokenOptions.property];
 
     if (!accessToken)
       throw new AppError("Logout Error", StatusCodes.INTERNAL_SERVER_ERROR);
 
-    await container
-      .resolve(LogoutService)
-      .execute({ accessToken: accessToken as string });
+    await this.logoutService.execute({ accessToken: accessToken as string });
 
     return response
       .clearCookie(accessTokenOptions.property)

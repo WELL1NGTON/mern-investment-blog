@@ -1,14 +1,19 @@
 import UpdateCategoryCommand from "@articles/commands/UpdateCategoryCommand";
 import Category from "@articles/models/Category";
 import ICategoryRepository from "@articles/models/ICategoryRepository";
+import TYPES from "@shared/constants/TYPES";
 import AppError from "@shared/errors/AppError";
 import { StatusCodes } from "http-status-codes";
-import { inject, injectable } from "tsyringe";
+import { inject, Container, injectable } from "inversify";
+
+export interface IUpdateCategoryService {
+  execute(command: UpdateCategoryCommand): Promise<void>;
+}
 
 @injectable()
-class UpdateCategoryService {
+class UpdateCategoryService implements IUpdateCategoryService {
   constructor(
-    @inject("CategoryRepository")
+    @inject(TYPES.ICategoryRepository)
     private categoryRepository: ICategoryRepository
   ) {}
 

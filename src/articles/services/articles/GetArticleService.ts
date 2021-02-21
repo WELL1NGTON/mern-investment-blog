@@ -1,15 +1,20 @@
 import Article from "@articles/models/Article";
 import IArticleRepository from "@articles/models/IArticleRepository";
-import { inject, injectable } from "tsyringe";
+import TYPES from "@shared/constants/TYPES";
+import { inject, Container, injectable } from "inversify";
 
 interface IRequest {
   slug: string;
 }
 
+export interface IGetArticleService {
+  execute({ slug }: IRequest): Promise<Article | null>;
+}
+
 @injectable()
-class GetArticleService {
+class GetArticleService implements IGetArticleService {
   constructor(
-    @inject("ArticleRepository")
+    @inject(TYPES.IArticleRepository)
     private articleRepository: IArticleRepository
   ) {}
 

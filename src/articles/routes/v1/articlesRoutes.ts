@@ -1,4 +1,4 @@
-import ArticlesController from "@articles/controllers/ArticlesController";
+import ArticlesController from "@articles/controllers/v1/ArticlesController";
 import CreateArticleCommand from "@articles/commands/CreateArticleCommand";
 import { Router } from "express";
 import UpdateArticleCommand from "@articles/commands/UpdateArticleCommand";

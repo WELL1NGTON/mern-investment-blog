@@ -1,4 +1,4 @@
-import CategoriesController from "@articles/controllers/CategoriesController";
+import CategoriesController from "@articles/controllers/v1/CategoriesController";
 import CreateCategoryCommand from "@articles/commands/CreateCategoryCommand";
 import { Router } from "express";
 import UpdateCategoryCommand from "@articles/commands/UpdateCategoryCommand";

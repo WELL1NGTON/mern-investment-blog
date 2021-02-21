@@ -1,23 +1,26 @@
+import TYPES from "@shared/constants/TYPES";
 import AppError from "@shared/errors/AppError";
-import Service from "@shared/services/Service";
 import CreateUserAndProfileCommand from "@users/commands/CreateUserAndProfileCommand";
 import IProfileRepository from "@users/models/IProfileRepository";
 import IUserRepository from "@users/models/IUserRepository";
 import Profile from "@users/models/Profile";
 import User from "@users/models/User";
 import { StatusCodes } from "http-status-codes";
-import { inject, injectable } from "tsyringe";
+import { inject, Container, injectable } from "inversify";
+import { provide, buildProviderModule } from "inversify-binding-decorators";
+
+export interface ICreateUserAndProfileService {
+  execute(command: CreateUserAndProfileCommand): Promise<null>;
+}
 
 @injectable()
-class CreateUserAndProfileService extends Service {
+class CreateUserAndProfileService implements ICreateUserAndProfileService {
   constructor(
-    @inject("UserRepository")
+    @inject(TYPES.IUserRepository)
     private userRepository: IUserRepository,
-    @inject("ProfileRepository")
+    @inject(TYPES.IProfileRepository)
     private profileRepository: IProfileRepository
-  ) {
-    super();
-  }
+  ) {}
 
   public async execute(command: CreateUserAndProfileCommand): Promise<null> {
     const user = new User(

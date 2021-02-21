@@ -12,9 +12,42 @@ import ListUsersService from "@users/services/users/ListUsersService";
 import { StatusCodes } from "http-status-codes";
 import UpdateUserCommand from "@users/commands/UpdateUserCommand";
 import UpdateUserService from "@users/services/users/UpdateUserService";
-import { container } from "tsyringe";
+import {
+  BaseHttpController,
+  controller,
+  httpDelete,
+  httpGet,
+  httpPost,
+  httpPut,
+} from "inversify-express-utils";
+import { inject } from "inversify";
 
-class UsersController {
+// import { container } from "tsyringe";
+
+@controller("api/v1/users")
+class UsersController extends BaseHttpController {
+  constructor(
+    @inject("ChangeUserPasswordService")
+    private changeUserPasswordService: ChangeUserPasswordService,
+    @inject("CreateUserAndProfileService")
+    private createUserAndProfileService: CreateUserAndProfileService,
+    @inject("DeleteUserAndProfileService")
+    private deleteUserAndProfileService: DeleteUserAndProfileService,
+    @inject("GetUserService")
+    private getUserService: GetUserService,
+    @inject("ListUsersService")
+    private listUsersService: ListUsersService,
+    @inject("UpdateUserService")
+    private updateUserService: UpdateUserService,
+    @inject("DisableUserService")
+    private disableUserService: DisableUserService,
+    @inject("EnableUserService")
+    private enableUserService: EnableUserService
+  ) {
+    super();
+  }
+
+  @httpGet("/")
   public async list(request: Request, response: Response): Promise<Response> {
     // const orderBy = request.query.orderBy
     //   ? {
@@ -30,9 +63,10 @@ class UsersController {
       ? parseInt(request.query.currentPage as string)
       : undefined;
 
-    const users = await container
-      .resolve(ListUsersService)
-      .execute({ pageSize, currentPage });
+    const users = await this.listUsersService.execute({
+      pageSize,
+      currentPage,
+    });
 
     // Ensure it doesn't return the password
     users.list.forEach((user) => user.clearPassword());
@@ -40,10 +74,11 @@ class UsersController {
     return response.status(StatusCodes.OK).json(users);
   }
 
+  @httpGet("/:id")
   public async get(request: Request, response: Response): Promise<Response> {
     const id: string = request.params.id;
 
-    const user = await container.resolve(GetUserService).execute({ id });
+    const user = await this.getUserService.execute({ id });
 
     const status = user ? StatusCodes.OK : StatusCodes.NO_CONTENT;
 
@@ -53,60 +88,66 @@ class UsersController {
     return response.status(status).json(user);
   }
 
+  @httpPost("/")
   public async create(request: Request, response: Response): Promise<Response> {
     const command = CreateUserAndProfileCommand.requestToCommand(request);
 
-    await container.resolve(CreateUserAndProfileService).execute(command);
+    await this.createUserAndProfileService.execute(command);
 
     return response.status(StatusCodes.OK).send("Usuário criado com sucesso");
   }
 
+  @httpPut("/:id")
   public async update(request: Request, response: Response): Promise<Response> {
     const command = UpdateUserCommand.requestToCommand(request);
 
-    await container.resolve(UpdateUserService).execute(command);
+    await this.updateUserService.execute(command);
 
     return response
       .status(StatusCodes.OK)
       .send("Usuário atualizado com sucesso");
   }
 
+  @httpDelete("/:id")
   public async delete(request: Request, response: Response): Promise<Response> {
     const id: string = request.params.id;
 
-    await container.resolve(DeleteUserAndProfileService).execute({ id });
+    await this.deleteUserAndProfileService.execute({ id });
 
     return response.status(StatusCodes.OK);
   }
 
+  @httpPut("/password")
   public async changePassword(
     request: Request,
     response: Response
   ): Promise<Response> {
     const command = ChangeUserPasswordCommand.requestToCommand(request);
 
-    await container.resolve(ChangeUserPasswordService).execute(command);
+    await this.changeUserPasswordService.execute(command);
 
     return response
       .status(StatusCodes.OK)
       .send("Usuário atualizado com sucesso");
   }
 
+  @httpPost("/enable/:id")
   public async enable(request: Request, response: Response): Promise<Response> {
     const id: string = request.params.id;
 
-    await container.resolve(EnableUserService).execute({ id });
+    await this.enableUserService.execute({ id });
 
     return response.status(StatusCodes.OK).send("Usuário ativado com sucesso");
   }
 
+  @httpPost("/disable/:id")
   public async disable(
     request: Request,
     response: Response
   ): Promise<Response> {
     const id: string = request.params.id;
 
-    await container.resolve(DisableUserService).execute({ id });
+    await this.disableUserService.execute({ id });
 
     return response.status(StatusCodes.OK).send("Usuário ativado com sucesso");
   }

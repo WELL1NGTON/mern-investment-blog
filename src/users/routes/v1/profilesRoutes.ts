@@ -1,4 +1,4 @@
-import ProfilesController from "@users/controllers/ProfilesController";
+import ProfilesController from "@users/controllers/v1/ProfilesController";
 import { Router } from "express";
 import UpdateCategoryCommand from "@articles/commands/UpdateCategoryCommand";
 

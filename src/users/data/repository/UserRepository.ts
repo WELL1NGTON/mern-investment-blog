@@ -6,6 +6,7 @@ import PagedResult from "@shared/models/PagedResult";
 import Role from "@shared/types/Role";
 import { StatusCodes } from "http-status-codes";
 import User from "@users/models/User";
+import { injectable } from "inversify";
 
 const userDocumentToEntity = (document: IUserMongooseDocument): User => {
   const user = new User(
@@ -29,6 +30,7 @@ const userEntityToDocument = (user: User): IUserMongooseDocument => {
   });
 };
 
+@injectable()
 class UserRepository implements IUserRepository {
   public getAll = async (
     pageSize = 10,

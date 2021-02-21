@@ -7,6 +7,7 @@ import IProfileRepository from "@users/models/IProfileRepository";
 import PagedResult from "@shared/models/PagedResult";
 import Profile from "@users/models/Profile";
 import { StatusCodes } from "http-status-codes";
+import { injectable } from "inversify";
 
 const profileDocumentToEntity = (
   document: IProfileMongooseDocument
@@ -34,6 +35,7 @@ const profileEntityToDocument = (
   });
 };
 
+@injectable()
 class ProfileRepository implements IProfileRepository {
   public getAll = async (
     pageSize = 10,

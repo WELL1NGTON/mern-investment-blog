@@ -1,20 +1,23 @@
-import Service from "@shared/services/Service";
+import TYPES from "@shared/constants/TYPES";
 import IProfileRepository from "@users/models/IProfileRepository";
 import Profile from "@users/models/Profile";
-import { inject, injectable } from "tsyringe";
+import { inject, Container, injectable } from "inversify";
+import { provide, buildProviderModule } from "inversify-binding-decorators";
 
 interface IRequest {
   id: string;
 }
 
+export interface IGetProfileService {
+  execute({ id }: IRequest): Promise<Profile | null>;
+}
+
 @injectable()
-class GetProfileService extends Service {
+class GetProfileService implements IGetProfileService {
   constructor(
-    @inject("ProfileRepository")
+    @inject(TYPES.IProfileRepository)
     private profileRepository: IProfileRepository
-  ) {
-    super();
-  }
+  ) {}
 
   public async execute({ id }: IRequest): Promise<Profile | null> {
     return await this.profileRepository.getById(id);

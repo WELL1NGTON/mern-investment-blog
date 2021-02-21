@@ -13,6 +13,7 @@
 // //   size?: number;
 // // }
 
+//@injectable()
 // class UploadImageService {
 //   public async execute(
 //     // file,

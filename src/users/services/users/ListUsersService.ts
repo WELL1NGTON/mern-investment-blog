@@ -2,7 +2,7 @@ import PagedResult from "@shared/models/PagedResult";
 import Service from "@shared/services/Service";
 import IUserRepository from "@users/models/IUserRepository";
 import User from "@users/models/User";
-import { inject, injectable } from "tsyringe";
+import { inject, injectable } from "inversify";
 
 interface IRequest {
   pageSize?: number;
@@ -10,13 +10,11 @@ interface IRequest {
 }
 
 @injectable()
-class ListUsersService extends Service {
+class ListUsersService implements Service {
   constructor(
     @inject("UserRepository")
     private userRepository: IUserRepository
-  ) {
-    super();
-  }
+  ) {}
 
   public async execute({
     pageSize,
