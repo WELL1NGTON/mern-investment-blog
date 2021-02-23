@@ -8,12 +8,27 @@
       "name": "start:dev",
       "type": "node",
       "request": "launch",
-      "cwd": "${workspaceRoot}",
-      "runtimeExecutable": "npm",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "yarn",
       "runtimeArgs": [
-        "run-script",
         "start:dev"
-      ]
+      ],
+      "port": 5000,
+      "console": "integratedTerminal",
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "!**/node_modules/**"
+      ],
+      "envFile": "${workspaceFolder}/env/development.env",
+      "skipFiles": [
+        "<node_internals>/**/*.js"
+      ],
+      "serverReadyAction": {
+        "action": "debugWithChrome",
+        "pattern": "Express server started on port: ([0-9]+)",
+        "uriFormat": "http://localhost:%s/api-docs/swagger",
+        "webRoot": "${workspaceFolder}"
+      }
     },
     {
       "type": "pwa-node",

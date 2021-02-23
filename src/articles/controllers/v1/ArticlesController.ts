@@ -18,12 +18,14 @@ import {
   httpPost,
   httpPut,
 } from "inversify-express-utils";
+import { number, string } from "joi";
 import {
   ApiOperationDelete,
   ApiOperationGet,
   ApiOperationPost,
   ApiOperationPut,
   ApiPath,
+  SwaggerDefinitionConstant,
 } from "swagger-express-ts";
 
 @ApiPath({
@@ -50,6 +52,25 @@ class ArticlesController extends BaseHttpController {
   @ApiOperationGet({
     summary: "Get a list of Articles",
     description: "Get Articles as PagedResult",
+    parameters: {
+      query: {
+        pageSize: {
+          description: "Maximum ammount of items returned per page (greater than 0)",
+          type: SwaggerDefinitionConstant.NUMBER,
+          default: 10
+        },
+        pageIndex: {
+          description: "Index of the page that will have items returned (greater than 0)",
+          type: SwaggerDefinitionConstant.NUMBER,
+          default: 1
+        },
+        ignorePageSize: {
+          description: "Ignore the other pagination limitations and return all items in one single page",
+          type: SwaggerDefinitionConstant.BOOLEAN,
+          default: false as unknown as number // Gambiarra lol
+        }
+      }
+    },
     responses: {
       [StatusCodes.OK]: {
         description: "Success",

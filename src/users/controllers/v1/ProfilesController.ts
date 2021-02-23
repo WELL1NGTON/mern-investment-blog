@@ -14,7 +14,7 @@ import UpdateProfileCommand from "@users/commands/UpdateProfileCommand";
 import UpdateProfileService from "@users/services/profile/UpdateProfileService";
 import { inject } from "inversify";
 import TYPES from "@shared/constants/TYPES";
-import { ApiOperationGet, ApiOperationPut, ApiPath } from "swagger-express-ts";
+import { ApiOperationGet, ApiOperationPut, ApiPath, SwaggerDefinitionConstant } from "swagger-express-ts";
 import EnsureAuthenticated from "@auth/middleware/EnsureAuthenticated";
 
 // import { container } from "tsyringe";
@@ -39,6 +39,25 @@ class ProfilesController extends BaseHttpController {
   @ApiOperationGet({
     summary: "Get a list of Profiles",
     description: "Get Profiles as PagedResult",
+    parameters: {
+      query: {
+        pageSize: {
+          description: "Maximum ammount of items returned per page (greater than 0)",
+          type: SwaggerDefinitionConstant.NUMBER,
+          default: 10
+        },
+        pageIndex: {
+          description: "Index of the page that will have items returned (greater than 0)",
+          type: SwaggerDefinitionConstant.NUMBER,
+          default: 1
+        },
+        ignorePageSize: {
+          description: "Ignore the other pagination limitations and return all items in one single page",
+          type: SwaggerDefinitionConstant.BOOLEAN,
+          default: false as unknown as number // Gambiarra lol
+        }
+      }
+    },
     responses: {
       [StatusCodes.OK]: {
         description: "Success",
