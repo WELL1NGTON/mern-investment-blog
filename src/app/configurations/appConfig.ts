@@ -2,9 +2,8 @@ import "@articles/controllers/v1/ArticlesController";
 import "express-async-errors";
 
 import * as swagger from "swagger-express-ts";
-
+import cors from "cors";
 import express, { Application, Request, Response } from "express";
-
 import cookieParser from "cookie-parser";
 import { cookieProps } from "./cookieProps";
 import helmet from "helmet";
@@ -27,7 +26,9 @@ function appConfig(app: Application): void {
   //   })
   // );
   // app.use(bodyParser.json());
-
+  app.use(cors({
+    origin: "http://localhost:3000"
+  }))
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
   app.use(cookieParser(cookieProps.secret));
