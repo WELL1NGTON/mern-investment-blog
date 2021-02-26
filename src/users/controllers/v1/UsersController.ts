@@ -65,21 +65,24 @@ class UsersController extends BaseHttpController {
     parameters: {
       query: {
         pageSize: {
-          description: "Maximum ammount of items returned per page (greater than 0)",
+          description:
+            "Maximum ammount of items returned per page (greater than 0)",
           type: SwaggerDefinitionConstant.NUMBER,
-          default: 10
+          default: 10,
         },
         pageIndex: {
-          description: "Index of the page that will have items returned (greater than 0)",
+          description:
+            "Index of the page that will have items returned (greater than 0)",
           type: SwaggerDefinitionConstant.NUMBER,
-          default: 1
+          default: 1,
         },
         ignorePageSize: {
-          description: "Ignore the other pagination limitations and return all items in one single page",
+          description:
+            "Ignore the other pagination limitations and return all items in one single page",
           type: SwaggerDefinitionConstant.BOOLEAN,
-          default: false as unknown as number // Gambiarra lol
-        }
-      }
+          default: (false as unknown) as number, // Gambiarra lol
+        },
+      },
     },
     responses: {
       [StatusCodes.OK]: {
@@ -89,7 +92,7 @@ class UsersController extends BaseHttpController {
     },
     security: { basicAuth: [] },
   })
-  @httpGet("/", EnsureAuthenticated)
+  @httpGet("/", TYPES.EnsureAuthenticated)
   public async list(request: Request, response: Response): Promise<Response> {
     // const orderBy = request.query.orderBy
     //   ? {
@@ -133,7 +136,7 @@ class UsersController extends BaseHttpController {
     },
     security: { basicAuth: [] },
   })
-  @httpGet("/:id", EnsureAuthenticated)
+  @httpGet("/:id", TYPES.EnsureAuthenticated)
   public async get(request: Request, response: Response): Promise<Response> {
     const id: string = request.params.id;
 
@@ -164,7 +167,7 @@ class UsersController extends BaseHttpController {
     },
     security: { basicAuth: [] },
   })
-  @httpPost("/", EnsureAuthenticated)
+  @httpPost("/", TYPES.EnsureAuthenticated)
   public async create(request: Request, response: Response): Promise<Response> {
     const command = CreateUserAndProfileCommand.requestToCommand(request);
 
@@ -196,7 +199,7 @@ class UsersController extends BaseHttpController {
     },
     security: { basicAuth: [] },
   })
-  @httpPut("/:id", EnsureAuthenticated)
+  @httpPut("/:id", TYPES.EnsureAuthenticated)
   public async update(request: Request, response: Response): Promise<Response> {
     const command = UpdateUserCommand.requestToCommand(request);
 
@@ -225,7 +228,7 @@ class UsersController extends BaseHttpController {
     },
     security: { basicAuth: [] },
   })
-  @httpDelete("/:id", EnsureAuthenticated)
+  @httpDelete("/:id", TYPES.EnsureAuthenticated)
   public async delete(request: Request, response: Response): Promise<Response> {
     const id: string = request.params.id;
 
@@ -254,7 +257,7 @@ class UsersController extends BaseHttpController {
     },
     security: { basicAuth: [] },
   })
-  @httpPut("/password", EnsureAuthenticated)
+  @httpPut("/password", TYPES.EnsureAuthenticated)
   public async changePassword(
     request: Request,
     response: Response
@@ -280,7 +283,7 @@ class UsersController extends BaseHttpController {
     },
     security: { basicAuth: [] },
   })
-  @httpPost("/enable/:id", EnsureAuthenticated)
+  @httpPost("/enable/:id", TYPES.EnsureAuthenticated)
   public async enable(request: Request, response: Response): Promise<Response> {
     const id: string = request.params.id;
 
@@ -301,7 +304,7 @@ class UsersController extends BaseHttpController {
     },
     security: { basicAuth: [] },
   })
-  @httpPost("/disable/:id", EnsureAuthenticated)
+  @httpPost("/disable/:id", TYPES.EnsureAuthenticated)
   public async disable(
     request: Request,
     response: Response

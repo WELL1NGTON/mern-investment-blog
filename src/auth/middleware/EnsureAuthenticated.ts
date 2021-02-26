@@ -19,8 +19,13 @@ const clearTokenAndRefuse = (response: Response) => {
 
 @injectable()
 class EnsureAuthenticated extends BaseMiddleware {
-  public handler(request: Request, response: Response, next: NextFunction) {
+  public handler(
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ): void {
     // TODO: está com algum problema ao gerar novo token a partir de refreshtoken
+
     const accessToken = JWTUtils.getAccessToken(request);
 
     // Check for token

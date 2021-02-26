@@ -16,6 +16,11 @@ function errorConfigFn(app: Application): void {
     ) => {
       logger.err(err, true);
 
+      console.log(err);
+      console.log(typeof err);
+      console.log(err);
+      console.log(err.stack);
+
       if (err instanceof AppError) {
         return response.status(err.statusCode).json({
           status: "Error",

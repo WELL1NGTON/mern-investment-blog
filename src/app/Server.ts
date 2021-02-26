@@ -1,8 +1,7 @@
-import "express-async-errors";
-// controllers
 import "@articles/controllers/";
 import "@auth/controllers/";
 import "@users/controllers/";
+import "express-async-errors";
 
 import * as prettyjson from "prettyjson";
 
@@ -11,22 +10,20 @@ import { InversifyExpressServer, getRouteInfo } from "inversify-express-utils";
 import appConfig from "./configurations/appConfig";
 import { container } from "./configurations/inversify.config";
 import errorConfigFn from "./configurations/errorConfigFn";
-import errorHandling from "./configurations/errorConfigFn";
 import startMongooseAndListen from "./services/startMongooseAndListen";
 
+// controllers
 // import "@images/controllers";
 
 // create server
 const server = new InversifyExpressServer(container);
-
-server;
 
 /************************************************************************************
  *                                  Handle Errors
  ***********************************************************************************/
 
 // Print API errors
-server.setConfig((app) => app.use(errorHandling));
+// server.setConfig((app) => app.use(errorHandling));
 // app.use(errorHandling);
 
 /************************************************************************************

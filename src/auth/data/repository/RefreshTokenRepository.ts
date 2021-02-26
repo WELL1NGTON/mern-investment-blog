@@ -151,7 +151,8 @@ class RefreshTokenRepository implements IRefreshTokenRepository {
   };
 
   deleteAllByEmail = async (email: string): Promise<null> => {
-    return await RefreshTokenModel.deleteMany({ email }).exec();
+    await RefreshTokenModel.deleteMany({ email }).exec();
+    return null;
   };
 
   public documentToEntity = refreshTokenDocumentToEntity;

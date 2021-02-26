@@ -5,6 +5,7 @@ import {
 import { articleStates, defaultArticleState } from "@shared/types/ArticleState";
 import { defaultRole, roles } from "@shared/types/Role";
 
+import { accessTokenOptions } from "@auth/configurations/jwtTokenOptions";
 import mongoose from "mongoose";
 import { visibilities } from "@shared/types/Visibility";
 
@@ -510,10 +511,10 @@ const swaggerExpressTsOptions: ISwaggerExpressOptions = {
     },
     // TODO: Configurar a porcaria da autorização!
     securityDefinitions: {
-      basicAuth: {
-        type: "basicAuth",
-        // in: "",
-        // name: ""
+      [accessTokenOptions.property]: {
+        type: SwaggerDefinitionConstant.Security.Type.API_KEY,
+        in: SwaggerDefinitionConstant.Security.In.HEADER,
+        name: accessTokenOptions.property,
       },
     },
   },

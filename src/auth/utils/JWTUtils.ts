@@ -4,7 +4,9 @@ import {
   refreshTokenOptions,
 } from "@auth/configurations/jwtTokenOptions";
 
+import AppError from "@shared/errors/AppError";
 import { Request } from "express";
+import { StatusCodes } from "http-status-codes";
 import jwt from "jsonwebtoken";
 
 class JWTUtils {
@@ -27,16 +29,10 @@ class JWTUtils {
   }
 
   static getAccessToken(request: Request): string {
-    // TODO: find a better way of handling this
-    if (typeof request.cookies[accessTokenOptions.property] !== "string")
-      throw new Error();
     return request.cookies[accessTokenOptions.property];
   }
 
   static getRefreshToken(request: Request): string {
-    // TODO: find a better way of handling this
-    if (typeof request.cookies[refreshTokenOptions.property] !== "string")
-      throw new Error();
     return request.cookies[refreshTokenOptions.property];
   }
 }
