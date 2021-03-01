@@ -5,7 +5,7 @@ import Visibility, {
   matchVilibilities,
 } from "@shared/types/Visibility";
 
-import Color from "@shared/richObjects/Color";
+import Color from "@shared/valueObjects/Color";
 import Command from "@shared/messages/Command";
 
 class CreateCategoryCommand extends Command {

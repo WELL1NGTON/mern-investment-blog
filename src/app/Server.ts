@@ -40,6 +40,7 @@ const app = server.setConfig(appConfig).setErrorConfig(errorConfigFn).build();
 
 const routeInfo = getRouteInfo(container);
 
+// Print api routes on start
 console.log(prettyjson.render({ routes: routeInfo }));
 
 export default app;

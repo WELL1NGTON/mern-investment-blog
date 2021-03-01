@@ -28,6 +28,10 @@ class Email {
     return this.value;
   }
 
+  public toJson(): string {
+    return this.toString();
+  }
+
   static isValid(email: string): boolean {
     return EmailValidator.validate(email);
   }

@@ -1,4 +1,4 @@
-import Email from "@shared/richObjects/Email";
+import Email from "@shared/valueObjects/Email";
 import Entity from "@shared/models/Entity";
 
 class RefreshToken extends Entity {

@@ -191,6 +191,10 @@ class Color extends TRGBHexStringValues {
     return this.hexString;
   }
 
+  public toJson(): string {
+    return this.toString();
+  }
+
   static isValid = (color: string): boolean => {
     const regex = /^#[a-fA-F0-9]{6}$/;
 

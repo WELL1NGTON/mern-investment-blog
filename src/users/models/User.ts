@@ -1,8 +1,8 @@
 import Role, { defaultRole } from "@shared/types/Role";
 
-import Email from "@shared/richObjects/Email";
+import Email from "@shared/valueObjects/Email";
 import Entity from "@shared/models/Entity";
-import Password from "@shared/richObjects/Password";
+import Password from "@shared/valueObjects/Password";
 
 /**
  * @typedef User
@@ -35,7 +35,7 @@ class User extends Entity {
   }
 
   public toString(): string {
-    return `${this.role} | ${this.email}`;
+    return `${this.role}: ${this.email}`;
   }
 
   public async encryptPassword(): Promise<void> {
@@ -53,7 +53,7 @@ class User extends Entity {
       email: this.email.value,
       role: this.role,
       isActive: this.isActive,
-      password: "********************",
+      password: "********************", // Never returning password on json (even if it's hashed)
     };
   }
 }

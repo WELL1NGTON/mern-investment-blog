@@ -1,6 +1,6 @@
 import mongoose, { Document, Schema } from "mongoose";
 
-import Email from "@shared/richObjects/Email";
+import Email from "@shared/valueObjects/Email";
 
 // TODO: Find a better way to use interfaces for mapping
 // ! Need to be changed if Article.ts changes... Not the best implmentation, but it will do for now

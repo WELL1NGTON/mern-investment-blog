@@ -21,11 +21,11 @@ class Slug {
   }
 
   public toString(): string {
-    return this._value;
+    return this.value;
   }
 
   public toJSON(): unknown {
-    return this._value;
+    return this.value;
   }
 }
 

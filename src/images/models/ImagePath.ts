@@ -1,5 +1,5 @@
 import Entity from "@shared/models/Entity";
-import Slug from "@shared/richObjects/Slug";
+import Slug from "@shared/valueObjects/Slug";
 
 class ImagePath extends Entity {
   private _slug: Slug;

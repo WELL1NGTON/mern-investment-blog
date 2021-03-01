@@ -1,4 +1,4 @@
-import Color from "@shared/richObjects/Color";
+import Color from "@shared/valueObjects/Color";
 import Entity from "@shared/models/Entity";
 import Visibility from "@shared/types/Visibility";
 

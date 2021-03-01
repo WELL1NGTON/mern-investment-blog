@@ -3,8 +3,8 @@ import { Request, RequestHandler } from "express";
 import Role, { defaultRole, matchRoles } from "@shared/types/Role";
 
 import Command from "@shared/messages/Command";
-import Email from "@shared/richObjects/Email";
-import Password from "@shared/richObjects/Password";
+import Email from "@shared/valueObjects/Email";
+import Password from "@shared/valueObjects/Password";
 import { isValidObjectId } from "mongoose";
 
 class UpdateUserCommand extends Command {

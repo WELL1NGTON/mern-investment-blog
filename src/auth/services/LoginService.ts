@@ -6,7 +6,7 @@ import RefreshToken from "@auth/models/RefreshToken";
 import JWTUtils from "@auth/utils/JWTUtils";
 import TYPES from "@shared/constants/TYPES";
 import AppError from "@shared/errors/AppError";
-import Password from "@shared/richObjects/Password";
+import Password from "@shared/valueObjects/Password";
 import IUserRepository from "@users/models/IUserRepository";
 import bcrypt from "bcrypt";
 import { StatusCodes } from "http-status-codes";

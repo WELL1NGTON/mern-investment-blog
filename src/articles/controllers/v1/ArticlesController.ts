@@ -81,7 +81,10 @@ class ArticlesController extends BaseHttpController {
       },
     },
   })
-  @httpGet("/", TYPES.EnsureAuthenticated)
+  @httpGet(
+    "/"
+    // ! TYPES.EnsureAuthenticated
+  )
   public async list(request: Request, response: Response): Promise<Response> {
     const ignorePageSize =
       request.query.ignorePageSize === "true" ? true : false;

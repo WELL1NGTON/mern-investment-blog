@@ -49,6 +49,14 @@ class Password {
   public clearPassword(): void {
     this._value = "";
   }
+
+  public toString(): string {
+    return this.value;
+  }
+
+  public toJson(): string {
+    return this.toString();
+  }
 }
 
 export default Password;

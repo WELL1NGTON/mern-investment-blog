@@ -3,7 +3,7 @@ import ArticleState, { defaultArticleState } from "@shared/types/ArticleState";
 import Visibility, { defaultVisibility } from "@shared/types/Visibility";
 
 import Entity from "@shared/models/Entity";
-import Slug from "@shared/richObjects/Slug";
+import Slug from "@shared/valueObjects/Slug";
 
 class Article extends Entity {
   private _slug: Slug;

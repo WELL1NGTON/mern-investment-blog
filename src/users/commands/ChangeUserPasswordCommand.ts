@@ -2,7 +2,7 @@ import { Joi, Segments, celebrate } from "celebrate";
 import { Request, RequestHandler } from "express";
 
 import Command from "@shared/messages/Command";
-import Password from "@shared/richObjects/Password";
+import Password from "@shared/valueObjects/Password";
 import { isValidObjectId } from "mongoose";
 
 // TODO: Está errado! o id eu tenho que pegar a partir do email do token de autenticação (ou seja, só dá para alterar a senha de quem estiver autenticado)
