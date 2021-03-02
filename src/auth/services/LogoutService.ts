@@ -1,15 +1,11 @@
-import { accessTokenOptions } from "@auth/configurations/jwtTokenOptions";
-import AuthData from "@auth/models/AuthData";
-import IRefreshTokenRepository from "@auth/models/IRefreshTokenRepository";
-import JWTUtils from "@auth/utils/JWTUtils";
-import TYPES from "@shared/constants/TYPES";
-import AppError from "@shared/errors/AppError";
-import Service from "@shared/services/Service";
-import { StatusCodes } from "http-status-codes";
-import { inject, Container, injectable } from "inversify";
+import IRefreshTokenRepository from '@auth/models/IRefreshTokenRepository';
+import TYPES from '@shared/constants/TYPES';
+import AppError from '@shared/errors/AppError';
+import { StatusCodes } from 'http-status-codes';
+import { inject, injectable } from 'inversify';
 
 interface IRequest {
-  accessToken: string;
+  email: string;
 }
 
 @injectable()
@@ -19,23 +15,9 @@ class LogoutService {
     private refreshTokenRepository: IRefreshTokenRepository
   ) {}
 
-  // TODO: Falhando ao deslogar ?????????? WHY??????
-  public async execute({ accessToken }: IRequest): Promise<null> {
+  public async execute({ email }: IRequest): Promise<null> {
     try {
-      const authData = await JWTUtils.decodeToken(
-        accessToken,
-        accessTokenOptions
-      );
-
-      if (!authData)
-        throw new AppError(
-          "Falha na tentativa de logout",
-          StatusCodes.INTERNAL_SERVER_ERROR
-        );
-
-      return await this.refreshTokenRepository.deleteAllByEmail(
-        (authData as AuthData).email
-      );
+      return await this.refreshTokenRepository.deleteAllByEmail(email);
     } catch {
       throw new AppError(
         "Falha na tentativa de logout",

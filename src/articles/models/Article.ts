@@ -2,14 +2,18 @@ import { ApiModel, ApiModelProperty } from "swagger-express-ts";
 import ArticleState, { defaultArticleState } from "@shared/types/ArticleState";
 import Visibility, { defaultVisibility } from "@shared/types/Visibility";
 
+import Category from "./Category";
 import Entity from "@shared/models/Entity";
+import Profile from "@users/models/Profile";
 import Slug from "@shared/valueObjects/Slug";
 
 class Article extends Entity {
   private _slug: Slug;
   private _title = "";
-  category?: string;
-  author?: string;
+  // category?: string;
+  // author?: string;
+  category?: Category;
+  author?: Profile;
   description = "";
   markdownArticle = "";
   date: Date = new Date(Date.now());
@@ -23,8 +27,13 @@ class Article extends Entity {
     description: string,
     markdownArticle: string,
     date: Date,
-    category?: string,
-    author?: string,
+
+    // category?: string,
+    // author?: string,
+
+    category?: Category,
+    author?: Profile,
+
     tags: string[] = [],
     visibility: Visibility = defaultVisibility,
     state: ArticleState = defaultArticleState,
@@ -73,6 +82,10 @@ class Article extends Entity {
       date: this.date,
       category: this.category,
       author: this.author,
+
+      // category: this.category?.toJSON(),
+      // author: this.author?.toJSON(),
+
       tags: this.tags,
       visibility: this.visibility,
       state: this.state,

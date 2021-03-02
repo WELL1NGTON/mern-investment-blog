@@ -1,23 +1,22 @@
 import LoginCommand from "@auth/commands/LoginCommand";
-import {
-  accessTokenOptions,
-  refreshTokenOptions,
-} from "@auth/configurations/jwtTokenOptions";
-import EnsureAuthenticated from "@auth/middleware/EnsureAuthenticated";
+import RefreshTokenCommand from "@auth/commands/RefreshTokenCommand";
+import AuthService from "@auth/services/AuthService";
 import LoginService from "@auth/services/LoginService";
 import LogoutService from "@auth/services/LogoutService";
-
+import RefreshTokenService from "@auth/services/RefreshTokenService";
 import TYPES from "@shared/constants/TYPES";
-import AppError from "@shared/errors/AppError";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { inject } from "inversify";
 import {
   BaseHttpController,
   controller,
+  httpGet,
   httpPost,
 } from "inversify-express-utils";
-import { ApiOperationPost, ApiPath } from "swagger-express-ts";
+import { ApiOperationGet, ApiOperationPost, ApiPath } from "swagger-express-ts";
+
+const authService = inject(TYPES.AuthService);
 
 @ApiPath({
   path: "/api/v1/auth",
@@ -25,13 +24,44 @@ import { ApiOperationPost, ApiPath } from "swagger-express-ts";
 })
 @controller("/api/v1/auth")
 class AuthController extends BaseHttpController {
+  @authService private readonly _authService: AuthService;
+
   constructor(
     @inject(TYPES.LoginService)
     private loginService: LoginService,
     @inject(TYPES.LogoutService)
-    private logoutService: LogoutService
+    private logoutService: LogoutService,
+    @inject(TYPES.RefreshTokenService)
+    private refreshTokenService: RefreshTokenService
   ) {
     super();
+  }
+
+  @ApiOperationGet({
+    summary: "Authenticate the user",
+    description: "Authenticate the user",
+    path: "/",
+    parameters: {},
+    responses: {
+      [StatusCodes.OK]: {
+        description: "Success",
+        model: "AuthDetails",
+      },
+      [StatusCodes.UNAUTHORIZED]: {
+        description: "Unauthorized",
+        model: "AppError",
+      },
+    },
+    security: { ["Bearer"]: [] },
+  })
+  @httpGet("/")
+  public async checkAuth(
+    request: Request,
+    response: Response
+  ): Promise<Response> {
+    await this._authService.ensureAuthenticated(this.httpContext);
+
+    return response.status(StatusCodes.OK).json(this.httpContext.user.details);
   }
 
   @ApiOperationPost({
@@ -48,6 +78,7 @@ class AuthController extends BaseHttpController {
     responses: {
       [StatusCodes.OK]: {
         description: "Success",
+        model: "LoginSuccess",
       },
     },
   })
@@ -57,13 +88,7 @@ class AuthController extends BaseHttpController {
 
     const auth = await this.loginService.execute(command);
 
-    return response
-      .cookie(accessTokenOptions.property, auth.accessToken, { httpOnly: true })
-      .cookie(refreshTokenOptions.property, auth.refreshToken, {
-        httpOnly: true,
-      })
-      .status(StatusCodes.OK)
-      .json(auth);
+    return response.status(StatusCodes.OK).json(auth);
   }
 
   @ApiOperationPost({
@@ -75,23 +100,52 @@ class AuthController extends BaseHttpController {
       [StatusCodes.OK]: {
         description: "Success",
       },
+      [StatusCodes.UNAUTHORIZED]: {
+        description: "Unauthorized",
+        model: "AppError",
+      },
     },
-    security: { basicAuth: [] },
+    security: { ["Bearer"]: [] },
   })
-  @httpPost("/logout", TYPES.EnsureAuthenticated)
+  @httpPost("/logout")
   public async logout(request: Request, response: Response): Promise<Response> {
-    const accessToken = request.cookies[accessTokenOptions.property];
+    await this._authService.ensureAuthenticated(this.httpContext);
 
-    if (!accessToken)
-      throw new AppError("Logout Error", StatusCodes.INTERNAL_SERVER_ERROR);
+    await this.logoutService.execute({
+      email: this._authService.authInfo(this.httpContext).email ?? "",
+    });
 
-    await this.logoutService.execute({ accessToken: accessToken as string });
+    return response.status(StatusCodes.OK).json();
+  }
 
-    return response
-      .clearCookie(accessTokenOptions.property)
-      .clearCookie(refreshTokenOptions.property)
-      .status(StatusCodes.OK)
-      .json();
+  @ApiOperationPost({
+    summary: "Reauthenticate the user",
+    description: "Reauthenticate the user",
+    path: "/refresh",
+    parameters: {
+      body: {
+        description: "RefreshToken",
+        required: true,
+        model: "RefreshToken",
+      },
+    },
+    responses: {
+      [StatusCodes.OK]: {
+        description: "Success",
+        model: "LoginSuccess",
+      },
+    },
+  })
+  @httpPost("/refresh", RefreshTokenCommand.validator)
+  public async refresh(
+    request: Request,
+    response: Response
+  ): Promise<Response> {
+    const command = RefreshTokenCommand.requestToCommand(request);
+
+    const auth = await this.refreshTokenService.execute(command);
+
+    return response.status(StatusCodes.OK).json(auth);
   }
 }
 

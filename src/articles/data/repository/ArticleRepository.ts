@@ -1,6 +1,14 @@
 import ArticleModel, {
   IArticleMongooseDocument,
 } from "../mappings/ArticleModel";
+import {
+  categoryDocumentToEntity,
+  categoryEntityToDocument,
+} from "./CategoryRepository";
+import {
+  profileDocumentToEntity,
+  profileEntityToDocument,
+} from "@users/data/repository/ProfileRepository";
 
 import AppError from "@shared/errors/AppError";
 import Article from "src/articles/models/Article";
@@ -19,15 +27,20 @@ const articleDocumentToEntity = (
     document.description,
     document.markdownArticle,
     document.date,
-    document.category ? document.category.toHexString() : undefined,
-    document.author ? document.author.toHexString() : undefined,
+
+    // document.category ? document.category.toHexString() : undefined,
+    // document.author ? document.author.toHexString() : undefined,
+
+    document.category ? categoryDocumentToEntity(document.category) : undefined,
+    document.author ? profileDocumentToEntity(document.author) : undefined,
+
     document.tags,
     document.visibility,
     document.state,
     document.previewImg
   );
 
-  article.id = document._id.toString();
+  article.id = document._id.toHexString();
 
   return article;
 };
@@ -38,12 +51,21 @@ const articleEntityToDocument = (
   return new ArticleModel({
     _id: article.id,
     title: article.title,
+
+    // category: article.category
+    //   ? new mongoose.Types.ObjectId(article.category)
+    //   : undefined,
+    // author: article.author
+    //   ? new mongoose.Types.ObjectId(article.author)
+    //   : undefined,
+
     category: article.category
-      ? new mongoose.Types.ObjectId(article.category)
+      ? categoryEntityToDocument(article.category)
       : undefined,
     author: article.author
-      ? new mongoose.Types.ObjectId(article.author)
+      ? profileEntityToDocument(article.author)
       : undefined,
+
     description: article.description,
     markdownArticle: article.markdownArticle,
     date: article.date,
@@ -67,6 +89,9 @@ class ArticleRepository implements IArticleRepository {
       result = await ArticleModel.find()
         .sort({ date: "desc" })
         .select("-markdownArticle")
+        .populate("author")
+        .populate("category")
+        // .getPopulatedPaths()
         .limit(pageSize)
         .skip(pageSize * (currentPage - 1))
         .exec();
@@ -96,6 +121,8 @@ class ArticleRepository implements IArticleRepository {
       result = await ArticleModel.find()
         .sort({ date: "desc" })
         .select("-markdownArticle")
+        .populate("author")
+        .populate("category")
         .exec();
 
       total = await ArticleModel.count().exec();
@@ -111,13 +138,19 @@ class ArticleRepository implements IArticleRepository {
   };
 
   public async getById(id: string): Promise<Article | null> {
-    const article = await ArticleModel.findById(id).exec();
+    const article = await ArticleModel.findById(id)
+      .populate("author")
+      .populate("category")
+      .exec();
 
     return article ? articleDocumentToEntity(article) : null;
   }
 
   public async getBySlug(slug: string): Promise<Article | null> {
-    const doc = await ArticleModel.findOne({ slug: slug }).exec();
+    const doc = await ArticleModel.findOne({ slug: slug })
+      .populate("author")
+      .populate("category")
+      .exec();
 
     return doc ? articleDocumentToEntity(doc) : null;
   }

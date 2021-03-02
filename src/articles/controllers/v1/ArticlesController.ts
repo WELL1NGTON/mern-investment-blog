@@ -5,8 +5,9 @@ import { IDeleteArticleService } from "@articles/services/articles/DeleteArticle
 import { IGetArticleService } from "@articles/services/articles/GetArticleService";
 import { IListArticlesService } from "@articles/services/articles/ListArticlesService";
 import { IUpdateArticleService } from "@articles/services/articles/UpdateArticleService";
-import EnsureAuthenticated from "@auth/middleware/EnsureAuthenticated";
+import AuthService from "@auth/services/AuthService";
 import TYPES from "@shared/constants/TYPES";
+import AppError from "@shared/errors/AppError";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { inject } from "inversify";
@@ -18,7 +19,6 @@ import {
   httpPost,
   httpPut,
 } from "inversify-express-utils";
-import { number, string } from "joi";
 import {
   ApiOperationDelete,
   ApiOperationGet,
@@ -28,12 +28,16 @@ import {
   SwaggerDefinitionConstant,
 } from "swagger-express-ts";
 
+const authService = inject(TYPES.AuthService);
+
 @ApiPath({
   path: "/api/v1/articles",
   name: "Articles Controller",
 })
 @controller("/api/v1/articles")
 class ArticlesController extends BaseHttpController {
+  @authService private readonly _authService: AuthService;
+
   constructor(
     @inject(TYPES.ListArticlesService)
     private listArticlesService: IListArticlesService,
@@ -81,10 +85,7 @@ class ArticlesController extends BaseHttpController {
       },
     },
   })
-  @httpGet(
-    "/"
-    // ! TYPES.EnsureAuthenticated
-  )
+  @httpGet("/")
   public async list(request: Request, response: Response): Promise<Response> {
     const ignorePageSize =
       request.query.ignorePageSize === "true" ? true : false;
@@ -114,9 +115,9 @@ class ArticlesController extends BaseHttpController {
 
   @ApiOperationGet({
     summary: "Get an existing Article",
-    description: "Get Article from it's id",
-    path: "/{id}",
-    parameters: { path: { ["id"]: { name: "id" } } },
+    description: "Get Article from it's slug",
+    path: "/{slug}",
+    parameters: { path: { ["slug"]: { name: "slug" } } },
     responses: {
       [StatusCodes.OK]: {
         description: "Success",
@@ -128,7 +129,7 @@ class ArticlesController extends BaseHttpController {
       },
     },
   })
-  @httpGet("/:id")
+  @httpGet("/:slug")
   public async get(request: Request, response: Response): Promise<Response> {
     const slug: string = request.params.slug;
 
@@ -153,11 +154,21 @@ class ArticlesController extends BaseHttpController {
       [StatusCodes.OK]: {
         description: "Success",
       },
+      [StatusCodes.UNAUTHORIZED]: {
+        description: "Unauthorized",
+        model: "AppError",
+      },
     },
-    security: { basicAuth: [] },
+    security: { ["Bearer"]: [] },
   })
-  @httpPost("/", TYPES.EnsureAuthenticated)
+  @httpPost("/")
   public async create(request: Request, response: Response): Promise<Response> {
+    await this._authService.ensureAuthenticated(this.httpContext);
+    await this._authService.ensureHasPermission(
+      this.httpContext,
+      "CREATE_ARTICLE"
+    );
+
     const command = CreateArticleCommand.requestToCommand(request);
 
     // await this.createArticleService.execute(command);
@@ -168,10 +179,10 @@ class ArticlesController extends BaseHttpController {
 
   @ApiOperationPut({
     summary: "Update an Article",
-    description: "Update an existing Article, based on it's id",
-    path: "/{id}",
+    description: "Update an existing Article, based on it's slug",
+    path: "/{slug}",
     parameters: {
-      path: { ["id"]: { name: "id" } },
+      path: { ["slug"]: { name: "slug" } },
       body: {
         description: "Updated Article",
         required: true,
@@ -186,11 +197,21 @@ class ArticlesController extends BaseHttpController {
         description: "Not Found",
         model: "AppError",
       },
+      [StatusCodes.UNAUTHORIZED]: {
+        description: "Unauthorized",
+        model: "AppError",
+      },
     },
-    security: { basicAuth: [] },
+    security: { ["Bearer"]: [] },
   })
-  @httpPut("/:id", TYPES.EnsureAuthenticated)
+  @httpPut("/:slug")
   public async update(request: Request, response: Response): Promise<Response> {
+    await this._authService.ensureAuthenticated(this.httpContext);
+    await this._authService.ensureHasPermission(
+      this.httpContext,
+      "EDIT_ARTICLE"
+    );
+
     const command = UpdateArticleCommand.requestToCommand(request);
 
     await this.updateArticleService.execute(command);
@@ -202,10 +223,10 @@ class ArticlesController extends BaseHttpController {
 
   @ApiOperationDelete({
     summary: "Remove an Article",
-    description: "Remove an existing Article, based on it's id",
-    path: "/{id}",
+    description: "Remove an existing Article, based on it's slug",
+    path: "/{slug}",
     parameters: {
-      path: { ["id"]: { name: "id" } },
+      path: { ["slug"]: { name: "slug" } },
     },
     responses: {
       [StatusCodes.OK]: {
@@ -215,11 +236,21 @@ class ArticlesController extends BaseHttpController {
         description: "Not Found",
         model: "AppError",
       },
+      [StatusCodes.UNAUTHORIZED]: {
+        description: "Unauthorized",
+        model: "AppError",
+      },
     },
-    security: { basicAuth: [] },
+    security: { ["Bearer"]: [] },
   })
-  @httpDelete("/:id", TYPES.EnsureAuthenticated)
+  @httpDelete("/:slug")
   public async delete(request: Request, response: Response): Promise<Response> {
+    await this._authService.ensureAuthenticated(this.httpContext);
+    await this._authService.ensureHasPermission(
+      this.httpContext,
+      "DELETE_ARTICLE"
+    );
+
     const slug: string = request.params.slug;
 
     await this.deleteArticleService.execute({ slug });

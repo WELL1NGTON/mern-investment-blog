@@ -40,8 +40,8 @@ class CreateImagePathCommand extends Command {
       [Segments.BODY]: {
         name: Joi.string().min(3).required(),
         tags: Joi.array().items(Joi.string()).required(),
-        changeFile: Joi.boolean().default(false).optional(),
-        format: Joi.string().allow(supportedImageFormats).optional(),
+        // changeFile: Joi.boolean().default(false).optional(),
+        // format: Joi.string().allow(supportedImageFormats).optional(),
         quality: Joi.number().min(1).max(100).optional(),
         size: Joi.number().min(1).max(4096).optional(),
       },

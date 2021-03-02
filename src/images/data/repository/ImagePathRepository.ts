@@ -23,7 +23,7 @@ const imagePathDocumentToEntity = (
     document.uploadedBy.toHexString()
   );
 
-  imagePath.id = document._id;
+  imagePath.id = document._id.toHexString();
 
   return imagePath;
 };

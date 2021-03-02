@@ -5,7 +5,7 @@ import DeleteCategoryService from "@articles/services/categories/DeleteCategoryS
 import GetCategoryService from "@articles/services/categories/GetCategoryService";
 import ListCategoriesService from "@articles/services/categories/ListCategoriesService";
 import UpdateCategoryService from "@articles/services/categories/UpdateCategoryService";
-import EnsureAuthenticated from "@auth/middleware/EnsureAuthenticated";
+import AuthService from "@auth/services/AuthService";
 import TYPES from "@shared/constants/TYPES";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
@@ -27,12 +27,16 @@ import {
   SwaggerDefinitionConstant,
 } from "swagger-express-ts";
 
+const authService = inject(TYPES.AuthService);
+
 @ApiPath({
   path: "/api/v1/categories",
   name: "Categories",
 })
 @controller("/api/v1/categories")
 class CategoriesController extends BaseHttpController {
+  @authService private readonly _authService: AuthService;
+
   constructor(
     @inject(TYPES.CreateCategoryService)
     private createCategoryService: CreateCategoryService,
@@ -145,16 +149,26 @@ class CategoriesController extends BaseHttpController {
       [StatusCodes.OK]: {
         description: "Success",
       },
+      [StatusCodes.UNAUTHORIZED]: {
+        description: "Unauthorized",
+        model: "AppError",
+      },
     },
-    security: { basicAuth: [] },
+    security: { ["Bearer"]: [] },
   })
-  @httpPost("/", TYPES.EnsureAuthenticated)
+  @httpPost("/")
   public async create(request: Request, response: Response): Promise<Response> {
+    await this._authService.ensureAuthenticated(this.httpContext);
+    await this._authService.ensureHasPermission(
+      this.httpContext,
+      "CREATE_CATEGORY"
+    );
+
     const command = CreateCategoryCommand.requestToCommand(request);
 
     await this.createCategoryService.execute(command);
 
-    return response.status(StatusCodes.OK).send("Artigo criado com sucesso");
+    return response.status(StatusCodes.OK).send("Categoria criada com sucesso");
   }
 
   @ApiOperationPut({
@@ -177,18 +191,28 @@ class CategoriesController extends BaseHttpController {
         description: "Not Found",
         model: "AppError",
       },
+      [StatusCodes.UNAUTHORIZED]: {
+        description: "Unauthorized",
+        model: "AppError",
+      },
     },
-    security: { basicAuth: [] },
+    security: { ["Bearer"]: [] },
   })
-  @httpPut("/:id", TYPES.EnsureAuthenticated)
+  @httpPut("/:id")
   public async update(request: Request, response: Response): Promise<Response> {
+    await this._authService.ensureAuthenticated(this.httpContext);
+    await this._authService.ensureHasPermission(
+      this.httpContext,
+      "EDIT_CATEGORY"
+    );
+
     const command = UpdateCategoryCommand.requestToCommand(request);
 
     await this.updateCategoryService.execute(command);
 
     return response
       .status(StatusCodes.OK)
-      .send("Artigo atualizado com sucesso");
+      .send("Categoria atualizada com sucesso");
   }
 
   @ApiOperationDelete({
@@ -206,11 +230,21 @@ class CategoriesController extends BaseHttpController {
         description: "Not Found",
         model: "AppError",
       },
+      [StatusCodes.UNAUTHORIZED]: {
+        description: "Unauthorized",
+        model: "AppError",
+      },
     },
-    security: { basicAuth: [] },
+    security: { ["Bearer"]: [] },
   })
-  @httpDelete("/:id", TYPES.EnsureAuthenticated)
+  @httpDelete("/:id")
   public async delete(request: Request, response: Response): Promise<Response> {
+    await this._authService.ensureAuthenticated(this.httpContext);
+    await this._authService.ensureHasPermission(
+      this.httpContext,
+      "DELETE_CATEGORY"
+    );
+
     const id: string = request.params.id;
 
     await this.deleteCategoryService.execute({ id });

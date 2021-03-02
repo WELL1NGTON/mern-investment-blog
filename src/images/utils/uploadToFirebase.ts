@@ -2,6 +2,7 @@ import AppError from "@shared/errors/AppError";
 import { StatusCodes } from "http-status-codes";
 import { Storage } from "@google-cloud/storage";
 import fs from "fs";
+import googleCloudOptions from "@app/configurations/googleCloudOptions";
 import sharp from "sharp";
 import slugify from "slugify";
 import { v4 as uuidv4 } from "uuid";
@@ -15,7 +16,7 @@ interface IImageCompressOptions {
 
 export default async function (
   imageCompressOptions: IImageCompressOptions,
-  bucketName = process.env.GOOGLE_BUCKET_NAME || ""
+  bucketName = googleCloudOptions.googleBucketName || ""
 ): Promise<{
   url: string;
   firebaseStorageDownloadTokens: string;

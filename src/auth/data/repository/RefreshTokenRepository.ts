@@ -18,7 +18,7 @@ const refreshTokenDocumentToEntity = (
     document.expirationDate
   );
 
-  refreshToken.id = document._id;
+  refreshToken.id = document._id.toHexString();
 
   return refreshToken;
 };
@@ -87,6 +87,16 @@ class RefreshTokenRepository implements IRefreshTokenRepository {
 
   public getById = async (id: string): Promise<RefreshToken | null> => {
     const refreshToken = await RefreshTokenModel.findById(id).exec();
+
+    return refreshToken ? this.documentToEntity(refreshToken) : null;
+  };
+
+  public findRefreshToken = async (
+    token: string
+  ): Promise<RefreshToken | null> => {
+    const refreshToken = await RefreshTokenModel.findOne({
+      token,
+    }).exec();
 
     return refreshToken ? this.documentToEntity(refreshToken) : null;
   };

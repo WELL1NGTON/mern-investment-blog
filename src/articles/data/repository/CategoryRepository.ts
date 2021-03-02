@@ -19,7 +19,7 @@ const categoryDocumentToEntity = (
     document.visibility as Visibility
   );
 
-  category.id = document._id;
+  category.id = document._id.toHexString();
 
   return category;
 };

@@ -37,18 +37,27 @@ const TYPES = {
 
   IImagePathRepository: Symbol.for("IImagePathRepository"),
 
+  MulterMiddlewareImage: Symbol.for("MulterMiddlewareImage"),
   CreateImagePathService: Symbol.for("CreateImagePathService"),
   DeleteImagePathService: Symbol.for("DeleteImagePathService"),
   GetImagePathService: Symbol.for("GetImagePathService"),
   ListImagePathService: Symbol.for("ListImagePathService"),
   UpdateImagePathService: Symbol.for("UpdateImagePathService"),
+  UploadImageService: Symbol.for("UploadImageService"),
+  ListImagesService: Symbol.for("ListImagesService"),
+  GetImageService: Symbol.for("GetImageService"),
+  DeleteImageService: Symbol.for("DeleteImageService"),
 
   IRefreshTokenRepository: Symbol.for("IRefreshTokenRepository"),
 
   LoginService: Symbol.for("LoginService"),
   LogoutService: Symbol.for("LogoutService"),
+  RefreshTokenService: Symbol.for("RefreshTokenService"),
+  AuthService: Symbol.for("AuthService"),
+  CustomAuthProvider: Symbol.for("CustomAuthProvider"),
+  CustomPrincipal: Symbol.for("CustomPrincipal"),
 
-  EnsureAuthenticated: Symbol.for("EnsureAuthenticated"),
+  // EnsureAuthenticated: Symbol.for("EnsureAuthenticated"),
 };
 
 export default TYPES;

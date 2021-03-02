@@ -1,4 +1,5 @@
 import LoginCommand from "@auth/commands/LoginCommand";
+import RefreshTokenCommand from "@auth/commands/RefreshTokenCommand";
 import AuthData from "@auth/models/AuthData";
 import IRefreshTokenRepository from "@auth/models/IRefreshTokenRepository";
 import RefreshToken from "@auth/models/RefreshToken";
@@ -10,23 +11,15 @@ import IUserRepository from "@users/models/IUserRepository";
 import User from "@users/models/User";
 import { StatusCodes } from "http-status-codes";
 import { inject, injectable } from "inversify";
+import { token } from "morgan";
 import { v4 as uuidv4 } from "uuid";
 
 import AuthService from "./AuthService";
 
 const authService = inject(TYPES.AuthService);
 
-export interface ILoginService {
-  execute(
-    command: LoginCommand
-  ): Promise<{
-    accessToken: string;
-    refreshToken: string;
-  }>;
-}
-
 @injectable()
-class LoginService implements ILoginService {
+class RefreshTokenService {
   @authService private readonly _authService: AuthService;
 
   constructor(
@@ -39,28 +32,51 @@ class LoginService implements ILoginService {
   ) {}
 
   public async execute(
-    command: LoginCommand
+    command: RefreshTokenCommand
   ): Promise<{
     accessToken: string;
     refreshToken: string;
     user: User;
   }> {
-    const user = await this.userRepository.getByEmail(command.email);
+    const refreshTokenFound = await this.refreshTokenRepository.findRefreshToken(
+      command.refreshToken
+    );
 
-    if (!user) throw new AppError("Email ou senha inválidos");
+    if (refreshTokenFound === null)
+      throw new AppError("Refresh Token inválido", StatusCodes.BAD_REQUEST);
+
+    const currentDate = new Date(Date.now());
+
+    if (refreshTokenFound.expirationDate.getTime() < currentDate.getTime()) {
+      await this.refreshTokenRepository.deleteAllByEmail(
+        refreshTokenFound.email.value
+      );
+      throw new AppError("Refresh Token expirado", StatusCodes.BAD_REQUEST);
+    }
+
+    const user = await this.userRepository.getByEmail(
+      refreshTokenFound.email.value
+    );
+
+    if (!user) {
+      await this.refreshTokenRepository.deleteAllByEmail(
+        refreshTokenFound.email.value
+      );
+      throw new AppError("Refresh Token inválido", StatusCodes.BAD_REQUEST);
+    }
+
+    const profile = await this.profileRepository.getById(user.id);
+
+    if (!profile) {
+      await this.refreshTokenRepository.deleteAllByEmail(
+        refreshTokenFound.email.value
+      );
+      throw new AppError("Refresh Token inválido", StatusCodes.BAD_REQUEST);
+    }
 
     const authData = new AuthData();
     authData.email = user.email.value;
     authData.role = user.role;
-
-    const isMatch = await Password.isMatch(command.password, user.password);
-
-    if (!isMatch)
-      throw new AppError("Email ou senha inválidos", StatusCodes.BAD_REQUEST);
-
-    const profile = await this.profileRepository.getById(user.id);
-
-    if (!profile) throw new AppError("Email ou senha inválidos");
 
     const accessToken = await this._authService.generateToken(user, profile);
 
@@ -72,20 +88,18 @@ class LoginService implements ILoginService {
         StatusCodes.INTERNAL_SERVER_ERROR
       );
 
-    const currentDate = new Date(Date.now());
-
     const datePluOneMonth = new Date(
       currentDate.setMonth(currentDate.getMonth() + 1)
     );
 
     const refresh = new RefreshToken(
-      command.email,
+      user.email.value,
       refreshToken,
       datePluOneMonth
     );
 
     // Delete all active refreshTokens
-    await this.refreshTokenRepository.deleteAllByEmail(command.email);
+    await this.refreshTokenRepository.deleteAllByEmail(user.email.value);
 
     // Create new refreshToken
     await this.refreshTokenRepository.create(refresh);
@@ -94,4 +108,4 @@ class LoginService implements ILoginService {
   }
 }
 
-export default LoginService;
+export default RefreshTokenService;

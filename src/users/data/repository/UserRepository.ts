@@ -16,7 +16,7 @@ const userDocumentToEntity = (document: IUserMongooseDocument): User => {
     document.isActive
   );
 
-  user.id = document._id;
+  user.id = document._id.toHexString();
 
   return user;
 };

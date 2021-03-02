@@ -1,12 +1,14 @@
 import "@articles/controllers/";
 import "@auth/controllers/";
 import "@users/controllers/";
+import "@images/controllers/";
 import "express-async-errors";
 
 import * as prettyjson from "prettyjson";
 
 import { InversifyExpressServer, getRouteInfo } from "inversify-express-utils";
 
+import CustomAuthProvider from "@auth/services/CustomAuthProvider";
 import appConfig from "./configurations/appConfig";
 import { container } from "./configurations/inversify.config";
 import errorConfigFn from "./configurations/errorConfigFn";
@@ -16,7 +18,13 @@ import startMongooseAndListen from "./services/startMongooseAndListen";
 // import "@images/controllers";
 
 // create server
-const server = new InversifyExpressServer(container);
+const server = new InversifyExpressServer(
+  container,
+  null,
+  null,
+  null,
+  CustomAuthProvider
+);
 
 /************************************************************************************
  *                                  Handle Errors

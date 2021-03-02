@@ -1,33 +1,47 @@
-import { ObjectId } from "mongoose";
+import Role, { roleHasPermission } from "@shared/types/Role";
+
+import { IAuthInfo } from "./AuthService";
 import Permission from "@shared/types/Permission";
-import Role from "@shared/types/Role";
 import { interfaces } from "inversify-express-utils";
+import mongoose from "mongoose";
 
-interface ICustomPrincipal extends interfaces.Principal {
-  hasPermission(permission: Permission): Promise<boolean>;
-}
+class CustomPrincipal implements interfaces.Principal {
+  details: IAuthInfo;
 
-class CustomPrincipal implements ICustomPrincipal {
-  details: any;
-
-  constructor(details: any) {
-    this.details = details;
+  constructor(authInfo: IAuthInfo) {
+    this.details = authInfo;
   }
 
-  hasPermission(permission: Permission): Promise<boolean> {
-    throw new Error("Method not implemented.");
+  public isAuthenticated(): Promise<boolean> {
+    return Promise.resolve(
+      this.details.isTokenValid &&
+        typeof this.details.isTokenExpired !== "undefined" &&
+        this.details.isTokenExpired === false
+    );
   }
-  isAuthenticated(): Promise<boolean> {
-    throw new Error("Method not implemented.");
+
+  public isResourceOwner(
+    resourceOwnerId: string | mongoose.Types.ObjectId
+  ): Promise<boolean> {
+    if (!this.details.userId) return Promise.resolve(false);
+    if (typeof resourceOwnerId === "string")
+      return Promise.resolve(resourceOwnerId === this.details.userId);
+    return Promise.resolve(
+      resourceOwnerId.toHexString() === this.details.userId
+    );
   }
-  isResourceOwner(resourceId: string | ObjectId): Promise<boolean> {
-    throw new Error("Method not implemented.");
+
+  public isInRole(role: Role): Promise<boolean> {
+    if (!this.details.role) return Promise.resolve(false);
+    return Promise.resolve(role === this.details.role);
   }
-  isInRole(role: Role): Promise<boolean> {
-    throw new Error("Method not implemented.");
+
+  public hasPermission(permission: Permission): Promise<boolean> {
+    if (!this.details.role) return Promise.resolve(false);
+    return Promise.resolve(roleHasPermission(this.details.role, permission));
   }
 }
 
 export default CustomPrincipal;
 
-export { ICustomPrincipal };
+// export { ICustomPrincipal };

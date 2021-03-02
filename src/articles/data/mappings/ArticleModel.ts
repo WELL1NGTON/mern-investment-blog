@@ -3,6 +3,8 @@ import Visibility, { visibilities } from "@shared/types/Visibility";
 import mongoose, { Document, Schema } from "mongoose";
 
 import Article from "@articles/models/Article";
+import { ICategoryMongooseDocument } from "./CategoryModel";
+import { IProfileMongooseDocument } from "@users/data/mappings/ProfileModel";
 import mongoosePaginate from "mongoose-paginate-v2";
 import slugify from "slugify";
 import slugifyOptions from "@shared/configurations/slugifyOptions";
@@ -14,8 +16,13 @@ import slugifyOptions from "@shared/configurations/slugifyOptions";
 export interface IArticleMongooseDocument extends Document {
   slug: string;
   title: string;
-  category?: mongoose.Types.ObjectId;
-  author?: mongoose.Types.ObjectId;
+
+  // category?: mongoose.Types.ObjectId;
+  // author?: mongoose.Types.ObjectId;
+
+  category?: ICategoryMongooseDocument;
+  author?: IProfileMongooseDocument;
+
   description: string;
   markdownArticle: string;
   date: Date;

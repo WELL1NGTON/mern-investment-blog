@@ -1,6 +1,8 @@
 import mongoose, { ConnectOptions } from "mongoose";
 
-const uri = process.env.MONGO_URI;
+import databaseOptions from "./databaseOptions";
+
+const uri = databaseOptions.mongo.connectionString;
 if (uri) {
   mongoose.connect(uri, {
     useNewUrlParser: true,
@@ -11,21 +13,6 @@ if (uri) {
   const connection = mongoose.connection;
   connection.once("open", () => {
     console.log("MongoDB database connection established successfully");
-
-    // const newUser = new User({
-    //   title,
-    //   description,
-    //   markdownArticle,
-    //   date,
-    //   tags,
-    //   author,
-    //   state,
-    //   visibility,
-    //   category,
-    //   previewImg,
-    // });
-
-    // const savedUser = await newUser.save();
   });
 }
 

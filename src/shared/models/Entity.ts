@@ -10,7 +10,7 @@ class Entity implements IEntity {
     // this.id = mongoose.Types.ObjectId().toHexString();
   }
 
-  id!: string;
+  public id!: string;
 
   public removeId(): void {
     this.id = mongoose.Types.ObjectId("000000000000000000000000").toHexString();

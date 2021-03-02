@@ -30,14 +30,18 @@ import {
   ApiPath,
   SwaggerDefinitionConstant,
 } from "swagger-express-ts";
-import EnsureAuthenticated from "@auth/middleware/EnsureAuthenticated";
+import AuthService from "@auth/services/AuthService";
+
+const authService = inject(TYPES.AuthService);
 
 @ApiPath({
   path: "/api/v1/users",
   name: "Users",
 })
-@controller("api/v1/users")
+@controller("/api/v1/users")
 class UsersController extends BaseHttpController {
+  @authService private readonly _authService: AuthService;
+
   constructor(
     @inject(TYPES.ChangeUserPasswordService)
     private changeUserPasswordService: ChangeUserPasswordService,
@@ -89,11 +93,18 @@ class UsersController extends BaseHttpController {
         description: "Success",
         model: "PagedResult",
       },
+      [StatusCodes.UNAUTHORIZED]: {
+        description: "Unauthorized",
+        model: "AppError",
+      },
     },
-    security: { basicAuth: [] },
+    security: { ["Bearer"]: [] },
   })
-  @httpGet("/", TYPES.EnsureAuthenticated)
+  @httpGet("/")
   public async list(request: Request, response: Response): Promise<Response> {
+    await this._authService.ensureAuthenticated(this.httpContext);
+    await this._authService.ensureHasPermission(this.httpContext, "LIST_USERS");
+
     // const orderBy = request.query.orderBy
     //   ? {
     //       orderBy: request.query.orderBy as string,
@@ -133,11 +144,18 @@ class UsersController extends BaseHttpController {
         description: "Not Found",
         model: "AppError",
       },
+      [StatusCodes.UNAUTHORIZED]: {
+        description: "Unauthorized",
+        model: "AppError",
+      },
     },
-    security: { basicAuth: [] },
+    security: { ["Bearer"]: [] },
   })
-  @httpGet("/:id", TYPES.EnsureAuthenticated)
+  @httpGet("/:id")
   public async get(request: Request, response: Response): Promise<Response> {
+    await this._authService.ensureAuthenticated(this.httpContext);
+    await this._authService.ensureHasPermission(this.httpContext, "VIEW_USER");
+
     const id: string = request.params.id;
 
     const user = await this.getUserService.execute({ id });
@@ -164,11 +182,21 @@ class UsersController extends BaseHttpController {
       [StatusCodes.OK]: {
         description: "Success",
       },
+      [StatusCodes.UNAUTHORIZED]: {
+        description: "Unauthorized",
+        model: "AppError",
+      },
     },
-    security: { basicAuth: [] },
+    security: { ["Bearer"]: [] },
   })
-  @httpPost("/", TYPES.EnsureAuthenticated)
+  @httpPost("/")
   public async create(request: Request, response: Response): Promise<Response> {
+    await this._authService.ensureAuthenticated(this.httpContext);
+    await this._authService.ensureHasPermission(
+      this.httpContext,
+      "CREATE_USER"
+    );
+
     const command = CreateUserAndProfileCommand.requestToCommand(request);
 
     await this.createUserAndProfileService.execute(command);
@@ -196,11 +224,18 @@ class UsersController extends BaseHttpController {
         description: "Not Found",
         model: "AppError",
       },
+      [StatusCodes.UNAUTHORIZED]: {
+        description: "Unauthorized",
+        model: "AppError",
+      },
     },
-    security: { basicAuth: [] },
+    security: { ["Bearer"]: [] },
   })
-  @httpPut("/:id", TYPES.EnsureAuthenticated)
+  @httpPut("/:id")
   public async update(request: Request, response: Response): Promise<Response> {
+    await this._authService.ensureAuthenticated(this.httpContext);
+    await this._authService.ensureHasPermission(this.httpContext, "EDIT_USER");
+
     const command = UpdateUserCommand.requestToCommand(request);
 
     await this.updateUserService.execute(command);
@@ -225,11 +260,21 @@ class UsersController extends BaseHttpController {
         description: "Not Found",
         model: "AppError",
       },
+      [StatusCodes.UNAUTHORIZED]: {
+        description: "Unauthorized",
+        model: "AppError",
+      },
     },
-    security: { basicAuth: [] },
+    security: { ["Bearer"]: [] },
   })
-  @httpDelete("/:id", TYPES.EnsureAuthenticated)
+  @httpDelete("/:id")
   public async delete(request: Request, response: Response): Promise<Response> {
+    await this._authService.ensureAuthenticated(this.httpContext);
+    await this._authService.ensureHasPermission(
+      this.httpContext,
+      "DELETE_USER"
+    );
+
     const id: string = request.params.id;
 
     await this.deleteUserAndProfileService.execute({ id });
@@ -254,15 +299,23 @@ class UsersController extends BaseHttpController {
       [StatusCodes.OK]: {
         description: "Success",
       },
+      [StatusCodes.UNAUTHORIZED]: {
+        description: "Unauthorized",
+        model: "AppError",
+      },
     },
-    security: { basicAuth: [] },
+    security: { ["Bearer"]: [] },
   })
-  @httpPut("/password", TYPES.EnsureAuthenticated)
+  @httpPut("/password")
   public async changePassword(
     request: Request,
     response: Response
   ): Promise<Response> {
+    await this._authService.ensureAuthenticated(this.httpContext);
+
     const command = ChangeUserPasswordCommand.requestToCommand(request);
+
+    await this._authService.ensureIsResourceOwner(this.httpContext, command.id);
 
     await this.changeUserPasswordService.execute(command);
 
@@ -280,11 +333,21 @@ class UsersController extends BaseHttpController {
       [StatusCodes.OK]: {
         description: "Success",
       },
+      [StatusCodes.UNAUTHORIZED]: {
+        description: "Unauthorized",
+        model: "AppError",
+      },
     },
-    security: { basicAuth: [] },
+    security: { ["Bearer"]: [] },
   })
-  @httpPost("/enable/:id", TYPES.EnsureAuthenticated)
+  @httpPost("/enable/:id")
   public async enable(request: Request, response: Response): Promise<Response> {
+    await this._authService.ensureAuthenticated(this.httpContext);
+    await this._authService.ensureHasPermission(
+      this.httpContext,
+      "ENABLE_USER"
+    );
+
     const id: string = request.params.id;
 
     await this.enableUserService.execute({ id });
@@ -301,14 +364,24 @@ class UsersController extends BaseHttpController {
       [StatusCodes.OK]: {
         description: "Success",
       },
+      [StatusCodes.UNAUTHORIZED]: {
+        description: "Unauthorized",
+        model: "AppError",
+      },
     },
-    security: { basicAuth: [] },
+    security: { ["Bearer"]: [] },
   })
-  @httpPost("/disable/:id", TYPES.EnsureAuthenticated)
+  @httpPost("/disable/:id")
   public async disable(
     request: Request,
     response: Response
   ): Promise<Response> {
+    await this._authService.ensureAuthenticated(this.httpContext);
+    await this._authService.ensureHasPermission(
+      this.httpContext,
+      "DISABLE_USER"
+    );
+
     const id: string = request.params.id;
 
     await this.disableUserService.execute({ id });

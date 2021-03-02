@@ -19,7 +19,7 @@ const profileDocumentToEntity = (
     document.contact
   );
 
-  profile.id = document._id;
+  profile.id = document._id.toHexString();
 
   return profile;
 };

@@ -27,13 +27,13 @@ export const accessTokenOptions: IJWTTokenOptions = {
     algorithm: "HS256",
     expiresIn: process.env.ACCESS_TOKEN_EXPIRATION_TIME as string,
     notBefore: Date.now(),
-    issuer: `https:\\\\${process.env.HOST as string}:${
+    issuer: `https://${process.env.HOST as string}:${
       process.env.PORT as string
     }`,
-    audience: `https:\\\\${process.env.HOST as string}:${
+    audience: `https://${process.env.HOST as string}:${
       process.env.PORT as string
     }`,
-    // subject: userid
+    // subject: userid,
   } as SignOptions,
   property: "access-token",
 };

@@ -20,16 +20,18 @@ import {
   ApiPath,
   SwaggerDefinitionConstant,
 } from "swagger-express-ts";
-import EnsureAuthenticated from "@auth/middleware/EnsureAuthenticated";
+import AuthService from "@auth/services/AuthService";
 
-// import { container } from "tsyringe";
+const authService = inject(TYPES.AuthService);
 
 @ApiPath({
   path: "/api/v1/profiles",
   name: "Profiles",
 })
-@controller("api/v1/profiles")
+@controller("/api/v1/profiles")
 class ProfilesController extends BaseHttpController {
+  @authService private readonly _authService: AuthService;
+
   constructor(
     @inject(TYPES.GetProfileService)
     private getProfileService: GetProfileService,
@@ -71,11 +73,21 @@ class ProfilesController extends BaseHttpController {
         description: "Success",
         model: "PagedResult",
       },
+      [StatusCodes.UNAUTHORIZED]: {
+        description: "Unauthorized",
+        model: "AppError",
+      },
     },
-    security: { basicAuth: [] },
+    security: { ["Bearer"]: [] },
   })
-  @httpGet("/", TYPES.EnsureAuthenticated)
+  @httpGet("/")
   public async list(request: Request, response: Response): Promise<Response> {
+    await this._authService.ensureAuthenticated(this.httpContext);
+    await this._authService.ensureHasPermission(
+      this.httpContext,
+      "LIST_PROFILES"
+    );
+
     // const orderBy = request.query.orderBy
     //   ? {
     //       orderBy: request.query.orderBy as string,
@@ -114,7 +126,7 @@ class ProfilesController extends BaseHttpController {
       },
     },
   })
-  @httpGet("/:id", TYPES.EnsureAuthenticated)
+  @httpGet("/:id")
   public async get(request: Request, response: Response): Promise<Response> {
     const id: string = request.params.id;
 
@@ -150,11 +162,22 @@ class ProfilesController extends BaseHttpController {
         description: "Not Found",
         model: "AppError",
       },
+      [StatusCodes.UNAUTHORIZED]: {
+        description: "Unauthorized",
+        model: "AppError",
+      },
     },
-    security: { basicAuth: [] },
+    security: { ["Bearer"]: [] },
   })
-  @httpPut("/:id", TYPES.EnsureAuthenticated)
+  @httpPut("/:id")
   public async update(request: Request, response: Response): Promise<Response> {
+    await this._authService.ensureAuthenticated(this.httpContext);
+    await this._authService.ensureIsResourceOwnerOrHasPermission(
+      this.httpContext,
+      request.params.id,
+      "EDIT_PROFILE"
+    );
+
     const command = UpdateProfileCommand.requestToCommand(request);
 
     await this.updateProfileService.execute(command);
