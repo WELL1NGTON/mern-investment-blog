@@ -50,7 +50,7 @@ class ProfileRepository implements IProfileRepository {
         .limit(pageSize)
         .skip(pageSize * (currentPage - 1))
         .exec();
-      total = await ProfileModel.count();
+      total = await ProfileModel.countDocuments();
     } catch (e) {
       result = [];
     }
@@ -73,7 +73,7 @@ class ProfileRepository implements IProfileRepository {
     let total = 0;
     try {
       result = await ProfileModel.find().sort({ name: "desc" }).exec();
-      total = await ProfileModel.count();
+      total = await ProfileModel.countDocuments();
     } catch (e) {
       result = [];
     }

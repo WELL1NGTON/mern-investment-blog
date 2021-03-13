@@ -7,7 +7,6 @@ import { IListArticlesService } from "@articles/services/articles/ListArticlesSe
 import { IUpdateArticleService } from "@articles/services/articles/UpdateArticleService";
 import AuthService from "@auth/services/AuthService";
 import TYPES from "@shared/constants/TYPES";
-import AppError from "@shared/errors/AppError";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { inject } from "inversify";

@@ -138,11 +138,16 @@ class ImagesController extends BaseHttpController {
     summary: "Image new Image",
     description: "Image new Image",
     parameters: {
-      body: {
-        description: "New Image",
-        required: true,
-        model: "UploadImage",
+      formData: {
+        file: {
+          type: SwaggerDefinitionConstant.JPEG,
+        },
       },
+      // body: {
+      //   description: "New Image",
+      //   required: true,
+      //   model: "UploadImage",
+      // },
     },
     responses: {
       [StatusCodes.OK]: {
@@ -157,11 +162,11 @@ class ImagesController extends BaseHttpController {
   })
   @httpPost("/", TYPES.MulterMiddlewareImage)
   public async create(request: Request, response: Response): Promise<Response> {
-    await this._authService.ensureAuthenticated(this.httpContext);
-    await this._authService.ensureHasPermission(
-      this.httpContext,
-      "UPLOAD_IMAGE"
-    );
+    // await this._authService.ensureAuthenticated(this.httpContext);
+    // await this._authService.ensureHasPermission(
+    //   this.httpContext,
+    //   "UPLOAD_IMAGE"
+    // );
 
     const command = CreateImagePathCommand.requestToCommand(request);
 

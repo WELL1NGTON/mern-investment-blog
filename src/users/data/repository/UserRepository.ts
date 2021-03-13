@@ -41,7 +41,7 @@ class UserRepository implements IUserRepository {
     let total = 0;
     try {
       result = await UserModel.find().sort({ date: "desc" }).exec();
-      total = await UserModel.count();
+      total = await UserModel.countDocuments();
     } catch (e) {
       result = [];
     }
@@ -62,7 +62,7 @@ class UserRepository implements IUserRepository {
     let total = 0;
     try {
       result = await UserModel.find().sort({ date: "desc" }).exec();
-      total = await UserModel.count();
+      total = await UserModel.countDocuments();
     } catch (e) {
       result = [];
     }

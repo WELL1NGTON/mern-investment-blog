@@ -5,6 +5,14 @@ import { CelebrateError } from "celebrate";
 import { StatusCodes } from "http-status-codes";
 import logger from "@app/services/Logger";
 
+/************************************************************************************
+ *                                  Handle Errors
+ ***********************************************************************************/
+
+// Print API errors
+// server.setConfig((app) => app.use(errorHandling));
+// app.use(errorHandling);
+
 function errorConfigFn(app: Application): void {
   app.use(
     (

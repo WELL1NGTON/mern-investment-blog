@@ -60,7 +60,7 @@ class ImagePathRepository implements IImagePathRepository {
         .limit(pageSize)
         .skip(pageSize * (currentPage - 1))
         .exec();
-      total = await ImagePathModel.count();
+      total = await ImagePathModel.countDocuments();
     } catch (e) {
       result = [];
     }
@@ -82,7 +82,7 @@ class ImagePathRepository implements IImagePathRepository {
     let total = 0;
     try {
       result = await ImagePathModel.find().sort({ name: "asc" }).exec();
-      total = await ImagePathModel.count();
+      total = await ImagePathModel.countDocuments();
     } catch (e) {
       result = [];
     }

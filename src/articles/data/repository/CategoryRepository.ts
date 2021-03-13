@@ -49,7 +49,7 @@ class CategoryRepository implements ICategoryRepository {
         .limit(pageSize)
         .skip(pageSize * (currentPage - 1))
         .exec();
-      total = await CategoryModel.count();
+      total = await CategoryModel.countDocuments();
     } catch (e) {
       result = [];
     }
@@ -71,7 +71,7 @@ class CategoryRepository implements ICategoryRepository {
     let total = 0;
     try {
       result = await CategoryModel.find().sort({ name: "asc" }).exec();
-      total = await CategoryModel.count();
+      total = await CategoryModel.countDocuments();
     } catch (e) {
       result = [];
     }

@@ -2,13 +2,14 @@ import { BaseMiddleware } from "inversify-express-utils";
 import { Request } from "express";
 import { injectable } from "inversify";
 import multer from "multer";
+import path from "path";
 
 @injectable()
 class MulterMiddlewareImage extends BaseMiddleware {
   public handler = multer({
     storage: multer.diskStorage({
       destination: (req: Request, file: Express.Multer.File, cb) => {
-        cb(null, "./public/images");
+        cb(null, path.join(__dirname, "../../../public/images"));
       },
 
       filename: (req: Request, file: Express.Multer.File, cb) => {
@@ -24,7 +25,7 @@ class MulterMiddlewareImage extends BaseMiddleware {
       }
       return cb(null, false);
     },
-  }).single("image");
+  }).single("file");
 }
 
 export default MulterMiddlewareImage;

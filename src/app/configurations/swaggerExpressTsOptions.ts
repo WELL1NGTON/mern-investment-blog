@@ -367,8 +367,7 @@ const swaggerExpressTsOptions: ISwaggerExpressOptions = {
       },
 
       UploadImage: {
-        description:
-          "Category Model class wich group Articles for better organization.",
+        description: "UploadImagesModel",
         properties: {
           // name: {
           //   description: "Category name",
@@ -390,7 +389,7 @@ const swaggerExpressTsOptions: ISwaggerExpressOptions = {
           //   example: "#3a558c" as any,
           // },
           parameters: {
-            description: `in: "formData", name: "image", type: "file" description: "image to be uploaded"`,
+            description: `in: "formData", name: "file", type: "file" description: "image to be uploaded"`,
           },
         },
       },

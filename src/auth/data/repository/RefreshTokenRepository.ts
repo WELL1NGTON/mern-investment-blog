@@ -48,7 +48,7 @@ class RefreshTokenRepository implements IRefreshTokenRepository {
         .limit(pageSize)
         .skip(pageSize * (currentPage - 1))
         .exec();
-      total = await RefreshTokenModel.count();
+      total = await RefreshTokenModel.countDocuments();
     } catch (e) {
       result = [];
     }
@@ -73,7 +73,7 @@ class RefreshTokenRepository implements IRefreshTokenRepository {
       result = await RefreshTokenModel.find()
         .sort({ expirationDate: "desc" })
         .exec();
-      total = await RefreshTokenModel.count();
+      total = await RefreshTokenModel.countDocuments();
     } catch (e) {
       result = [];
     }

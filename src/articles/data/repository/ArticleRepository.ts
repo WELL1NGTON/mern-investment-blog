@@ -96,7 +96,7 @@ class ArticleRepository implements IArticleRepository {
         .skip(pageSize * (currentPage - 1))
         .exec();
 
-      total = await ArticleModel.count().exec();
+      total = await ArticleModel.countDocuments().exec();
     } catch (e) {
       result = [];
     }
@@ -125,7 +125,7 @@ class ArticleRepository implements IArticleRepository {
         .populate("category")
         .exec();
 
-      total = await ArticleModel.count().exec();
+      total = await ArticleModel.countDocuments().exec();
     } catch (e) {
       result = [];
     }
