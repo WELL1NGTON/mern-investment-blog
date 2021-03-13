@@ -67,7 +67,8 @@ export default async function (
   } catch (e) {
     throw new AppError(e.message, StatusCodes.INTERNAL_SERVER_ERROR);
   } finally {
-    deleteFile(path);
+    // TODO: Arrumar para não ficar salvando arquivos inúteis localmente
+    // ! deleteFile(path);
   }
 }
 
@@ -78,7 +79,8 @@ const generateNewCompressedFile = async (
   const data = await compressImage(imageCompressOptions);
 
   // Delete file sent by user
-  await deleteFile(imageCompressOptions.file.path);
+  // TODO: Arrumar para não ficar salvando arquivos inúteis localmente
+  // ! await deleteFile(imageCompressOptions.file.path);
 
   // Configure a new path to save the file on buffer
   const newPath = generateNewFilePathName(

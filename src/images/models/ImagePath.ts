@@ -22,7 +22,7 @@ class ImagePath extends Entity {
   ) {
     super();
 
-    this._slug = new Slug(name);
+    this._slug = new Slug("");
     this.name = name;
     this.tags = tags;
     this.url = url;

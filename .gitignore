@@ -119,3 +119,6 @@ dist
 /env/*
 !example.env
 requests.rest
+
+public/images/*
+!public/images/.gitkeep

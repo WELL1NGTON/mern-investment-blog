@@ -162,11 +162,11 @@ class ImagesController extends BaseHttpController {
   })
   @httpPost("/", TYPES.MulterMiddlewareImage)
   public async create(request: Request, response: Response): Promise<Response> {
-    // await this._authService.ensureAuthenticated(this.httpContext);
-    // await this._authService.ensureHasPermission(
-    //   this.httpContext,
-    //   "UPLOAD_IMAGE"
-    // );
+    await this._authService.ensureAuthenticated(this.httpContext);
+    await this._authService.ensureHasPermission(
+      this.httpContext,
+      "UPLOAD_IMAGE"
+    );
 
     const command = CreateImagePathCommand.requestToCommand(request);
 
@@ -184,7 +184,7 @@ class ImagesController extends BaseHttpController {
       quality: command.quality,
       size: command.size,
     });
-    return response.status(StatusCodes.OK).send("Artigo criado com sucesso");
+    return response.status(StatusCodes.OK).send("Imagem enviada com sucesso");
   }
 
   @ApiOperationDelete({

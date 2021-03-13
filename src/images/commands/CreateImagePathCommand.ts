@@ -5,6 +5,7 @@ import SupportedImageFormat, {
 } from "@images/types/SupportedImageFormat";
 
 import Command from "@shared/messages/Command";
+import path from "path";
 
 class CreateImagePathCommand extends Command {
   name: string;
@@ -53,11 +54,12 @@ class CreateImagePathCommand extends Command {
     request: Request
   ): CreateImagePathCommand => {
     const command = new CreateImagePathCommand(
-      request.body.title,
+      request.body.name,
       request.body.tags,
       request.file,
       request.body.changeFile,
-      request.body.format,
+      request.body.format ??
+        path.extname(request.file.filename).replace(".", ""),
       request.body.quality,
       request.body.size
     );

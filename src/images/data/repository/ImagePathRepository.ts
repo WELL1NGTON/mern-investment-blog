@@ -20,7 +20,7 @@ const imagePathDocumentToEntity = (
     document.bucket,
     document.firebaseFileName,
     document.firebaseStorageDownloadTokens,
-    document.uploadedBy.toHexString()
+    document.uploadedBy?.toHexString()
   );
 
   imagePath.id = document._id.toHexString();
